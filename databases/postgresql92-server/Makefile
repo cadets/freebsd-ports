@@ -109,7 +109,7 @@ DEBUG_DESC=	Builds with debugging symbols
 OPTIONS_DEFINE+=	SSL
 SSL_DESC=	Build with OpenSSL support
 
-OPTIONS_DEFAULT+=	NLS SSL
+OPTIONS_DEFAULT+=	NLS SSL DTRACE DEBUG
 .endif # !SLAVE_ONLY
 
 .if defined(CLIENT_ONLY)
