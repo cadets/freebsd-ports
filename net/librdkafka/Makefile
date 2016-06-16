@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	librdkafka
-PORTVERSION=	0.8.6
+PORTVERSION=	0.9.1
 CATEGORIES=	net
 
 MAINTAINER=	xnasx@yandex.ru
 COMMENT=	Apache Kafka C/C++ library
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	BSD2CLAUSE
 
 BROKEN_powerpc64=	Does not build
 
@@ -16,7 +16,6 @@ BUILD_DEPENDS=	bash:shells/bash
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	edenhill
-GH_TAGNAME=	e3d984849a
 
 USE_LDCONFIG=	yes
 
@@ -28,9 +27,6 @@ GNU_CONFIGURE=	yes
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000 && ${ARCH} == "i386"
 CFLAGS+=	-march=pentium
 .endif
-
-post-install:
-	${INSTALL_DATA} ${WRKSRC}/rdkafka.pc  ${STAGEDIR}${PREFIX}/libdata/pkgconfig/librdkafka.pc
 
 post-stage:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/librdkafka.so.1
