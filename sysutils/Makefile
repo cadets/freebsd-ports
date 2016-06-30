@@ -1099,6 +1099,7 @@
     SUBDIR += u-boot-cubox-hummingboard
     SUBDIR += u-boot-duovero
     SUBDIR += u-boot-pandaboard
+    SUBDIR += u-boot-pine64
     SUBDIR += u-boot-rpi
     SUBDIR += u-boot-rpi2
     SUBDIR += u-boot-utilite
@@ -1228,6 +1229,7 @@
     SUBDIR += zfs-stats
     SUBDIR += zfs-stats-lite
     SUBDIR += zfsnap
+    SUBDIR += zfsnap2
     SUBDIR += zfstools
     SUBDIR += zidrav
     SUBDIR += zisofs-tools
