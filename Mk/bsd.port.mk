@@ -1275,6 +1275,8 @@ WITH_DEBUG=	yes
 
 _PREMKINCLUDED=	yes
 
+.include "${PORTSDIR}/Mk/bsd.default-versions.mk"
+
 .if defined(PORTVERSION)
 .if ${PORTVERSION:M*[-_,]*}x != x
 IGNORE=			PORTVERSION ${PORTVERSION} may not contain '-' '_' or ','
@@ -1357,7 +1359,7 @@ USES+=	ssl
 .include "${PORTSDIR}/Mk/bsd.emacs.mk"
 .endif
 
-.if defined(USE_PHP) && (!defined(USES) || ( defined(USES) && !${USES:Mphp} ))
+.if defined(USE_PHP) && (!defined(USES) || ( defined(USES) && !${USES:Mphp*} ))
 DEV_WARNING+=		"Using USE_PHP alone is deprecated, please use USES=php"
 USES+=	php
 .endif
@@ -1400,10 +1402,6 @@ USES+=	gnome
 
 .if defined(USE_MATE)
 USES+=	mate
-.endif
-
-.if defined(USE_BDB)
-USES+=bdb:${USE_BDB}
 .endif
 
 .if defined(USE_MYSQL)
@@ -1602,13 +1600,18 @@ SUB_LIST+=	PREFIX=${PREFIX} LOCALBASE=${LOCALBASE} \
 		WWWDIR=${WWWDIR} ETCDIR=${ETCDIR}
 # This is used for check-stagedir.sh and check_leftover.sh to replace
 # directories/files with PLIST_SUB %%KEYS%%.
+# Remove VARS which values are PLIST_SUB_SED_MIN long or shorter
+PLIST_SUB_SED_MIN?=	2
+PLIST_SUB_SED_tmp1= ${PLIST_SUB:C/.*=.{1,${PLIST_SUB_SED_MIN}}$//g}
 #  Remove VARS that are too generic
 #  Remove empty values
 #  Remove @comment values
+PLIST_SUB_SED_tmp2= ${PLIST_SUB_tmp1:NEXTRACT_SUFX=*:NOSREL=*:NLIB32DIR=*:NPREFIX=*:NLOCALBASE=*:NRESETPREFIX=*:N*="":N*="@comment*}
+#  Handle VARS for which there is a _regex entry
+PLIST_SUB_SED_tmp3?= ${PLIST_SUB_SED_tmp1:C/(${PLIST_SUB:M*_regex=*:C/_regex=.*/=.*/:Q:S/\\ /|/g:S/\\//g})//:C/(.*)_regex=(.*)/\1=\2/}
 #  Remove quotes
 #  Replace . with \. for later sed(1) usage
-PLIST_SUB_SED_MIN?=	2
-PLIST_SUB_SED?= ${PLIST_SUB:C/.*=.{1,${PLIST_SUB_SED_MIN}}$//g:NEXTRACT_SUFX=*:NOSREL=*:NLIB32DIR=*:NPREFIX=*:NLOCALBASE=*:NRESETPREFIX=*:N*="":N*="@comment*:C/([^=]*)="?([^"]*)"?/s!\2!%%\1%%!g;/g:C/\./\\./g}
+PLIST_SUB_SED?= ${PLIST_SUB_SED_tmp3:C/([^=]*)="?([^"]*)"?/s!\2!%%\1%%!g;/g:C/\./\\./g}
 
 # kludge to strip trailing whitespace from CFLAGS;
 # sub-configure will not # survive double space
@@ -1921,7 +1924,7 @@ _FORCE_POST_PATTERNS=	rmdir kldxref mkfontscale mkfontdir fc-cache \
 .include "${PORTSDIR}/Mk/bsd.sdl.mk"
 .endif
 
-.if defined(USE_PHP) && (!defined(USES) || ( defined(USES) && !${USES:Mphp} ))
+.if defined(USE_PHP) && (!defined(USES) || ( defined(USES) && !${USES:Mphp*} ))
 DEV_WARNING+=		"Using USE_PHP alone is deprecated, please use USES=php"
 _USES_POST+=	php
 .endif
@@ -2165,6 +2168,7 @@ PKGINSTALL?=	${PKGDIR}/pkg-install
 PKGDEINSTALL?=	${PKGDIR}/pkg-deinstall
 PKGREQ?=		${PKGDIR}/pkg-req
 PKGMESSAGE?=	${PKGDIR}/pkg-message
+_PKGMESSAGES+=	${PKGMESSAGE}
 
 TMPPLIST?=	${WRKDIR}/.PLIST.mktmp
 TMPPLIST_SORT?=	${WRKDIR}/.PLIST.mktmp.sorted
@@ -4004,10 +4008,12 @@ DEPENDS-LIST= \
 			PORTSDIR="${PORTSDIR}" \
 			dp_MAKE="${MAKE}" \
 			dp_PKGNAME="${PKGNAME}" \
+			dp_PKG_INFO="${PKG_INFO}" \
 			dp_SCRIPTSDIR="${SCRIPTSDIR}" \
 			${SH} ${SCRIPTSDIR}/depends-list.sh
 
 ALL-DEPENDS-LIST=			${DEPENDS-LIST} -r ${_UNIFIED_DEPENDS:Q}
+MISSING-DEPENDS-LIST=		${DEPENDS-LIST} -m ${_UNIFIED_DEPENDS:Q}
 TEST-DEPENDS-LIST=			${DEPENDS-LIST} ${TEST_DEPENDS:Q}
 CLEAN-DEPENDS-LIST=			${DEPENDS-LIST} -wr ${_UNIFIED_DEPENDS:Q} 
 CLEAN-DEPENDS-LIMITED-LIST=	${DEPENDS-LIST} -w ${_UNIFIED_DEPENDS:Q}
@@ -4237,7 +4243,7 @@ create-manifest:
 			dp_CATEGORIES='${CATEGORIES:u:S/$/,/}'                \
 			dp_COMMENT=${COMMENT:Q}                               \
 			dp_COMPLETE_OPTIONS_LIST='${COMPLETE_OPTIONS_LIST}'   \
-			dp_DEPRECATED='${DEPRECATED:Q}'                       \
+			dp_DEPRECATED=${DEPRECATED:Q}                         \
 			dp_DESCR='${DESCR}'                                   \
 			dp_EXPIRATION_DATE='${EXPIRATION_DATE}'               \
 			dp_GROUPS='${GROUPS:u:S/$/,/}'                        \
@@ -4249,7 +4255,7 @@ create-manifest:
 			dp_PKGBASE='${PKGBASE}'                               \
 			dp_PKGDEINSTALL='${PKGDEINSTALL}'                     \
 			dp_PKGINSTALL='${PKGINSTALL}'                         \
-			dp_PKGMESSAGE='${PKGMESSAGE}'                         \
+			dp_PKGMESSAGES='${_PKGMESSAGES}'                      \
 			dp_PKGORIGIN='${PKGORIGIN}'                           \
 			dp_PKGPOSTDEINSTALL='${PKGPOSTDEINSTALL}'             \
 			dp_PKGPOSTINSTALL='${PKGPOSTINSTALL}'                 \
@@ -4287,12 +4293,8 @@ package-recursive: package
 
 # Show missing dependencies
 missing:
-	@_origins=$$(${PKG_INFO} -aoq); \
-	for dir in $$(${ALL-DEPENDS-LIST}); do \
-		_origin=$${dir##${PORTSDIR}/}; \
-		if ! $$(${ECHO_CMD} $${_origins} | ${GREP} -q $${_origin}); then \
-			${ECHO_CMD} $${_origin}; \
-		fi; \
+	@for dir in $$(${MISSING-DEPENDS-LIST}); do \
+		echo $${dir#${PORTSDIR}/}; \
 	done
 
 # Show missing dependencies by name
@@ -4455,8 +4457,7 @@ generate-plist: ${WRKDIR}
 		${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} ${PLIST} >> ${TMPPLIST}; \
 	fi
 
-# Keep PLIST_DIRSTRY as compatibility
-.for dir in ${PLIST_DIRS} ${PLIST_DIRSTRY}
+.for dir in ${PLIST_DIRS}
 	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@dir ,' >> ${TMPPLIST}
 .endfor
 
@@ -4536,7 +4537,7 @@ add-plist-info:
 # deinstall-time
 .if !target(add-plist-post)
 .if (${PREFIX} != ${LOCALBASE} && ${PREFIX} != ${LINUXBASE} && \
-    ${PREFIX} != "/usr" && !defined(NO_PREFIX_RMDIR))
+    ${PREFIX} != "/usr" && ${PREFIX} != "/" && !defined(NO_PREFIX_RMDIR))
 add-plist-post:
 	@${ECHO_CMD} "@dir ${PREFIX}" >> ${TMPPLIST}
 .endif

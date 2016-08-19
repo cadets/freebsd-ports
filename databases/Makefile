@@ -64,6 +64,7 @@
     SUBDIR += elixir-postgrex
     SUBDIR += elixir-timex_ecto
     SUBDIR += emma
+    SUBDIR += erlang-couchbeam
     SUBDIR += erlang-epgsql
     SUBDIR += erlang-eredis
     SUBDIR += evolution-data-server
@@ -167,6 +168,7 @@
     SUBDIR += libpbl
     SUBDIR += libpqtypes
     SUBDIR += libsdb
+    SUBDIR += libzbxpgsql
     SUBDIR += libzdb
     SUBDIR += linux-c6-sqlite3
     SUBDIR += linux-f10-sqlite3
@@ -212,8 +214,6 @@
     SUBDIR += mysql-proxy
     SUBDIR += mysql-q4m
     SUBDIR += mysql-udf
-    SUBDIR += mysql-udf-sys
-    SUBDIR += mysql-xql
     SUBDIR += mysql2odbc
     SUBDIR += mysql2pgsql
     SUBDIR += mysql55-client
@@ -245,7 +245,6 @@
     SUBDIR += opentsdb
     SUBDIR += oracle7-client
     SUBDIR += oracle8-client
-    SUBDIR += oracle_odbc_driver
     SUBDIR += p5-Amazon-SimpleDB
     SUBDIR += p5-Amon2-DBI
     SUBDIR += p5-AnyEvent-BDB
@@ -418,6 +417,7 @@
     SUBDIR += p5-Dancer-Session-Memcached
     SUBDIR += p5-Dancer2-Plugin-DBIC
     SUBDIR += p5-Dancer2-Plugin-Database
+    SUBDIR += p5-Dancer2-Session-DBIC
     SUBDIR += p5-Data-Page
     SUBDIR += p5-Data-Pageset
     SUBDIR += p5-Exception-Class-DBI
@@ -428,6 +428,7 @@
     SUBDIR += p5-GraphViz-DBI
     SUBDIR += p5-HTML-FormHandler-Model-DBIC
     SUBDIR += p5-Ima-DBI
+    SUBDIR += p5-Interchange6-Schema
     SUBDIR += p5-Iterator-DBI
     SUBDIR += p5-Jifty-DBI
     SUBDIR += p5-KyotoCabinet
@@ -657,11 +658,6 @@
     SUBDIR += postgresql-relay
     SUBDIR += postgresql-repmgr
     SUBDIR += postgresql-repmgr2
-    SUBDIR += postgresql90-client
-    SUBDIR += postgresql90-pgtcl
-    SUBDIR += postgresql90-plperl
-    SUBDIR += postgresql90-plpython
-    SUBDIR += postgresql90-server
     SUBDIR += postgresql91-client
     SUBDIR += postgresql91-contrib
     SUBDIR += postgresql91-docs
@@ -702,7 +698,6 @@
     SUBDIR += postgresql95-plpython
     SUBDIR += postgresql95-pltcl
     SUBDIR += postgresql95-server
-    SUBDIR += postgresql_autodoc
     SUBDIR += powerarchitect
     SUBDIR += proftpd-mod_sql_mysql
     SUBDIR += proftpd-mod_sql_odbc
@@ -837,6 +832,7 @@
     SUBDIR += qt5-sqldrivers-sqlite2
     SUBDIR += qt5-sqldrivers-sqlite3
     SUBDIR += qt5-sqldrivers-tds
+    SUBDIR += radix.v2
     SUBDIR += rdb
     SUBDIR += rdfdb
     SUBDIR += recutils
@@ -979,6 +975,7 @@
     SUBDIR += tokyocabinet
     SUBDIR += tokyotyrant
     SUBDIR += tora
+    SUBDIR += tsearch_extras
     SUBDIR += tuning-primer
     SUBDIR += twemproxy
     SUBDIR += unixODBC

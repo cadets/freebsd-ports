@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	postgresql
-DISTVERSION?=	9.2.17
+DISTVERSION?=	9.2.18
+PORTREVISION?=	0
 CATEGORIES?=	databases
 MASTER_SITES=	PGSQL/source/v${DISTVERSION}
 PKGNAMESUFFIX?=	${DISTVERSION:R:S/.//}${COMPONENT}
@@ -18,7 +19,7 @@ CONFLICTS?=	${PORTNAME}[^${PORTVERSION:R:R}]?-client* \
 WRKSRC=		${WRKDIR}/postgresql-${DISTVERSION}
 DIST_SUBDIR=	postgresql
 
-ICU_PATCHFILE?=	pg-929-icu-2015-04-18.diff.gz
+ICU_PATCHFILE?=	pg-9218-icu-2016-08-10.diff.gz
 
 OPTIONS_SUB=	yes
 
@@ -29,9 +30,9 @@ USES+=	gmake
 GNU_CONFIGURE=	yes
 .endif
 
-PG_USER=	pgsql
-PG_GROUP=	pgsql
-PG_UID=	70
+PG_USER?=	pgsql
+PG_GROUP?=	pgsql
+PG_UID?=	70
 
 LDFLAGS+=	-L${LOCALBASE}/lib
 INCLUDES+=	-I${LOCALBASE}/include
@@ -118,7 +119,7 @@ LIBEDIT_USES=		libedit
 LIBEDIT_USES_OFF=		readline
 .endif # CLIENT_ONLY
 
-SSL_USE=	OPENSSL=yes
+SSL_USES=	ssl
 SSL_CONFIGURE_WITH=openssl
 
 PAM_CONFIGURE_WITH=	pam
@@ -165,6 +166,7 @@ PATCH_DIST_STRIP=-p1
 .  if ${PORT_OPTIONS:MDTRACE}
 CONFIGURE_ARGS+=--enable-dtrace
 LDFLAGS+=-lelf
+INSTALL_TARGET=install
 .  endif
 
 .if ${PORT_OPTIONS:MGSSAPI}

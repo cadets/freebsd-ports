@@ -29,7 +29,6 @@
     SUBDIR += bogosort
     SUBDIR += bottlerocket
     SUBDIR += boxes
-    SUBDIR += boxquote.el
     SUBDIR += brs
     SUBDIR += buffer
     SUBDIR += cave
@@ -56,7 +55,6 @@
     SUBDIR += crosspad
     SUBDIR += cs
     SUBDIR += cstream
-    SUBDIR += cuecat
     SUBDIR += dahdi
     SUBDIR += dahdi-kmod
     SUBDIR += dahdi-kmod26
@@ -75,9 +73,11 @@
     SUBDIR += dvorakng
     SUBDIR += e2fsprogs-libblkid
     SUBDIR += e2fsprogs-libuuid
+    SUBDIR += elixir-mime
     SUBDIR += elixir-uuid
     SUBDIR += elscreen
     SUBDIR += erlang-mimerl
+    SUBDIR += erlang-mimetypes
     SUBDIR += esniper
     SUBDIR += estic
     SUBDIR += excel-writer
@@ -375,9 +375,10 @@
     SUBDIR += py-osd
     SUBDIR += py-pexpect
     SUBDIR += py-powerline-status
-    SUBDIR += py-pyprind
     SUBDIR += py-progressbar
     SUBDIR += py-progressbar231
+    SUBDIR += py-pyfiglet
+    SUBDIR += py-pyprind
     SUBDIR += py-qt4-demo
     SUBDIR += py-qt4-doc
     SUBDIR += py-qt5-demo
@@ -388,7 +389,6 @@
     SUBDIR += py-tqdm
     SUBDIR += py-yolk
     SUBDIR += pylize
-    SUBDIR += pypanda
     SUBDIR += qbrew
     SUBDIR += qlas
     SUBDIR += qmetro
@@ -400,7 +400,6 @@
     SUBDIR += qt5-examples
     SUBDIR += qt5-l10n
     SUBDIR += qt5ct
-    SUBDIR += quotes
     SUBDIR += raspberrypi-userland
     SUBDIR += raspbsd-led
     SUBDIR += ree
@@ -420,13 +419,13 @@
     SUBDIR += rubygem-vpim
     SUBDIR += rump
     SUBDIR += saaghar
+    SUBDIR += seabios
     SUBDIR += sent
     SUBDIR += seq2
     SUBDIR += shared-mime-info
     SUBDIR += shc
     SUBDIR += shuffle
     SUBDIR += shuffle-db
-    SUBDIR += seabios
     SUBDIR += since
     SUBDIR += skyutils
     SUBDIR += sloccount

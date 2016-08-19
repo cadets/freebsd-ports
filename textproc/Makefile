@@ -70,7 +70,6 @@
     SUBDIR += c2html
     SUBDIR += ca-aspell
     SUBDIR += catdoc
-    SUBDIR += cbedic
     SUBDIR += cdif
     SUBDIR += cdiff
     SUBDIR += cgrep
@@ -133,7 +132,6 @@
     SUBDIR += docbook2X
     SUBDIR += docbook2mdoc
     SUBDIR += docbook2odf
-    SUBDIR += docbookide.el
     SUBDIR += docdiff
     SUBDIR += doclifter
     SUBDIR += docproj
@@ -185,11 +183,11 @@
     SUBDIR += et-aspell
     SUBDIR += exempi
     SUBDIR += expat2
-    SUBDIR += exslt
     SUBDIR += extract_url
     SUBDIR += ezxml
     SUBDIR += fa-aspell
     SUBDIR += fcitx-m17n
+    SUBDIR += fcitx-qt5
     SUBDIR += fex
     SUBDIR += ffe
     SUBDIR += fi-aspell
@@ -206,6 +204,7 @@
     SUBDIR += fpc-libxml2
     SUBDIR += freexl
     SUBDIR += fy-aspell
+    SUBDIR += fzf
     SUBDIR += ga-aspell
     SUBDIR += gastex
     SUBDIR += gd-aspell
@@ -213,8 +212,6 @@
     SUBDIR += gl-aspell
     SUBDIR += gladtex
     SUBDIR += glark
-    SUBDIR += glpi-plugins-AdditionalReports
-    SUBDIR += glpi-plugins-DataInjection
     SUBDIR += gmetadom
     SUBDIR += gnome-doc-utils
     SUBDIR += gnome-spell
@@ -414,8 +411,6 @@
     SUBDIR += libsoldout
     SUBDIR += libsphinxclient
     SUBDIR += libstree
-    SUBDIR += libtext-charwidth-perl
-    SUBDIR += libtext-wrapi18n-perl
     SUBDIR += libtextcat
     SUBDIR += libtranslate
     SUBDIR += libtre
@@ -557,7 +552,6 @@
     SUBDIR += p5-Geo-Parse-OSM
     SUBDIR += p5-Getopt-Lucid
     SUBDIR += p5-Google-Data-JSON
-    SUBDIR += p5-Groonga-API
     SUBDIR += p5-HTML-CTPP2
     SUBDIR += p5-HTML-Copy
     SUBDIR += p5-HTML-Entities-ImodePictogram
@@ -1216,12 +1210,17 @@
     SUBDIR += py-MarkupSafe
     SUBDIR += py-Tempita
     SUBDIR += py-acora
+    SUBDIR += py-agate
+    SUBDIR += py-agate-dbf
+    SUBDIR += py-agate-excel
     SUBDIR += py-alabaster
     SUBDIR += py-asv
+    SUBDIR += py-awesome-slugify
     SUBDIR += py-bugzillatools
     SUBDIR += py-chardet
     SUBDIR += py-cloud_sptheme
     SUBDIR += py-creole
+    SUBDIR += py-csvkit
     SUBDIR += py-dbfread
     SUBDIR += py-diff-match-patch
     SUBDIR += py-docutils
@@ -1233,10 +1232,12 @@
     SUBDIR += py-empy
     SUBDIR += py-enchant
     SUBDIR += py-errorhandler
+    SUBDIR += py-esmre
     SUBDIR += py-et_xmlfile
     SUBDIR += py-excelerator
     SUBDIR += py-feedparser
     SUBDIR += py-genshi
+    SUBDIR += py-guess-language
     SUBDIR += py-hexdump
     SUBDIR += py-html2text
     SUBDIR += py-hyperestraier-python
@@ -1328,6 +1329,7 @@
     SUBDIR += py-zpt
     SUBDIR += py2html
     SUBDIR += py3-MarkupSafe
+    SUBDIR += py3-asciinema
     SUBDIR += py3-chardet
     SUBDIR += py3-libxml2
     SUBDIR += pychm
@@ -1569,7 +1571,6 @@
     SUBDIR += sr-hunspell
     SUBDIR += srilm
     SUBDIR += ss-hunspell
-    SUBDIR += ssddiff
     SUBDIR += stardict-dict-fa_IR
     SUBDIR += stardict-dictd_mova
     SUBDIR += stardict-quick
@@ -1587,7 +1588,6 @@
     SUBDIR += ta-aspell
     SUBDIR += tagsoup
     SUBDIR += tclExpat
-    SUBDIR += tdhkit
     SUBDIR += te-aspell
     SUBDIR += te-hunspell
     SUBDIR += teckit
@@ -1614,7 +1614,6 @@
     SUBDIR += tokyodystopia
     SUBDIR += topic
     SUBDIR += tr-aspell
-    SUBDIR += tralics
     SUBDIR += trang
     SUBDIR += translate-toolkit
     SUBDIR += ts-hunspell
@@ -1697,10 +1696,8 @@
     SUBDIR += xp
     SUBDIR += xqilla
     SUBDIR += xslide.el
-    SUBDIR += xslint
     SUBDIR += xstream
     SUBDIR += xsv
-    SUBDIR += xt
     SUBDIR += xwindiff
     SUBDIR += xxdiff
     SUBDIR += xxdiff-scripts

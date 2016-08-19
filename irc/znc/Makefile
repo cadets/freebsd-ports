@@ -3,6 +3,7 @@
 
 PORTNAME=	znc
 PORTVERSION=	1.6.3
+PORTREVISION=	2
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://znc.in/releases/ \
 		http://znc.in/releases/archive/
@@ -52,13 +53,6 @@ TCL_CONFIGURE_ON=	--with-tcl=${TCL_LIBDIR}
 TCL_USES=	tcl
 
 PORTDOCS=	README.md
-
-pre-configure:
-# No need to cast to char** in AM_ICONV, fixes charset/iconv detection
-# and by extension, successfully builds charset module
-	@${REINPLACE_CMD} -e \
-		's#(char \*\*)##g' \
-		${WRKSRC}/configure
 
 # Instead of using bundled swig generated files, delete them to force
 # regeneration using swig 2.0.11+ (fixes port compilation using clang)
