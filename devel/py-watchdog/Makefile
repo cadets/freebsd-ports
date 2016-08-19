@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	watchdog
-PORTVERSION=	0.8.2
+PORTVERSION=	0.8.3
 DISTVERSIONPREFIX=	v
 PORTREVISION=	0
 CATEGORIES=	devel
@@ -27,7 +27,7 @@ OPTIONS_DEFINE=	DOCS
 PORTDOCS=	*
 
 USE_GITHUB=	yes
-USES=		python
+USES=		python:3
 USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 
