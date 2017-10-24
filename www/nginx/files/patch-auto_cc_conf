@@ -1,0 +1,15 @@
+--- auto/cc/conf.orig	2017-10-17 13:16:37 UTC
++++ auto/cc/conf
+@@ -48,6 +48,12 @@ if test -n "$CFLAGS"; then
+             ngx_include_opt="-I"
+         ;;
+ 
++        clang)
++            if [ "$NGX_CLANG_BITCODE" != "" ]; then
++                CFLAGS="${CFLAGS} -flto"
++            fi
++        ;;
++
+         sunc)
+ 
+             MAIN_LINK=
