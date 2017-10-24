@@ -1,0 +1,10 @@
+--- auto/cc/clang.orig	2017-10-17 13:16:37 UTC
++++ auto/cc/clang
+@@ -96,3 +96,7 @@ CFLAGS="$CFLAGS -g"
+ if [ ".$CPP" = "." ]; then
+     CPP="$CC -E"
+ fi
++
++if [ "$NGX_CLANG_BITCODE" != "" ]; then
++    CFLAGS="${CFLAGS} -flto"
++fi
