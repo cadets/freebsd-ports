@@ -3,6 +3,7 @@
 AJP_DESC=			3rd party ajp module
 ARRAYVAR_DESC=			3rd party array_var module
 AWS_AUTH_DESC=			3rd party aws auth module
+BITCODE_DESC=			Build using LLVM bitcode
 BROTLI_DESC=			3rd party brotli module
 CACHE_PURGE_DESC=		3rd party cache_purge module
 CLOJURE_DESC=			3rd party clojure module

@@ -1,0 +1,64 @@
+--- auto/make.orig	2017-10-17 13:16:37 UTC
++++ auto/make
+@@ -227,12 +227,31 @@ cat << END                                            
+ build:	binary modules manpage
+ 
+ binary:	$NGX_OBJS${ngx_dirsep}nginx$ngx_binext
++END
+ 
++if test -n "$NGX_CLANG_BITCODE"; then
++	cat << END                                            >> $NGX_MAKEFILE
++
++$NGX_OBJS${ngx_dirsep}nginx$ngx_binext:	$NGX_OBJS${ngx_dirsep}nginx.bc
++	\$(CC) $NGX_OBJS${ngx_dirsep}nginx.bc $ngx_long_start$ngx_binout$NGX_OBJS${ngx_dirsep}nginx$ngx_binext$ngx_libs$ngx_link$ngx_main_link
++	$ngx_rcc
++$ngx_long_end
++
++$NGX_OBJS${ngx_dirsep}nginx.bc:	$ngx_deps$ngx_spacer
++	llvm-link $ngx_long_start$ngx_binout$NGX_OBJS${ngx_dirsep}nginx.bc$ngx_long_cont$ngx_objs$ngx_link
++$ngx_long_end
++
++END
++else
++	cat << END                                            >> $NGX_MAKEFILE
+ $NGX_OBJS${ngx_dirsep}nginx$ngx_binext:	$ngx_deps$ngx_spacer
+ 	\$(LINK) $ngx_long_start$ngx_binout$NGX_OBJS${ngx_dirsep}nginx$ngx_long_cont$ngx_objs$ngx_libs$ngx_link$ngx_main_link
+ 	$ngx_rcc
+ $ngx_long_end
++END
++fi
+ 
++cat << END                                                    >> $NGX_MAKEFILE
+ modules:
+ END
+ 
+@@ -619,11 +638,29 @@ END
+     cat << END                                            >> $NGX_MAKEFILE
+ 
+ modules:	$ngx_obj
++END
+ 
++if test -n "$NGX_CLANG_BITCODE"; then
++    cat << END                                            >> $NGX_MAKEFILE
++$ngx_obj.bc:	$ngx_deps$ngx_spacer
++	llvm-link $ngx_long_start$ngx_binout$ngx_obj.bc$ngx_long_cont$ngx_objs
++$ngx_long_end
++
++$ngx_obj:	$ngx_obj.bc
++	\$(LINK) $ngx_long_start$ngx_binout$ngx_obj$ngx_long_cont$ngx_obj.bc$ngx_libs$ngx_link$ngx_module_link
++$ngx_long_end
++END
++
++else
++    cat << END                                            >> $NGX_MAKEFILE
+ $ngx_obj:	$ngx_deps$ngx_spacer
+ 	\$(LINK) $ngx_long_start$ngx_binout$ngx_obj$ngx_long_cont$ngx_objs$ngx_libs$ngx_link$ngx_module_link
+ $ngx_long_end
++END
+ 
++fi
++
++    cat << END                                            >> $NGX_MAKEFILE
+ $ngx_modules_obj:	\$(CORE_DEPS)$ngx_cont$ngx_modules_c
+ 	$ngx_cc$ngx_tab$ngx_objout$ngx_modules_obj$ngx_tab$ngx_modules_c$NGX_AUX
+ 
