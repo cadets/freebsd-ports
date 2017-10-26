@@ -188,7 +188,8 @@ STREAM_SSL_PREREAD_CONFIGURE_ON=	--with-stream_ssl_preread_module
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MBITCODE}
-CONFIGURE_ARGS+=--with-cc=clang
+BUILD_DEPENDS+=	clang70:devel/llvm70
+CONFIGURE_ARGS+=--with-cc=clang70 --with-llvm-link=llvm-link70
 CONFIGURE_ENV+=	"NGX_CLANG_BITCODE=true"
 .endif
 
