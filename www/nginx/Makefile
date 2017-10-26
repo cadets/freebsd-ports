@@ -121,6 +121,7 @@ OPTIONS_DEFAULT=	${OPTIONS_DEFINE} ${OPTIONS_GROUP_HTTP} ${OPTIONS_GROUP_MAIL}
 
 # Non-module options handling
 BITCODE_CONFIGURE_ON=	--with-cc=clang
+BITCODE_LIB_DEPENDS=	llvm-link60:devel/llvm60
 BITCODE_VARS=		NGINX_CLANG_BITCODE=true
 DEBUG_CFLAGS=		-g
 DEBUG_VARS=		STRIP=#do not strip if nginx with debug information

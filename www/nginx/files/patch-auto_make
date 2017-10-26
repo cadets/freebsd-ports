@@ -15,7 +15,7 @@
 +$ngx_long_end
 +
 +$NGX_OBJS${ngx_dirsep}nginx.bc:	$ngx_deps$ngx_spacer
-+	llvm-link $ngx_long_start$ngx_binout$NGX_OBJS${ngx_dirsep}nginx.bc$ngx_long_cont$ngx_objs$ngx_link
++	$NGX_LLVM_LINK $ngx_long_start$ngx_binout$NGX_OBJS${ngx_dirsep}nginx.bc$ngx_long_cont$ngx_objs$ngx_link
 +$ngx_long_end
 +
 +END
@@ -41,7 +41,7 @@
 +if test -n "$NGX_CLANG_BITCODE"; then
 +    cat << END                                            >> $NGX_MAKEFILE
 +$ngx_obj.bc:	$ngx_deps$ngx_spacer
-+	llvm-link $ngx_long_start$ngx_binout$ngx_obj.bc$ngx_long_cont$ngx_objs
++	$NGX_LLVM_LINK $ngx_long_start$ngx_binout$ngx_obj.bc$ngx_long_cont$ngx_objs
 +$ngx_long_end
 +
 +$ngx_obj:	$ngx_obj.bc
