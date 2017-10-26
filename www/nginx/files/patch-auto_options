@@ -1,0 +1,10 @@
+--- auto/options.orig	2017-10-26 16:59:39 UTC
++++ auto/options
+@@ -334,6 +334,7 @@ use the \"--with-mail_ssl_module\" option instead"
+ 
+         --with-cc=*)                     CC="$value"                ;;
+         --with-cpp=*)                    CPP="$value"               ;;
++        --with-llvm-link=*)              NGX_LLVM_LINK="$value"     ;;
+         --with-cc-opt=*)                 NGX_CC_OPT="$value"        ;;
+         --with-ld-opt=*)                 NGX_LD_OPT="$value"        ;;
+         --with-cpu-opt=*)                CPU="$value"               ;;

@@ -285,7 +285,10 @@ IGNORE=		requires at least HTTP or MAIL to \
 .endif
 
 .if ${PORT_OPTIONS:MBITCODE}
-CONFIGURE_ARGS+=--with-cc=clang
+BUILD_DEPENDS+=	${LOCALBASE}/llvm50/bin/clang:devel/llvm-devel
+
+CONFIGURE_ARGS+=--with-cc=${LOCALBASE}/llvm50/bin/clang \
+		--with-llvm-link=${LOCALBASE}/llvm50/bin/llvm-link
 CONFIGURE_ENV+=	"NGX_CLANG_BITCODE=true"
 .endif
 
