@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nasm
-PORTVERSION=	2.11.08
-PORTREVISION=	1
+PORTVERSION=	2.13.01
 PORTEPOCH=	1
 CATEGORIES=	devel lang
 MASTER_SITES=	http://www.nasm.us/pub/nasm/releasebuilds/${PORTVERSION}/
@@ -14,6 +13,7 @@ COMMENT=	General-purpose multi-platform x86 and amd64 assembler
 LICENSE=	BSD2CLAUSE
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	ac_cv_func_strspn=yes
 USES=		tar:xz gmake
 MAKE_ARGS+=	INSTALLROOT=${STAGEDIR}
 INSTALL_TARGET=	install #needed for RDOFF_INSTALL_TARGET

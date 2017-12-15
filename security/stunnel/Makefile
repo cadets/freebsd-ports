@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stunnel
-PORTVERSION=	5.35
-PORTREVISION=	1
+PORTVERSION=	5.44
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.stunnel.org/downloads/%SUBDIR%/ \
@@ -19,7 +18,7 @@ MASTER_SITES=	https://www.stunnel.org/downloads/%SUBDIR%/ \
 		http://www.namesdir.com/mirrors/stunnel/%SUBDIR%/ \
 		http://stunnel.cybermirror.org/%SUBDIR%/ \
 		http://mirrors.zerg.biz/stunnel/%SUBDIR%/ \
-		http://mirrors.rit.edu/zi/
+		ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	SSL encryption wrapper for standard network daemons
@@ -28,10 +27,9 @@ COMMENT=	SSL encryption wrapper for standard network daemons
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-USES=		cpe libtool perl5 shebangfix
+USES=		cpe libtool perl5 shebangfix ssl
 USE_PERL5=	build
 USE_LDCONFIG=	yes
-USE_OPENSSL=	yes
 USE_RC_SUBR=	stunnel
 
 GNU_CONFIGURE=	yes
@@ -77,11 +75,11 @@ LDFLAGS+=	-lpthread
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MFIPS} && ${SSL_DEFAULT} == libressl
+.if ${PORT_OPTIONS:MFIPS} && ${SSL_DEFAULT:Mlibressl*}
 IGNORE=		LibreSSL does not support FIPS standard
 .endif
 
-.if ${SSL_DEFAULT} == libressl
+.if ${SSL_DEFAULT:Mlibressl*}
 NO_PACKAGE=	The stunnel license restricts distribution when linked to non-OpenSSL non-base SSL-libraries
 .endif
 
@@ -89,7 +87,7 @@ post-patch:
 # place files under /var/tmp so that this can be run by an unprivileged
 # user stunnel and group stunnel
 	@${REINPLACE_CMD} -E -e 's|\@prefix\@/var/lib/stunnel/|/var/tmp/stunnel|; \
-		s|nobody|stunnel|;s|nogroup|stunnel|' \
+		s|nobody|stunnel|;s|nogroup|stunnel|;s|;include |include |' \
 		${WRKSRC}/tools/stunnel.conf-sample.in
 	@${REINPLACE_CMD} -E -e 's|\$$\(prefix\)/var/run/stunnel/stunnel.pid|$$(localstatedir)/stunnel.pid|' \
 		${WRKSRC}/src/Makefile.in
@@ -110,12 +108,16 @@ post-patch:
 post-build:
 	@${STRIP_CMD} ${WRKSRC}/src/.libs/libstunnel.so
 
+post-install:
+	${MKDIR} ${STAGEDIR}${ETCDIR}/conf.d/
+	${INSTALL_DATA} ${FILESDIR}/pid.conf ${STAGEDIR}${ETCDIR}/conf.d/
+
 cert:
 	@${ECHO} ""
 	@${ECHO} "**************************************************************************"
 	@${ECHO} "The new certificate will be saved into ${ETCDIR}/stunnel.pem"
 	@${ECHO} "**************************************************************************"
 	@${ECHO} ""
-	@(cd ${WRKSRC}/tools/; make install-data-local)
+	@(cd ${WRKSRC}/tools/; make cert)
 
 .include <bsd.port.post.mk>

@@ -3,9 +3,8 @@
 
 PORTNAME=	kdf
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	sysutils kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	1
+CATEGORIES=	sysutils kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Shows free space of devices for KDE

@@ -1,6 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	widgets
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits devel python
 
 MAINTAINER=	kde@FreeBSD.org
@@ -12,6 +13,7 @@ PYQT_DIST=	yes
 USES=		python pyqt:5
 USE_GL=		gl
 USE_PYQT=	sip_build core_run gui_run
+USE_PYTHON=	flavors
 USE_QT5=	core gui widgets qmake_build
 
 OPTIONS_DEFINE=	API DEBUG

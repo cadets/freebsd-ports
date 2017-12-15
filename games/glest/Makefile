@@ -3,31 +3,29 @@
 
 PORTNAME=	glest
 PORTVERSION=	3.2.2
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20source/${PORTVERSION}
 DISTNAME=	${PORTNAME}_source_${PORTVERSION}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	mokhi64@gmail.com
+MAINTAINER=	mmokhi@FreeBSD.org
 COMMENT=	Free 3D real-time customizable strategy game
 
 LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3 \
 		libvorbis.so:audio/libvorbis
 BUILD_DEPENDS=	jam:devel/jam
-RUN_DEPENDS=	${DATADIR}/servers.ini:games/glest-data
+RUN_DEPENDS=	${LOCALBASE}/${DATADIR_REL}/servers.ini:games/glest-data
 
-USES=		dos2unix openal:al,alut pkgconfig zip lua:51
+USES=		dos2unix localbase openal:al,alut pkgconfig zip lua:51
 USE_AUTOTOOLS=	automake:env autoconf:env
 USE_SDL=	yes
 USE_GL=		yes
 GNU_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	mk/linux/configure
-CPPFLAGS+=		-I${LOCALBASE}/include
-LIBS+=			-L${LOCALBASE}/lib
 SUB_FILES=		glest-wrapper pkg-message
 
-JAM_CMD=		${LOCALBASE}/bin/jam -qa
+JAM_CMD=		${LOCALBASE}/bin/jam -q -a -dx
 
 OPTIONS_DEFINE=	DOCS EDITOR
 OPTIONS_SUB=	yes
@@ -40,7 +38,6 @@ EXTRACT_AFTER_ARGS=	-d ${WRKDIR}/${DISTNAME}
 .if ${PORT_OPTIONS:MEDITOR}
 USE_WX=		2.6+
 WX_CONF_ARGS=	relative
-WX_UNICODE=	yes
 HAVE_EDITOR=	true
 .endif
 
@@ -78,8 +75,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/glest-wrapper \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
-.if ${PORT_OPTIONS:MEDITOR}
+do-install-EDITOR-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/glest_editor ${STAGEDIR}${PREFIX}/bin/
-.endif
 
 .include <bsd.port.mk>

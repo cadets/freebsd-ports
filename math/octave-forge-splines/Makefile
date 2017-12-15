@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-splines
-PORTVERSION=	1.2.9
+PORTVERSION=	1.3.2
 PORTREVISION=	1
 CATEGORIES=	math
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		${OCTAVE_PKGNAME}
+OCTSRC=		${DISTNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
 
@@ -24,7 +24,7 @@ do-build:
 	@${DO_NADA}
 
 post-build:
-	${RM} -f ${WRKSRC}/Makefile ${WRKSRC}/configure
+	${RM} ${WRKSRC}/Makefile ${WRKSRC}/configure
 	cd ${WRKDIR} && ${TAR} cfz ${DISTNAME}.tar.gz ${OCTSRC}
 
 .include <bsd.port.mk>

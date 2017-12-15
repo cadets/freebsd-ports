@@ -2,14 +2,14 @@
 
 PORTNAME=	libe-book
 PORTVERSION=	0.1.2
-PORTREVISION=	4
+PORTREVISION=	17
 CATEGORIES=	textproc
 MASTER_SITES=	SF/libebook/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Library for import of reflowable e-book formats
 
-LICENSE=	MPL
+LICENSE=	MPL20
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/algorithm/string.hpp:devel/boost-libs
 LIB_DEPENDS=	libicui18n.so:devel/icu \
@@ -23,7 +23,6 @@ USES=		compiler:c++11-lang gmake gperf libtool pathfix pkgconfig \
 		tar:xz
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ZLIB_CFLAGS="-DWEHAVEZLIBINBASE" ZLIB_LIBS="-DWEDOHAVEIT"
 INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS=	--disable-werror --disable-tests
 CPPFLAGS+=	-I${LOCALBASE}/include -DBOOST_ERROR_CODE_HEADER_ONLY

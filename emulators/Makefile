@@ -8,6 +8,7 @@
     SUBDIR += advancemenu
     SUBDIR += advancemess
     SUBDIR += aftp
+    SUBDIR += almostti
     SUBDIR += aqemu
     SUBDIR += atari800
     SUBDIR += bfe
@@ -16,6 +17,8 @@
     SUBDIR += catapult
     SUBDIR += cinc
     SUBDIR += cingb
+    SUBDIR += citra
+    SUBDIR += citra-qt5
     SUBDIR += cpmemu
     SUBDIR += cpmtools
     SUBDIR += cpmtools2
@@ -25,7 +28,6 @@
     SUBDIR += dgen-sdl
     SUBDIR += dolphin-emu
     SUBDIR += dosbox
-    SUBDIR += doscmd
     SUBDIR += dtcyber
     SUBDIR += dynagen
     SUBDIR += dynagui
@@ -53,7 +55,6 @@
     SUBDIR += hercules
     SUBDIR += higan
     SUBDIR += hugo
-    SUBDIR += hyperv-is
     SUBDIR += i386-wine
     SUBDIR += i386-wine-devel
     SUBDIR += i386-wine-staging
@@ -68,9 +69,9 @@
     SUBDIR += libdsk
     SUBDIR += libspectrum
     SUBDIR += linux-c6
-    SUBDIR += linux-f10
+    SUBDIR += linux-c7
     SUBDIR += linux_base-c6
-    SUBDIR += linux_base-f10
+    SUBDIR += linux_base-c7
     SUBDIR += lisaem
     SUBDIR += loemu
     SUBDIR += m2000
@@ -78,12 +79,14 @@
     SUBDIR += mastergear
     SUBDIR += mednafen
     SUBDIR += mess
+    SUBDIR += mgba
     SUBDIR += mtools
     SUBDIR += mupen64plus
     SUBDIR += mupen64plus-audio-sdl
     SUBDIR += mupen64plus-core
     SUBDIR += mupen64plus-input-sdl
     SUBDIR += mupen64plus-plugins
+    SUBDIR += mupen64plus-qt
     SUBDIR += mupen64plus-rsp-cxd4
     SUBDIR += mupen64plus-rsp-hle
     SUBDIR += mupen64plus-rsp-z64
@@ -108,7 +111,10 @@
     SUBDIR += pipelight
     SUBDIR += playonbsd
     SUBDIR += ppsspp
+    SUBDIR += ppsspp-qt5
     SUBDIR += py-gns3-converter
+    SUBDIR += py-nova
+    SUBDIR += py-unicorn
     SUBDIR += q4wine
     SUBDIR += qemu
     SUBDIR += qemu-cheri
@@ -116,12 +122,18 @@
     SUBDIR += qemu-cheri128m
     SUBDIR += qemu-devel
     SUBDIR += qemu-launcher
+    SUBDIR += qemu-ppcnv
+    SUBDIR += qemu-riscv
     SUBDIR += qemu-sbruno
     SUBDIR += qemu-user-static
+    SUBDIR += qemu-utils
     SUBDIR += qmc2
     SUBDIR += qtemu
     SUBDIR += quasi88
     SUBDIR += raine
+    SUBDIR += riscv-fesvr
+    SUBDIR += riscv-isa-sim
+    SUBDIR += rpcs3
     SUBDIR += rtc
     SUBDIR += rubygem-fission
     SUBDIR += simh
@@ -140,6 +152,7 @@
     SUBDIR += tuxnes
     SUBDIR += uae
     SUBDIR += ucon64
+    SUBDIR += unicorn
     SUBDIR += vba
     SUBDIR += vboxtool
     SUBDIR += vgb-bin
@@ -148,8 +161,9 @@
     SUBDIR += virtio-kmod
     SUBDIR += virtualbox-ose
     SUBDIR += virtualbox-ose-additions
+    SUBDIR += virtualbox-ose-additions-nox11
     SUBDIR += virtualbox-ose-kmod
-    SUBDIR += virtualbox-ose-lite
+    SUBDIR += virtualbox-ose-nox11
     SUBDIR += visualboyadvance-m
     SUBDIR += vmips
     SUBDIR += vmsbackup
@@ -163,6 +177,7 @@
     SUBDIR += wine-mono
     SUBDIR += wine-mono-devel
     SUBDIR += wine-staging
+    SUBDIR += winetricks
     SUBDIR += wxmupen64plus
     SUBDIR += x48
     SUBDIR += x49gp

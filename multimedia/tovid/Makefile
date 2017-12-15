@@ -3,8 +3,9 @@
 
 PORTNAME=	tovid
 PORTVERSION=	0.35.2
+DISTVERSIONPREFIX=	tovid-
+PORTREVISION=	3
 CATEGORIES=	multimedia python
-MASTER_SITES=	http://github.com//tovid-suite/tovid/archive/
 
 MAINTAINER=	grepper@gmail.com
 COMMENT=	Suite of tools for making DVD video disks
@@ -23,11 +24,13 @@ RUN_DEPENDS=	mplayer:multimedia/mplayer \
 		normalize:audio/normalize \
 		lame:audio/lame \
 		gnubc>0:math/gnubc \
-		${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter \
+		${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${FLAVOR} \
 		bash:shells/bash
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
+USE_GITHUB=	yes
+GH_ACCOUNT=	tovid-suite
 
 PYDISTUTILS_INSTALLNOSINGLE=	yes
 
@@ -40,8 +43,5 @@ OPTIONS_DEFINE=	DOCS TRANSCODE
 TRANSCODE_DESC=	Faster seeks when making menus. Needs mjpegtools enabled.
 
 TRANSCODE_RUN_DEPENDS=	transcode:multimedia/transcode
-
-post-extract:
-	${MV} ${WRKDIR}/${PORTNAME}-${PORTNAME}-${PORTVERSION} ${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 .include <bsd.port.mk>

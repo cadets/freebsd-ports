@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	php70
-PORTVERSION=	7.0.10
-PORTREVISION?=	0
+PORTVERSION=	7.0.26
+PORTREVISION?=	1
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
 DISTNAME=	php-${PORTVERSION}
@@ -12,8 +12,6 @@ MAINTAINER=	tz@FreeBSD.org
 COMMENT=	PHP Scripting Language
 
 LICENSE=	PHP301
-
-BROKEN_powerpc64=	Does not build
 
 USES+=		tar:xz cpe
 CPE_PRODUCT=	php
@@ -38,29 +36,39 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 
 USE_GNOME=	libxml2
 
-OPTIONS_DEFINE+=CLI CGI FPM EMBED PHPDBG DEBUG DTRACE IPV6 LINKTHR ZTS
-OPTIONS_DEFAULT=CLI CGI FPM LINKTHR
+OPTIONS_DEFINE+=CLI CGI FPM EMBED PHPDBG DEBUG DTRACE IPV6 MAILHEAD LINKTHR ZTS
+OPTIONS_DEFAULT=CLI CGI FPM EMBED LINKTHR DTRACE
 # Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
 OPTIONS_EXCLUDE_mips=FPM
 OPTIONS_EXCLUDE_mips64=FPM
 OPTIONS_SUB=	yes
 
+OPTIONS_EXCLUDE_DragonFly=	DTRACE
+# ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
+OPTIONS_EXCLUDE_aarch64=	DTRACE
+OPTIONS_EXCLUDE_sparc64=	DTRACE
+
 CLI_DESC=	Build CLI version
 CGI_DESC=	Build CGI version
 FPM_DESC=	Build FPM version
 EMBED_DESC=	Build embedded library
-DEBUG_DESC=	Enable debug
 PHPDBG_DESC=	Interactive PHP debugger
-DTRACE_DESC=	Enable DTrace support
-IPV6_DESC=	Enable ipv6 support
+MAILHEAD_DESC=	Enable mail header patch
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
-CONFLICTS=	php55-5* php56-*
+CONFLICTS=	php56-* php71-* php72-*
 
 DESTDIRNAME=	INSTALL_ROOT
 
 .include <bsd.port.pre.mk>
+
+PATCH_DIST_STRIP=	-p1
+
+.if ${PORT_OPTIONS:MMAILHEAD}
+PATCHFILES+=	php-7.0.x-mail-header.patch:mail
+PATCH_SITES+=	http://choon.net/opensource/php/:mail
+.endif
 
 .if ${PORT_OPTIONS:MCLI}
 PHP_SAPI+=	cli
@@ -83,9 +91,6 @@ CONFIGURE_ARGS+=--enable-fpm \
 .endif
 
 .if defined(PKGNAMEPREFIX)
-USES+=	php
-PHP_VER=	70
-IGNORE_WITH_PHP=	55 56
 USE_APACHE=	22+
 .include "${PORTSDIR}/Mk/bsd.apache.mk"
 .if ${PORT_OPTIONS:MAP2FILTER}
@@ -119,20 +124,6 @@ PLIST_SUB+=	SAPI_INC=""
 PLIST_SUB+=	SAPI_INC="@comment "
 .endif
 
-.if !defined(WITH_REGEX_TYPE) || ${WITH_REGEX_TYPE} == "php"
-CONFIGURE_ARGS+=--with-regex=php
-.elif defined(WITH_REGEX_TYPE) && ${WITH_REGEX_TYPE} == "system"
-CONFIGURE_ARGS+=--with-regex=system
-.endif
-
-.if !defined(WITH_ZEND_VM) || ${WITH_ZEND_VM} == "CALL"
-CONFIGURE_ARGS+=--with-zend-vm=CALL
-.elif defined(WITH_ZEND_VM) && ${WITH_ZEND_VM} == "SWITCH"
-CONFIGURE_ARGS+=--with-zend-vm=SWITCH
-.elif defined(WITH_ZEND_VM) && ${WITH_ZEND_VM} == "GOTO"
-CONFIGURE_ARGS+=--with-zend-vm=GOTO
-.endif
-
 CONFIGURE_ENV+=	ac_cv_decimal_fp_supported="no" \
 		lt_cv_path_SED="sed"
 
@@ -147,7 +138,6 @@ CONFIGURE_ARGS+=--enable-debug
 .if ${PORT_OPTIONS:MZTS}
 CONFIGURE_ARGS+=--enable-maintainer-zts
 CONFIGURE_ENV+=	pthreads_working="yes"
-USES=	localhost
 .endif
 
 .if ${PORT_OPTIONS:MDTRACE}

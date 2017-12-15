@@ -1,8 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	simple-mtpfs
-DISTVERSION=	0.2-24
-DISTVERSIONSUFFIX=	-ga7ab64c
+DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	0.3.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
@@ -18,7 +19,6 @@ GH_ACCOUNT=	phatina
 
 USES=		autoreconf compiler:c++11-lib fuse localbase pkgconfig
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 MAKEFILE=	makefile
 INSTALL_TARGET=	install-strip
 PLIST_FILES=	bin/${PORTNAME} \
@@ -26,10 +26,6 @@ PLIST_FILES=	bin/${PORTNAME} \
 PORTDOCS=	AUTHORS NEWS README.md
 
 OPTIONS_DEFINE=	DOCS
-
-.if !exists(/usr/libdata/pkgconfig/libusb-1.0.pc)
-CONFIGURE_ENV+=	LIBUSB1_CFLAGS=" " LIBUSB1_LIBS="-lusb"
-.endif
 
 # XXX move to PREFIX when bug 193596 lands
 .if exists(/etc/autofs)

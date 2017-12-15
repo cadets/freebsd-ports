@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	tabulate
-PORTVERSION=	0.7.5
+PORTVERSION=	0.8.2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Pretty-print tabular data in Python
 
 LICENSE=	MIT

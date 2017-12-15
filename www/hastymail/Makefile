@@ -13,12 +13,10 @@ COMMENT=	Small, fast and secure yet powerful IMAP webmail
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	Does not build
-
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
-WANT_PHP_WEB=	yes
+USES=		php:web
 USE_PHP=	session imap pcre
 
 PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"

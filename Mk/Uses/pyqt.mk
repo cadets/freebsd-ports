@@ -61,16 +61,16 @@ MASTER_SITES_PYQT5=	SF/pyqt/PyQt5/PyQt-${PORTVERSION} \
 MASTER_SITES_QSCI2=	SF/pyqt/QScintilla2/QScintilla-${PORTVERSION} \
 			GENTOO
 
-SIP_VERSION=		4.17
+SIP_VERSION=		4.19.2
 QSCI2_VERSION=		2.9.1
-PYQT4_VERSION=		4.11.4
-PYQT5_VERSION=		5.5.1
+PYQT4_VERSION=		4.12
+PYQT5_VERSION=		5.7.1
 
 SIP_DISTNAME=		sip-${SIP_VERSION}
-PYQT4_DISTNAME=		PyQt-x11-gpl-${PYQT4_VERSION}
-PYQT4_DISTINFO_FILE=	${.CURDIR}/../../devel/${PYQT_RELNAME}/distinfo
-PYQT5_DISTNAME=		PyQt-gpl-${PYQT5_VERSION}
-PYQT5_DISTINFO_FILE=	${.CURDIR}/../../devel/py-qt5/distinfo
+PYQT4_DISTNAME=		PyQt4_gpl_x11-${PYQT4_VERSION}
+PYQT4_DISTINFO_FILE=	${.CURDIR:H:H}/devel/${PYQT_RELNAME}/distinfo
+PYQT5_DISTNAME=		PyQt5_gpl-${PYQT5_VERSION}
+PYQT5_DISTINFO_FILE=	${.CURDIR:H:H}/devel/${PYQT_RELNAME}/distinfo
 QSCI2_DISTNAME=		QScintilla-gpl-${QSCI2_VERSION}
 
 # PyQt components split up into pyqt4/pyqt5/...
@@ -209,6 +209,8 @@ QT_NONSTANDARD=	yes  # Do not add unknown arguments to CONFIGURE_ARGS.
 # PyQt5's configure.py generates .pro files and calls qmake to generate the
 # Makefiles. qmake's Makefiles use INSTALL_ROOT instead of DESTDIR.
 DESTDIRNAME=	INSTALL_ROOT
+# Limit PyQt5's version to the Qt5 version in ports
+PORTSCOUT?=	limit:^${_QT_VERSION:R}
 .endif
 
 PATCHDIR=	${.CURDIR}/../../devel/${PYQT_RELNAME}-core/files
@@ -217,6 +219,7 @@ CONFIGURE_ARGS+=-b ${PREFIX}/bin \
 		-d ${PYTHONPREFIX_SITELIBDIR} \
 		-q ${QMAKE} \
 		--confirm-license \
+		--sip ${LOCALBASE}/bin/sip-${PYTHON_VER} \
 		--sipdir ${SIPDIR}
 
 # One of the things PyQt looks for to determine whether to build the Qt DBus
@@ -238,8 +241,8 @@ do-configure:
 _USE_PYQT_ALL+=			${_USE_PYQT${_PYQT_VERSION}_ONLY}
 .for comp in ${_USE_PYQT_ALL:O:u}
 _USE_PYQT_ALL_SUFFIXED+=		py-${comp} py-${comp}_build py-${comp}_run
-py-${comp}_BUILD_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}
-py-${comp}_RUN_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}
+py-${comp}_BUILD_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}@${PY_FLAVOR}
+py-${comp}_RUN_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}@${PY_FLAVOR}
 py-${comp}_build_BUILD_DEPENDS?=	${py-${comp}_BUILD_DEPENDS}
 py-${comp}_run_RUN_DEPENDS?=		${py-${comp}_RUN_DEPENDS}
 .endfor

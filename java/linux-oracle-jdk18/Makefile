@@ -22,15 +22,14 @@ WRKSRC=		${WRKDIR}/jdk${DL_JDK_VERSION}
 PLIST_SUB=	T=${APP_HOME:S/^${PREFIX}\///} PORTVERSION=${PORTVERSION}
 
 NO_BUILD=	yes
-USE_LINUX=	yes
-USE_LINUX_APPS=	xorglibs
-USES=		shebangfix
+USES=		linux shebangfix
+USE_LINUX=	xorglibs
 ONLY_FOR_ARCHS=	i386 amd64
 
 JDK_VENDOR=		oracle
 JDK_VERSION=		8
 JDK_INTERNAL_VERSION=	1.${JDK_VERSION}.0
-JDK_UPDATE_VERSION=	102
+JDK_UPDATE_VERSION=	152
 .if ${JDK_UPDATE_VERSION} == 0
 DL_JDK_VERSION=		${JDK_INTERNAL_VERSION}
 .elif ${JDK_UPDATE_VERSION} <= 9
@@ -51,8 +50,6 @@ bash_CMD=	${SH}
 .if !exists(${DISTDIR}/${DISTNAME}${EXTRACT_SUFX})
 IGNORE?=You must manually fetch the J2SE SDK download for the Linux platform (${DISTNAME}${EXTRACT_SUFX}) from ${DOWNLOAD_URL}, place it in ${DISTDIR} and then run make again
 .endif
-
-.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDEMO}
 DEMO_UPDATE_VERSION=	${JDK_UPDATE_VERSION}

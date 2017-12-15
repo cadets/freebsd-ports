@@ -32,11 +32,8 @@ PLIST_SUB=	DESKTOPDIR=${DESKTOPDIR:S,${PREFIX}/,,} \
 SUB_LIST=	LINUXBASE=${LINUXBASE}
 SUB_FILES=	pkg-message
 
-USE_LINUX=	yes
-USE_LINUX_APPS=	xorglibs
-USES=		desktop-file-utils python:2 tar:tgz
-
-.include <bsd.port.options.mk>
+USES=		desktop-file-utils linux python:2 tar:tgz
+USE_LINUX=	xorglibs
 
 post-patch:
 	${REINPLACE_CMD} -e 's,%%PREFIX%%,${PREFIX},1' \
@@ -56,11 +53,13 @@ do-install:
 	${LOCALBASE}/bin/desktop-file-install \
 		--mode=${SHAREMODE} --dir=${STAGEDIR}${DESKTOPDIR} \
 		${WRKSRC}/usr/share/applications/SpiderOakONE.desktop
+	${INSTALL_DATA} ${WRKSRC}/usr/share/pixmaps/*.png ${STAGEDIR}${PREFIX}/share/pixmaps/
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/usr/share/doc/SpiderOakONE/Getting\ Started\ Guide.pdf ${STAGEDIR}${DOCSDIR}
-.if ${PORT_OPTIONS:MMANPAGES}
+
+do-install-MANPAGES-on:
 	${INSTALL_MAN} ${WRKSRC}/usr/share/man/man1/SpiderOakONE.1.gz ${STAGEDIR}${MANPREFIX}/man/man1/
-.endif
-	${INSTALL_DATA} ${WRKSRC}/usr/share/pixmaps/*.png ${STAGEDIR}${PREFIX}/share/pixmaps/
 
 .include <bsd.port.mk>

@@ -15,14 +15,12 @@ COMMENT=	Small, fast and secure yet powerful IMAP webmail
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	Does not build
-
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
 CONFLICTS_INSTALL=	hastymail2-devel-[0-9]*
 
-WANT_PHP_WEB=	yes
+USES=		php:web
 USE_PHP=	ctype pcre session xml
 
 WIKEDVERSION=	1_1

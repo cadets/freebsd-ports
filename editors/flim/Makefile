@@ -3,14 +3,14 @@
 
 PORTNAME=	flim
 PORTVERSION=	${FLIM_VER}
-PORTREVISION=	14
+PORTREVISION=	16
 PORTEPOCH=	1
 CATEGORIES=	editors elisp
 MASTER_SITES=	http://git.chise.org/elisp/dist/flim/flim-1.14/
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
 
-MAINTAINER?=	nobutaka@FreeBSD.org
-COMMENT?=	Message representation or encoding elisp library for emacs
+MAINTAINER=	nobutaka@FreeBSD.org
+COMMENT=	Message representation or encoding elisp library for emacs
 
 LICENSE=	GPLv2
 
@@ -49,31 +49,10 @@ MAKE_ARGS+=	PREFIX="${STAGEDIR}${LOCALBASE}" \
 
 .include <bsd.port.pre.mk>
 
-.if defined(EMACS_PORT_NAME)
-.if (${EMACS_PORT_NAME} == "emacs23") || (${EMACS_PORT_NAME} == "emacs24") || (${EMACS_PORT_NAME} == "emacs-devel")
-DEPPORT_SUFFIX=
-.else
-DEPPORT_SUFFIX=	-${EMACS_PORT_NAME}
-.endif
-.if (${EMACS_PORT_NAME} == "emacs23") || (${EMACS_PORT_NAME} == "emacs24") || (${EMACS_PORT_NAME} == "emacs-devel")
 PLIST=		${PKGDIR}/pkg-plist.emacs21
-.endif
-# depends on apel (case of xemacs-21.x or later)
-.if defined(EMACS_PACKAGESDIR)
-BUILD_DEPENDS+=	${LOCALBASE}/${EMACS_LIBDIR}/xemacs-packages/lisp/apel/emu.el:editors/xemacs-packages
-RUN_DEPENDS+=	${LOCALBASE}/${EMACS_LIBDIR}/xemacs-packages/lisp/apel/emu.el:editors/xemacs-packages
-MAKE_ARGS+=	PACKAGEDIR="${STAGEDIR}${LOCALBASE}/${EMACS_PACKAGESDIR}"
-.else
-# depends on apel (case of gnu emacsen etc...)
-BUILD_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/emu/emu.el:editors/apel${DEPPORT_SUFFIX}
-RUN_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/emu/emu.el:editors/apel${DEPPORT_SUFFIX}
-.endif
-.else
-.BEGIN:
-	@${ECHO} "Error: Bad port."
-	@${ECHO} "You must define EMACS_PORT_NAME."
-	@${FALSE}
-.endif
+# depends on apel
+BUILD_DEPENDS+=	apel-${EMACS_PORT_NAME}>0:editors/apel
+RUN_DEPENDS+=	apel-${EMACS_PORT_NAME}>0:editors/apel
 
 .if !defined(BUILD_INFO_BY_EMACS) || (${BUILD_INFO_BY_EMACS} == "NO")
 # info files JIS to EUC
@@ -81,7 +60,7 @@ BUILD_DEPENDS+=	nkf:japanese/nkf
 .endif
 
 # makeinfo stuff
-MAKEINFO=		makeinfo --no-split --no-validate
+MAKEINFO_FLAGS=		--no-split --no-validate
 MAKEINFO_EMACS=		${EMACS_CMD} -no-site-file -no-init-file -batch
 MAKEINFO_EMACS_FLAGS=	-e texinfo-format-buffer -f save-buffer
 
@@ -130,14 +109,14 @@ info-build:
 	for i in mime-en.texi; do \
 		${MV} $${i} $${i}.jis ; \
 		${CAT} $${i}.jis | nkf -e > $${i} ; \
-		${MAKEINFO} $${i} || ${TRUE} ; \
+		${MAKEINFO} ${MAKEINFO_FLAGS} $${i} || ${TRUE} ; \
 	done)
 .if defined(EMACS_HAS_MULE) && (${EMACS_HAS_MULE} == "YES")
 	@(cd ${WRKSRC} ; \
 	for i in mime-ja.texi; do \
 		${MV} $${i} $${i}.jis ; \
 		${CAT} $${i}.jis | nkf -e > $${i} ; \
-		${MAKEINFO} $${i} || ${TRUE} ; \
+		${MAKEINFO} ${MAKEINFO_FLAGS} $${i} || ${TRUE} ; \
 	done)
 .endif
 
@@ -202,10 +181,10 @@ info-package-install:
 	done)
 
 manifest-install:
-	@${RM} -f ${WRKDIR}/${MANIFEST}
+	@${RM} ${WRKDIR}/${MANIFEST}
 	@${CAT} ${PLIST} | ${GREP} -e "^%%EMACS_PACKAGESDIR%%" | \
 		${SED} -e "s;^%%EMACS_PACKAGESDIR%%/;;" > ${WRKDIR}/${MANIFEST}
-	@${INSTALL_DATA} ${WRKDIR}/${MANIFEST} \
+	${INSTALL_DATA} ${WRKDIR}/${MANIFEST} \
 		${STAGEDIR}${LOCALBASE}/${EMACS_PACKAGESDIR}/pkginfo/
 
 pkgcookie-install:

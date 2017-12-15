@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lazarus
-PORTVERSION=	1.6.0
+PORTVERSION=	1.6.4
 DISTVERSIONSUFFIX=	-0
 PORTREVISION?=	0
 CATEGORIES=	editors devel
@@ -10,7 +10,7 @@ MASTER_SITES=	SF/${PORTNAME}/Lazarus%20Zip%20_%20GZip/Lazarus%20${PORTVERSION:S/
 		LOCAL/acm/freepascal
 DIST_SUBDIR=	freepascal
 
-MAINTAINER?=	freebsd-fpc@FreeBSD.org
+MAINTAINER?=	acm@FreeBSD.org
 COMMENT?=	Portable Delphi-like IDE for the FreePascal compiler
 
 BUILD_DEPENDS?=	#
@@ -110,7 +110,7 @@ do-build:
 
 post-build:
 	@cd ${WRKSRC} && \
-		${RM} -Rf COPYING* README* debian localize.bat test *.orig *.bak startlazarus.app \
+		${RM} -R COPYING* README* debian localize.bat test *.orig *.bak startlazarus.app \
 			ide/Makefile*.orig ide/Makefile*.bak lcl/units components/ideintf/units \
 				components/synedit/units components/lazcontrols/lib
 
@@ -119,8 +119,8 @@ pre-install:
 	@${ECHO} "cd ${DATADIR} || exit 1 " >> ${WRKDIR}/lazarus-wrapper
 	@${ECHO} "exec ./startlazarus" >> ${WRKDIR}/lazarus-wrapper
 
-	@${RM} -f ${PLIST}
-	@${RM} -f ${WRKSRC}/lcl/units
+	@${RM} ${PLIST}
+	@${RM} ${WRKSRC}/lcl/units
 	@${RM} -r ${WRKSRC}/components/chmhelp/lhelp/lhelp.app/Contents/MacOS \
 		${WRKSRC}/lazarus.app/Contents/MacOS \
 		${WRKSRC}/lazarus.app/Contents/Resources/startlazarus.app/Contents/MacOS
@@ -151,7 +151,7 @@ do-install:
 		@${MKDIR} ${STAGEDIR}${DATADIR}/${DIRE}
 		@cd ${WRKSRC}/${DIRE} && \
 			${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${DATADIR}/${DIRE}/{}" \; && \
-				${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${DATADIR}/${DIRE}/{}" \;
+				${FIND} * -type f -exec ${INSTALL_DATA} {} "${STAGEDIR}${DATADIR}/${DIRE}/{}" \;
 .endfor
 	@${CHMOD} +x ${STAGEDIR}${DATADIR}/tools/svn2revisioninc ${STAGEDIR}${DATADIR}/tools/lazres ${STAGEDIR}${DATADIR}/tools/lrstolfm \
 		${STAGEDIR}${DATADIR}/tools/updatepofiles
@@ -162,12 +162,12 @@ do-install:
 
 	@cd ${WRKDIR}/docs && \
 		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${DOCSDIR}/{}" \; && \
-			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${DOCSDIR}/{}" \;
+			${FIND} * -type f -exec ${INSTALL_DATA} {} "${STAGEDIR}${DOCSDIR}/{}" \;
 	@${LN} -s ${DOCSDIR} ${STAGEDIR}${DATADIR}/docs
 
 	@cd ${WRKDIR}/examples && \
 		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${EXAMPLESDIR}/{}" \; && \
-			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${EXAMPLESDIR}/{}" \;
+			${FIND} * -type f -exec ${INSTALL_DATA} {} "${STAGEDIR}${EXAMPLESDIR}/{}" \;
 	@${LN} -s ${EXAMPLESDIR} ${STAGEDIR}${DATADIR}/examples
 
 	${INSTALL_SCRIPT} ${WRKSRC}/localize.sh ${STAGEDIR}${DATADIR}

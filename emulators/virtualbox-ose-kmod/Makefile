@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.0.26
-PORTREVISION=	1
+PORTVERSION=	5.2.2
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX=	-kmod
@@ -38,10 +37,11 @@ CONFIGURE_ARGS+=	--disable-alsa \
 			--disable-xpcom
 CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
-CONFLICTS_INSTALL=	virtualbox-ose-kmod-devel-4* \
-			virtualbox-ose-kmod-legacy-4*
+CONFLICTS_INSTALL=	virtualbox-ose-kmod-devel-* \
+			virtualbox-ose-kmod-legacy-*
 
 OPTIONS_DEFINE=	DEBUG VIMAGE
+OPTIONS_DEFAULT=VIMAGE
 OPTIONS_SUB=	yes
 DEBUG_DESC=	Debug symbols, additional logs and assertions
 VIMAGE_DESC=	VIMAGE virtual networking support
@@ -57,7 +57,7 @@ BUILD_WRKSRC=	${VBOX_BIN}
 
 KMK_BUILDTYPE=	release
 KMK_CONFIG=	VBOX_LIBPATH_X11=${LOCALBASE} VBOX_FREEBSD_SRC=${SRC_BASE}/sys
-KMK_FLAGS=	HostDrivers-scripts vboxdrv-mod VBoxNetFlt-src VBoxNetAdp-src
+KMK_FLAGS=	HostDrivers-scripts vboxdrv-src VBoxNetFlt-src VBoxNetAdp-src
 
 .if ${PORT_OPTIONS:MDEBUG}
 KMK_FLAGS+=	BUILD_TYPE=debug
@@ -75,6 +75,13 @@ KMK_ARCH=	freebsd.${ARCH}
 
 .include <bsd.port.pre.mk>
 
+.if ${OSREL:R} >= 11
+SYMBOLSUFFIX=	debug
+.else
+SYMBOLSUFFIX=	symbols
+.endif
+PLIST_SUB+=	SYMBOLSUFFIX=${SYMBOLSUFFIX}
+
 post-patch:
 	@${ECHO} 'VBOX_WITH_VBOXDRV = 1' > ${WRKSRC}/LocalConfig.kmk
 	@${ECHO} 'VBOX_WITH_NETFLT = 1' >> ${WRKSRC}/LocalConfig.kmk
@@ -84,20 +91,21 @@ post-patch:
 	@${ECHO} 'VBOX_WITH_NETFLT_VIMAGE = 1' >> ${WRKSRC}/LocalConfig.kmk
 .endif
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
-		${WRKSRC}/Config.kmk \
-		${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|\$$KBUILDDIR_BIN/kmk_sed|${LOCALBASE}/bin/kmk_sed|g' ${WRKSRC}/configure
+	    ${WRKSRC}/Config.kmk ${WRKSRC}/configure
+	@${REINPLACE_CMD} \
+	    -e 's|\$$KBUILDDIR_BIN/kmk_sed|${LOCALBASE}/bin/kmk_sed|g' \
+	    ${WRKSRC}/configure
 
 pre-build:
-	cd ${WRKSRC}/src/VBox/HostDrivers && \
-	    ${SH} -c '. ${WRKSRC}/env.sh && ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
+	cd ${WRKSRC}/src/VBox/HostDrivers && ${SH} -c \
+	    '. ${WRKSRC}/env.sh && ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
 
 do-install:
 	${MKDIR} ${STAGEDIR}${KMODDIR}
 .for i in ${VBOX_KMODS}
 	${INSTALL_KLD} ${VBOX_BIN}/${i}/${i}.ko ${STAGEDIR}${KMODDIR}
 .if ${PORT_OPTIONS:MDEBUG}
-	${INSTALL_KLD} ${VBOX_BIN}/${i}/${i}.ko.symbols ${STAGEDIR}${KMODDIR}
+	${INSTALL_KLD} ${VBOX_BIN}/${i}/${i}.ko.${SYMBOLSUFFIX} ${STAGEDIR}${KMODDIR}
 .endif
 .endfor
 

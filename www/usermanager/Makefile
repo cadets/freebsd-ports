@@ -10,10 +10,9 @@ DISTNAME=	ftp_v${PORTVERSION}
 MAINTAINER=	danger@FreeBSD.org
 COMMENT=	Easily create, change, or delete virtual PureFTPd users
 
-BROKEN_powerpc64=	Does not build
-
 WRKSRC=		${WRKDIR}/ftp
 
+USES=		php
 USE_PHP=	mysql pcre posix session
 
 NO_BUILD=	yes

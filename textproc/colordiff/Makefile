@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	colordiff
-PORTVERSION=	1.0.16
+PORTVERSION=	1.0.18
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.colordiff.org/ LOCAL/ehaupt
 
@@ -13,6 +13,7 @@ LICENSE=	GPLv2
 
 USES=		shebangfix perl5
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 SHEBANG_FILES=	colordiff.pl
 

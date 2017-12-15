@@ -9,8 +9,7 @@ MASTER_SITES=	http://lionwiki.0o.cz/download/${PORTVERSION}/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Minimalis wiki, extensible, templatable and file based
 
-BROKEN_powerpc64=	Does not build
-
+USES=		php
 USE_PHP=	session ctype
 
 NO_BUILD=	yes

@@ -3,13 +3,16 @@
 
 PORTNAME=	argp-standalone
 PORTVERSION=	1.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://www.lysator.liu.se/~nisse/misc/ \
 		LOCAL/sem
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standalone version of arguments parsing functions from GLIBC
+
+LICENSE=	LGPL20+ PD
+LICENSE_COMB=	multi
 
 USES=		autoreconf libtool
 USE_CSTD=	gnu89

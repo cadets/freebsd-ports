@@ -18,8 +18,9 @@ LICENSE_NAME_QPL10=	Q Public License, Version 1.0
 LICENSE_FILE_QPL10=	${WRKSRC}/LICENSE
 LICENSE_PERMS_QPL10=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_powerpc64=	Does not build
-
+BROKEN_aarch64=		Does not build: No rule to make target aarch64.o, needed by libasmrun.a
+BROKEN_armv7=		Does not build: hasgot.c: undefined reference to `tgetent'
+BROKEN_powerpc64=	Does not build: error: too few arguments to function gethostbyname_r
 BROKEN_sparc64=	ocamlc.opt seg-faults, please try to fix
 BROKEN_mips64=	No ASM support
 BROKEN_mips=	No ASM support
@@ -68,7 +69,7 @@ PORTDOCS=	htmlman ${DOCSDISTNAME}-refman.ps.gz ${DOCSDISTNAME}-refman.pdf
 PLIST_SUB+=	DOC="@comment "
 .endif
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 CONFIGURE_ARGS+=	-as "${AS} ${ASFLAGS} -meabi=5"
 .else
 CONFIGURE_ARGS+=	-as "${AS} ${ASFLAGS}"
@@ -98,7 +99,7 @@ CONFIGURE_ARGS+=-no-graph
 .include <bsd.port.pre.mk>
 .include "${FILESDIR}/manfiles"
 
-OCAML_ARCH=	${ARCH:S/x86_64/amd64/:S/powerpc/power/:S/armv6/arm/}
+OCAML_ARCH=	${ARCH:S/x86_64/amd64/:S/powerpc/power/:C/armv.*/arm/}
 
 .if defined(NO_PROFILE) || ${OCAML_ARCH:Mpower} || ${OCAML_ARCH:Mamd64}
 
@@ -147,7 +148,7 @@ post-configure:
 		-e 's,(${PATTERN}+.*(MANDIR|MANODIR|MANEXT)),\1\$${BSD_INSTALL_MAN} \4,'
 
 check-test: do-install
-	@cd ${WRKSRC}/testsuite; ${RM} -f _log; for d in tests/* ; do \
+	@cd ${WRKSRC}/testsuite; ${RM} _log; for d in tests/* ; do \
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} one DIR=$${d} \
 	2>&1 | tee -a _log || ${TRUE} ; done ; \
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} report

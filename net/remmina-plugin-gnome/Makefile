@@ -5,7 +5,10 @@ PKGNAMESUFFIX=	-gnome
 
 COMMENT=	Remmina plugin for GNOME Keyring
 
-LIB_DEPENDS=	libgnome-keyring.so:security/libgnome-keyring
+LIB_DEPENDS=	libsecret-1.so:security/libsecret
+RUN_DEPENDS=	gnome-keyring:security/gnome-keyring
+
+USES+=		gettext-runtime
 
 MASTERDIR=	${.CURDIR}/../remmina-plugins
 

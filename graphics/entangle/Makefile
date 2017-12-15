@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	entangle
-PORTVERSION=	0.7.1
+PORTVERSION=	0.7.2
 CATEGORIES=	graphics
 MASTER_SITES=	http://entangle-photo.org/download/sources/
 
@@ -20,21 +20,17 @@ LIB_DEPENDS=	libgphoto2.so:graphics/libgphoto2 \
 		libraw_r.so:graphics/libraw \
 		libpeas-1.0.so:devel/libpeas
 RUN_DEPENDS:=	${BUILD_DEPENDS:Nitstool*} \
-		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py3-libpeas
+		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas@${PY_FLAVOR}
 
-USES=		gettext-tools gmake libtool pkgconfig python:3
+USES=		gettext-tools gmake libtool pkgconfig python:3.4+
 GNU_CONFIGURE=	yes
-USE_GNOME=	gtk30 intltool introspection:build
+USE_GNOME=	cairo gtk30 intltool introspection
+USE_GSTREAMER1=	core
+USE_XORG=	xext
 GLIB_SCHEMAS=	org.entangle-photo.manager.gschema.xml
 INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
-
-# XXX: it would be nice if one day this option would be passed automatically
-# to configure scripts that support it :)
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
-CONFIGURE_ARGS=	--disable-silent-rules
-.endif
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

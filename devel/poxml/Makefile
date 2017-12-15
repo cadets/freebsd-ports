@@ -2,9 +2,8 @@
 
 PORTNAME=	poxml
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	devel kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	1
+CATEGORIES=	devel kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Tools to translate Docbook XML using gettext

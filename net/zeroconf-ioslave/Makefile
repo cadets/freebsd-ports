@@ -2,9 +2,8 @@
 
 PORTNAME=	zeroconf-ioslave
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	net kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	1
+CATEGORIES=	net kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Network monitor for DNS-SD services (Zeroconf)

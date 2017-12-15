@@ -3,19 +3,19 @@
 
 PORTNAME=	kcachegrind
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	devel kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	2
+CATEGORIES=	devel kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Profiler frontend for KDE
 
-USES=		cmake:outsource kde:4 tar:xz shebangfix
+USES=		cmake:outsource kde:4 python:run tar:xz shebangfix
 USE_KDE=	kdelibs automoc4
 USE_QT4=	moc_build qmake_build rcc_build uic_build \
 		corelib dbus gui
 SHEBANG_FILES=	converters/op2calltree converters/dprof2calltree \
-		converters/memprof2calltree
+		converters/memprof2calltree \
+		converters/hotshot2calltree.cmake
 
 OPTIONS_DEFINE=	DOT VALGRIND
 

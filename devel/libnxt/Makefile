@@ -4,13 +4,13 @@
 PORTNAME=	libnxt
 PORTVERSION=	0.3
 CATEGORIES=	devel
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/libnxt/
 
 MAINTAINER=	bacon4000@gmail.com
 COMMENT=	Lego NXT library
 
 SUB_FILES=	pkg-message
-USES=		python:build scons shebangfix
+USES=		python:2.7,build scons shebangfix
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	make_flash_header.py
 

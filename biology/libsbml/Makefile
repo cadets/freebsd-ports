@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libsbml
-PORTVERSION=	5.13.0
+PORTVERSION=	5.15.0
 CATEGORIES=	biology devel
 MASTER_SITES=	SF/sbml/${PORTNAME}/${PORTVERSION}/stable
 DISTNAME=	libSBML-${PORTVERSION}-core-src
@@ -27,7 +27,7 @@ OPTIONS_SUB=	yes
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 PYTHON_BUILD_DEPENDS=	swig2.0:devel/swig20
-PYTHON_USES=		python
+PYTHON_USES=		python:2.7
 PYTHON_CMAKE_ON=	-DWITH_PYTHON:BOOL=ON \
 			-DPYTHON_INCLUDE_DIR:STRING="${PYTHON_INCLUDEDIR}" \
 			-DPYTHON_LIBRARY:STRING="${PYTHONBASE}/lib/lib${PYTHON_VERSION}.so" \
@@ -46,8 +46,7 @@ post-patch:
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	@${TAR} -C ${WRKSRC}/examples --exclude "*Makefile*" -cf - . | \
-		${TAR} -C ${STAGEDIR}${EXAMPLESDIR} --unlink -xf -
-	@${CHMOD} -R a+rX ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . \
+		${STAGEDIR}${EXAMPLESDIR} '! -name *Makefile*'
 
 .include <bsd.port.mk>

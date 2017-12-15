@@ -17,8 +17,8 @@ COMMENT=	Unreal Gold for Linux
 BUILD_DEPENDS=	ut:games/linux-ut
 RUN_DEPENDS=	ut:games/linux-ut
 
-USE_LINUX=	yes
-USE_LINUX_APPS=	xorglibs
+USES=		linux
+USE_LINUX=	xorglibs
 NO_BUILD=	yes
 RESTRICTED=	Redistribution is limited, see license
 
@@ -34,7 +34,6 @@ OPTIONS_DEFINE=	DOCS
 CDDIRS=		Help Maps Maps/UPak Music Sounds Sounds/int System Textures
 
 .include <bsd.port.pre.mk>
-.include <bsd.port.options.mk>
 
 UT_DATADIR!=	cd ${PORTSDIR}/games/linux-ut && ${MAKE} -V DATADIR
 
@@ -97,7 +96,7 @@ do-extract:
 .for group in System_English Sounds_All System_All Manual_English
 	@${CP} -Rp ${WRKDIR}/source/${group}/ \
 		${WRKDIR}/source/${group:S,_English,,:S,_All,,}
-	@${RM} -rf ${WRKDIR}/source/${group}
+	@${RM} -r ${WRKDIR}/source/${group}
 .endfor
 	@${MV} ${WRKDIR}/source/Sounds_English ${WRKDIR}/source/Sounds/int
 # Original CD

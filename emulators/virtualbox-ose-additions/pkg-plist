@@ -1,5 +1,6 @@
 %%X11%%bin/VBoxClient
 %%X11%%bin/VBoxClient-all
+%%OPENGL%%etc/libmap.d/vboxvideo.conf
 %%X11%%etc/xdg/autostart/vboxclient.desktop
 %%OPENGL%%lib/VBoxEGL.so
 %%OPENGL%%lib/VBoxOGL.so
@@ -14,6 +15,8 @@ lib/pam_vbox.so
 %%X11%%lib/xorg/modules/input/vboxmouse_drv.so
 sbin/VBoxControl
 sbin/VBoxService
+sbin/mount_vboxvfs
 %%X11%%share/autostart/vboxclient.desktop
 /%%KMODDIR%%/vboxguest.ko
+/%%KMODDIR%%/vboxvfs.ko
 %%DEBUG%%/%%KMODDIR%%/vboxguest.ko.symbols

@@ -9,12 +9,14 @@ CATEGORIES=	games
 MAINTAINER=	fiziologus@gmail.com
 COMMENT=	Real time simulation game
 
+LICENSE=	GPLv2+
+
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
 		${LOCALBASE}/bin/xsltproc:textproc/libxslt
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/fife/__init__.py:games/py-fife \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
-		${PYTHON_SITELIBDIR}/yaml/__init__.py:devel/py-yaml \
-		${PYTHON_PKGNAMEPREFIX}gdbm>0:databases/py-gdbm
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/fife/__init__.py:games/py-fife@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${FLAVOR} \
+		${PYTHON_SITELIBDIR}/yaml/__init__.py:devel/py-yaml@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}gdbm>0:databases/py-gdbm@${FLAVOR}
 
 ONLY_FOR_ARCHS=	i386 amd64
 
@@ -47,9 +49,8 @@ post-patch:
 
 # Install multiplayer lib (enet+pyenet)
 post-install:
-	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/horizons/network/libs
-	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/horizons/network/libs/freebsd-${ENET_DIR}
-	${INSTALL} ${WRKSRC}/horizons/network/libs/freebsd-${ENET_DIR}/enet.so \
+	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/horizons/network/libs/freebsd-${ENET_DIR}
+	${INSTALL_LIB} ${WRKSRC}/horizons/network/libs/freebsd-${ENET_DIR}/enet.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/horizons/network/libs/freebsd-${ENET_DIR}/enet.so
 # (rene) prune unwanted files to pass 'make check-plist'
 	${RM} -r ${STAGEDIR}${PYTHON_SITELIBDIR}/UnknownHorizons-_unknown_-py${PYTHON_VER}.egg-info

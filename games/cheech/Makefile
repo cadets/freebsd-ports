@@ -3,7 +3,7 @@
 
 PORTNAME=	cheech
 PORTVERSION=	0.8
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -14,6 +14,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgnet-2.0.so:net/gnet2
+
+BROKEN=		fails to compile: ustring.h: expected ';' at end of declaration list
 
 OPTIONS_DEFINE=	DOCS
 

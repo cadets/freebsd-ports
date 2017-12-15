@@ -1,2 +1,3 @@
-SHA256 (rubygem/rb-fsevent-0.9.7.gem) = 9b744c190144ce481500d7f23936512b5f25437b8c2def2d69933fdb1f7593f6
-SIZE (rubygem/rb-fsevent-0.9.7.gem) = 51712
+TIMESTAMP = 1498989264
+SHA256 (rubygem/rb-fsevent-0.10.2.gem) = ee479a1a259e26db06936379c0fd228aab67aeafb0cee04f466b767ebdac77b9
+SIZE (rubygem/rb-fsevent-0.10.2.gem) = 50688

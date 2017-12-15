@@ -3,7 +3,7 @@
 
 PORTNAME=	wmi
 PORTVERSION=	1.3.16
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://dev.zenoss.org/trac/export/26435/trunk/inst/externallibs/ \
 		http://www.openvas.org/download/wmi/ \
@@ -29,7 +29,7 @@ PROGS=	bin/wmic bin/winexe
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USES+=		python
+USES+=		python:2.7
 MAKE_ARGS+=	PYTHON="${PYTHON_CMD}" PY_LIBDIR="${PYTHONPREFIX_SITELIBDIR}"
 PLIST_SUB+=	PYTHON=""
 .else

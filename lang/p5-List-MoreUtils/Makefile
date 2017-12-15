@@ -2,30 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	List-MoreUtils
-DISTVERSION=	0.413
+PORTVERSION=	0.428
 CATEGORIES=	lang perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	CPAN:REHSACK
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	lth@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Provide the stuff missing in List::Util
 
-LICENSE=	ART10 GPLv1
-LICENSE_COMB=	dual
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-Exporter-Tiny>=0.038:devel/p5-Exporter-Tiny
+BUILD_DEPENDS=	p5-Exporter-Tiny>=0.038:devel/p5-Exporter-Tiny \
+		p5-List-MoreUtils-XS>=0.426:lang/p5-List-MoreUtils-XS
 RUN_DEPENDS:=	${BUILD_DEPENDS}
+TEST_DEPENDS=	p5-Test-LeakTrace>=0:devel/p5-Test-LeakTrace
 
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
-
-post-stage:
-	( \
-		cd ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/List/MoreUtils; \
-		${CHMOD} u+w MoreUtils.so; \
-		${STRIP_CMD} MoreUtils.so; \
-		${CHMOD} u-w MoreUtils.so; \
-	)
 
 .include <bsd.port.mk>

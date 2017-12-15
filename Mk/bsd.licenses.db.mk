@@ -20,6 +20,8 @@ Licenses_db_Include_MAINTAINER=         portmgr@FreeBSD.org
 #   https://spdx.org/licenses/
 #
 # See also:
+# - Copyfree Licenses
+#   http://copyfree.org/standard/licenses
 # - Wikipedia (article "Comparison of Free Software Licenses")
 #   http://en.wikipedia.org/wiki/Comparison_of_free_software_licences
 #
@@ -39,9 +41,9 @@ Licenses_db_Include_MAINTAINER=         portmgr@FreeBSD.org
 # _LICENSE_LIST_GROUPS	- List of defined license groups
 #
 
-_LICENSE_LIST= 	BSL CC0-1.0 CDDL CPAL-1.0 ClArtistic EPL GFDL GMGPL \
-				ISCL MIT MPL NCSA OFL10 OFL11 OWL OpenSSL PD PSFL PostgreSQL \
-				RUBY ZLIB ZPL21
+_LICENSE_LIST= 	BSL CDDL CPAL-1.0 ClArtistic EPL GFDL GMGPL \
+				ISCL MIT NCSA OFL10 OFL11 OWL OpenSSL PD PSFL PostgreSQL \
+				RUBY UNLICENSE WTFPL1 WTFPL ZLIB ZPL21
 
 # GNU family
 _LICENSE_LIST+= AGPLv3 GPLv1 GPLv2 GPLv3 GPLv3RLE LGPL20 LGPL21 LGPL3
@@ -62,6 +64,21 @@ _LICENSE_LIST+= ART10 ARTPERL10 ART20
 
 # PHP family
 _LICENSE_LIST+= PHP202 PHP30 PHP301
+
+# Creative Commons family
+_LICENSE_LIST+=	CC0-1.0 \
+				CC-BY-1.0 CC-BY-2.0 CC-BY-2.5 CC-BY-3.0 CC-BY-4.0 \
+				CC-BY-ND-1.0 CC-BY-ND-2.0 CC-BY-ND-2.5 CC-BY-ND-3.0 CC-BY-ND-4.0 \
+				CC-BY-NC-1.0 CC-BY-NC-2.0 CC-BY-NC-2.5 CC-BY-NC-3.0 CC-BY-NC-4.0 \
+				CC-BY-NC-ND-1.0 CC-BY-NC-ND-2.0 CC-BY-NC-ND-2.5 CC-BY-NC-ND-3.0 CC-BY-NC-ND-4.0 \
+				CC-BY-NC-SA-1.0 CC-BY-NC-SA-2.0 CC-BY-NC-SA-2.5 CC-BY-NC-SA-3.0 CC-BY-NC-SA-4.0 \
+				CC-BY-SA-1.0 CC-BY-SA-2.0 CC-BY-SA-2.5 CC-BY-SA-3.0 CC-BY-SA-4.0
+
+# MPL family
+_LICENSE_LIST+= MPL10 MPL11 MPL20
+
+# Others
+_LICENSE_LIST+= NONE
 
 # List of groups (only names must be present)
 
@@ -134,6 +151,111 @@ _LICENSE_GROUPS_BSL=	FSF OSI COPYFREE
 
 _LICENSE_NAME_CC0-1.0=		Creative Commons Zero v1.0 Universal
 _LICENSE_GROUPS_CC0-1.0=	FSF GPL COPYFREE
+
+_LICENSE_NAME_CC-BY-1.0=	Creative Commons Attribution 1.0
+_LICENSE_GROUPS_CC-BY-1.0=	# empty
+
+_LICENSE_NAME_CC-BY-2.0=	Creative Commons Attribution 2.0
+_LICENSE_GROUPS_CC-BY-2.0=	# empty
+
+_LICENSE_NAME_CC-BY-2.5=	Creative Commons Attribution 2.5
+_LICENSE_GROUPS_CC-BY-2.5=	# empty
+
+_LICENSE_NAME_CC-BY-3.0=	Creative Commons Attribution 3.0
+_LICENSE_GROUPS_CC-BY-3.0=	# empty
+
+_LICENSE_NAME_CC-BY-4.0=	Creative Commons Attribution 4.0
+_LICENSE_GROUPS_CC-BY-4.0=	# empty
+
+_LICENSE_NAME_CC-BY-ND-1.0=	Creative Commons Attribution No Derivatives 1.0
+_LICENSE_GROUPS_CC-BY-ND-1.0=	# empty
+
+_LICENSE_NAME_CC-BY-ND-2.0=	Creative Commons Attribution No Derivatives 2.0
+_LICENSE_GROUPS_CC-BY-ND-2.0=	# empty
+
+_LICENSE_NAME_CC-BY-ND-2.5=	Creative Commons Attribution No Derivatives 2.5
+_LICENSE_GROUPS_CC-BY-ND-2.5=	# empty
+
+_LICENSE_NAME_CC-BY-ND-3.0=	Creative Commons Attribution No Derivatives 3.0
+_LICENSE_GROUPS_CC-BY-ND-3.0=	# empty
+
+_LICENSE_NAME_CC-BY-ND-4.0=	Creative Commons Attribution No Derivatives 4.0
+_LICENSE_GROUPS_CC-BY-ND-4.0=	# empty
+
+_LICENSE_NAME_CC-BY-NC-1.0=	Creative Commons Attribution Non Commercial 1.0
+_LICENSE_GROUPS_CC-BY-NC-1.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-1.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-2.0=	Creative Commons Attribution Non Commercial 2.0
+_LICENSE_GROUPS_CC-BY-NC-2.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-2.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-2.5=	Creative Commons Attribution Non Commercial 2.5
+_LICENSE_GROUPS_CC-BY-NC-2.5=	# empty
+_LICENSE_PERMS_CC-BY-NC-2.5=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-3.0=	Creative Commons Attribution Non Commercial 3.0
+_LICENSE_GROUPS_CC-BY-NC-3.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-3.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-4.0=	Creative Commons Attribution Non Commercial 4.0
+_LICENSE_GROUPS_CC-BY-NC-4.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-4.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-ND-1.0=	Creative Commons Attribution Non Commercial No Derivatives 1.0
+_LICENSE_GROUPS_CC-BY-NC-ND-1.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-ND-1.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-ND-2.0=	Creative Commons Attribution Non Commercial No Derivatives 2.0
+_LICENSE_GROUPS_CC-BY-NC-ND-2.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-ND-2.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-ND-2.5=	Creative Commons Attribution Non Commercial No Derivatives 2.5
+_LICENSE_GROUPS_CC-BY-NC-ND-2.5=	# empty
+_LICENSE_PERMS_CC-BY-NC-ND-2.5=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-ND-3.0=	Creative Commons Attribution Non Commercial No Derivatives 3.0
+_LICENSE_GROUPS_CC-BY-NC-ND-3.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-ND-3.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-ND-4.0=	Creative Commons Attribution Non Commercial No Derivatives 4.0
+_LICENSE_GROUPS_CC-BY-NC-ND-4.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-ND-4.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-SA-1.0=	Creative Commons Attribution Non Commercial Share Alike 1.0
+_LICENSE_GROUPS_CC-BY-NC-SA-1.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-SA-1.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-SA-2.0=	Creative Commons Attribution Non Commercial Share Alike 2.0
+_LICENSE_GROUPS_CC-BY-NC-SA-2.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-SA-2.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-SA-2.5=	Creative Commons Attribution Non Commercial Share Alike 2.5
+_LICENSE_GROUPS_CC-BY-NC-SA-2.5=	# empty
+_LICENSE_PERMS_CC-BY-NC-SA-2.5=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-SA-3.0=	Creative Commons Attribution Non Commercial Share Alike 3.0
+_LICENSE_GROUPS_CC-BY-NC-SA-3.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-SA-3.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-NC-SA-4.0=	Creative Commons Attribution Non Commercial Share Alike 4.0
+_LICENSE_GROUPS_CC-BY-NC-SA-4.0=	# empty
+_LICENSE_PERMS_CC-BY-NC-SA-4.0=	dist-mirror pkg-mirror auto-accept
+
+_LICENSE_NAME_CC-BY-SA-1.0=	Creative Commons Attribution Share Alike 1.0
+_LICENSE_GROUPS_CC-BY-SA-1.0=	# empty
+
+_LICENSE_NAME_CC-BY-SA-2.0=	Creative Commons Attribution Share Alike 2.0
+_LICENSE_GROUPS_CC-BY-SA-2.0=	# empty
+
+_LICENSE_NAME_CC-BY-SA-2.5=	Creative Commons Attribution Share Alike 2.5
+_LICENSE_GROUPS_CC-BY-SA-2.5=	# empty
+
+_LICENSE_NAME_CC-BY-SA-3.0=	Creative Commons Attribution Share Alike 3.0
+_LICENSE_GROUPS_CC-BY-SA-3.0=	# empty
+
+_LICENSE_NAME_CC-BY-SA-4.0=	Creative Commons Attribution Share Alike 4.0
+_LICENSE_GROUPS_CC-BY-SA-4.0=	# empty
 
 _LICENSE_NAME_CDDL=	Common Development and Distribution License
 _LICENSE_GROUPS_CDDL=	FSF OSI
@@ -229,8 +351,14 @@ _LICENSE_PERMS_LPPL13c=	dist-mirror dist-sell
 _LICENSE_NAME_MIT=	MIT license / X11 license
 _LICENSE_GROUPS_MIT=	COPYFREE FSF GPL OSI
 
-_LICENSE_NAME_MPL=	Mozilla Public License
-_LICENSE_GROUPS_MPL=	FSF OSI
+_LICENSE_NAME_MPL10=	Mozilla Public License version 1.0
+_LICENSE_GROUPS_MPL10=	FSF OSI
+
+_LICENSE_NAME_MPL11=	Mozilla Public License version 1.1
+_LICENSE_GROUPS_MPL11=	FSF OSI
+
+_LICENSE_NAME_MPL20=	Mozilla Public License version 2.0
+_LICENSE_GROUPS_MPL20=	FSF OSI
 
 _LICENSE_NAME_NCSA=	University of Illinois/NCSA Open Source License
 _LICENSE_GROUPS_NCSA=	COPYFREE FSF GPL OSI
@@ -268,6 +396,19 @@ _LICENSE_GROUPS_PSFL=	FSF GPL OSI
 _LICENSE_NAME_RUBY=	Ruby License
 _LICENSE_GROUPS_RUBY=	FSF
 
+_LICENSE_NAME_NONE=	No license specified
+_LICENSE_GROUPS_NONE=	# empty
+_LICENSE_PERMS_NONE=	none
+
+_LICENSE_NAME_UNLICENSE=	The Unlicense
+_LICENSE_GROUPS_UNLICENSE=	COPYFREE FSF GPL
+
+_LICENSE_NAME_WTFPL1=	Do What the Fuck You Want To Public License version 1
+_LICENSE_GROUPS_WTFPL1=	GPL FSF COPYFREE
+
+_LICENSE_NAME_WTFPL=	Do What the Fuck You Want To Public License version 2
+_LICENSE_GROUPS_WTFPL=	GPL FSF COPYFREE
+
 _LICENSE_NAME_ZLIB=		zlib License
 _LICENSE_GROUPS_ZLIB=	GPL FSF OSI
 
@@ -278,8 +419,6 @@ _LICENSE_GROUPS_ZPL21=	GPL OSI
 
 .for lic in ${_LICENSE_LIST}
 .	if !defined(_LICENSE_PERMS_${lic})
-# note that space before = is needed to correctly handle licenses
-# ending with a plus sign
-_LICENSE_PERMS_${lic} =	${_LICENSE_PERMS_DEFAULT}
+_LICENSE_PERMS_${lic}=	${_LICENSE_PERMS_DEFAULT}
 .	endif
 .endfor

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Coro
-PORTVERSION=	6.51.1
+PORTVERSION=	6.51.3
 PORTEPOCH=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
@@ -11,7 +11,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:R}${PORTVERSION:E}
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Coroutine process abstraction for perl
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-AnyEvent>=7:devel/p5-AnyEvent \
@@ -35,12 +35,6 @@ PORTEXAMPLES=	*
 SHEBANG_FILES=	Coro/*.pl eg/*
 perl_OLD_CMD=	/.*/bin/perl
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} >= 502200
-BROKEN=		Perl >= 5.22 is not supported
-.endif
-
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Coro/EV/EV.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Coro/Event/Event.so
@@ -54,4 +48,4 @@ post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	${INSTALL_SCRIPT} ${WRKSRC}/eg/* ${STAGEDIR}${EXAMPLESDIR}/
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pragmarcs
-PORTVERSION=	20160627
+PORTVERSION=	20161207
 CATEGORIES=	devel
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PragmAda Reusable Components
 
 LICENSE=	GPLv2 GMGPL
@@ -15,7 +15,7 @@ USES=		ada
 USE_GITHUB=	yes
 GH_ACCOUNT=	jrcarter
 GH_PROJECT=	PragmARC
-GH_TAGNAME=	cd8b6ef
+GH_TAGNAME=	1378e7a
 
 post-extract:
 	@${CP} ${FILESDIR}/buildlib.gpr ${WRKSRC}/

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	13.10.0
+PORTVERSION=	13.18.4
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -19,12 +19,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson
 
+ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc sparc64
+
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
-ONLY_FOR_ARCHS=	i386 amd64 powerpc sparc64 armv6
-
-USES=		bison cpe gmake iconv libedit localbase ncurses \
-		shebangfix sqlite ssl
+USES=		bison cpe gmake iconv libedit localbase \
+		shebangfix sqlite ssl ncurses
 USE_CSTD=	gnu89
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
@@ -57,7 +57,7 @@ CONFLICTS_BUILD=	linuxthreads-*
 CONFLICTS_INSTALL=	asterisk*-1.8* asterisk*-11*
 
 OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS LDAP LUA \
-				MP3PLAYER OOH323 PJSIP PORTAUDIO RADIUS SNMP \
+				MP3PLAYER OOH323 OPTIMIZED_CFLAGS PJSIP PORTAUDIO RADIUS SNMP \
 				SPANDSP SRTP SYSINFO XMPP
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MP3PLAYER NEWT ODBC MYSQL PGSQL PJSIP \
 				PORTAUDIO RADIUS SNMP SPANDSP SPEEX SQLITE2 VORBIS
@@ -66,11 +66,12 @@ OPTIONS_DEFINE_i386=		DAHDI
 OPTIONS_DEFINE_amd64=		DAHDI
 OPTIONS_DEFINE_sparc64=		DAHDI
 
-OPTIONS_DEFAULT_i386=		DAHDI GCC XMPP
-OPTIONS_DEFAULT_amd64=		DAHDI GCC XMPP
+OPTIONS_DEFAULT_i386=		DAHDI BASE XMPP
+OPTIONS_DEFAULT_amd64=		DAHDI BASE XMPP
 OPTIONS_DEFAULT_sparc64=	DAHDI GCC XMPP
 OPTIONS_DEFAULT_powerpc=	GCC XMPP
 OPTIONS_DEFAULT_armv6=		BASE
+OPTIONS_DEFAULT_armv7=		BASE
 
 OPTIONS_GROUP=			CODECS
 OPTIONS_GROUP_CODECS=		GSM NEWG711 SPEEX VORBIS
@@ -100,7 +101,7 @@ G729_DISTFILES=			${ASTERISK_CORE_G729_SOUNDS}:g729 \
 
 ASTVERSION_DESC?= Install astversion (requires bash)
 BACKTRACE_DESC?= Stack backtrace support via (lib)execinfo
-BASE_DESC=	Use base compiler (experimental)
+BASE_DESC=	Use base compiler
 DAHDI_DESC?=	DAHDI support
 EXCHANGE_DESC?=	Exchange calendar support
 MP3PLAYER_DESC=	Install MP3 Player for Music-On-Hold (mpg123)
@@ -116,7 +117,6 @@ OPTIONS_SUB=		yes
 ASTVERSION_RUN_DEPENDS=		bash:shells/bash
 
 BACKTRACE_CONFIGURE_WITH=	execinfo
-BACKTRACE_USES=			execinfo
 
 CURL_CONFIGURE_ON=	--with-libcurl
 CURL_CONFIGURE_OFF=	--with-libcurl=no
@@ -171,6 +171,8 @@ PGSQL_USES=		pgsql
 
 PJSIP_CONFIGURE_WITH=	pjproject
 PJSIP_USES=		pkgconfig
+PJSIP_LIB_DEPENDS=	libspeex.so:audio/speex \
+			libspeexdsp.so:audio/speexdsp
 
 PORTAUDIO_CONFIGURE_WITH=	portaudio
 PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
@@ -179,13 +181,16 @@ RADIUS_CONFIGURE_WITH=	radius
 RADIUS_LIB_DEPENDS=	libradiusclient-ng.so:net/radiusclient
 
 SNMP_CONFIGURE_WITH=	netsnmp
-SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
+SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp \
+			libpkg.so:ports-mgmt/pkg
 
 SPANDSP_CONFIGURE_WITH=	spandsp
-SPANDSP_LIB_DEPENDS=	libspandsp.so:comms/spandsp
+SPANDSP_LIB_DEPENDS=	libspandsp.so:comms/spandsp \
+			libtiff.so:graphics/tiff
 
 SPEEX_CONFIGURE_WITH=	speex
-SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex
+SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex \
+			libspeexdsp.so:audio/speexdsp
 
 SQLITE2_CONFIGURE_WITH=	sqlite
 SQLITE2_LIB_DEPENDS=	libsqlite.so:databases/sqlite2
@@ -195,7 +200,8 @@ SRTP_CONFIGURE_WITH=	srtp
 SYSINFO_LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo
 
 VORBIS_CONFIGURE_WITH=	ogg
-VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
+VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
+			libogg.so:audio/libogg
 
 XMPP_CONFIGURE_WITH=	iksemel
 XMPP_LIB_DEPENDS=	libiksemel.so:textproc/iksemel
@@ -237,48 +243,46 @@ PLIST_SUB+=	ASTERISK_USER=${ASTERISK_USER} \
 post-extract:
 	@${FIND} ${WRKSRC} -name '*.d' -delete
 
-.if ${PORT_OPTIONS:MG729}
+post-extract-G729-on:
 	${CP} ${DISTDIR}/${ASTERISK_CORE_G729_SOUNDS} ${WRKSRC}/sounds
 	${CP} ${DISTDIR}/${ASTERISK_MOH_G729_SOUNDS} ${WRKSRC}/sounds
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/var/lib|${PREFIX}/share|g' ${WRKSRC}/configs/samples/musiconhold.conf.sample
-.if ${PORT_OPTIONS:MSYSINFO}
+.if exists(${FILESDIR}/.asterisk.makeopts)
+	${CP} ${FILESDIR}/.asterisk.makeopts ${WRKSRC}/menuselect.makeopts
+.endif
+
+post-patch-SYSINFO-on:
 	@${REINPLACE_CMD} -e 's/%%LIBSYSINFO%%/-lsysinfo/' ${WRKSRC}/main/Makefile
-.else
+
+post-patch-SYSINFO-off:
 	@${REINPLACE_CMD} -e '/#define HAVE_SYSINFO 1/d' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e '/%%LIBSYSINFO%%/d' ${WRKSRC}/main/Makefile
-.endif
-
-.if exists(${FILESDIR}/.asterisk.makeopts)
-USER_MAKEOPTS_FILE=${FILESDIR}/.asterisk.makeopts
-.else
-USER_MAKEOPTS_FILE=
-.endif
 
 post-configure:
-	@cd ${WRKSRC} && ${MAKE_CMD} menuselect.makeopts USER_MAKEOPTS="${USER_MAKEOPTS_FILE}"
+	@cd ${WRKSRC} && ${MAKE_CMD} menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --disable res_timing_kqueue menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable chan_mgcp menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable res_pktccops menuselect.makeopts
-.if ${PORT_OPTIONS:MMYSQL}
+
+post-configure-MYSQL-on:
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable res_config_mysql menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable app_mysql menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable cdr_mysql menuselect.makeopts
-.endif
-.if ${PORT_OPTIONS:MOOH323}
+
+post-configure-OOH323-on:
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable chan_ooh323 menuselect.makeopts
-.endif
-.if ${PORT_OPTIONS:MNEWG711}
+
+post-configure-NEWG711-on:
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable G711_NEW_ALGORITHM menuselect.makeopts
-.endif
+
+post-configure-OPTIMIZED_CFLAGS-off:
+	@cd ${WRKSRC} && ./menuselect/menuselect --disable BUILD_NATIVE menuselect.makeopts
 
 post-install:
 	@${RM} ${STAGEDIR}${ETCDIR}/*.conf ${STAGEDIR}${ETCDIR}/extensions.ael ${STAGEDIR}${ETCDIR}/extensions.lua
-.if ! ${PORT_OPTIONS:MASTVERSION}
-	@${RM} ${STAGEDIR}${PREFIX}/sbin/astversion
-.endif
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/ast[a-f]* ${STAGEDIR}${PREFIX}/lib/*.so.* ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/modules/*.so ${STAGEDIR}${DATADIR}/agi-bin/eagi-*
 	${FIND} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/modules -type f -name '*.so' | ${SED} "s,^${STAGEDIR}${PREFIX}/,," >> ${TMPPLIST}
 	${FIND} ${STAGEDIR}${DATADIR}/sounds -type f | ${SED} "s,^${STAGEDIR}${DATADIR},${DATADIR}," >> ${TMPPLIST}
 	${FIND} ${STAGEDIR}${DATADIR}/moh -type f | ${SED} "s,^${STAGEDIR}${DATADIR},${DATADIR}," >> ${TMPPLIST}
@@ -290,5 +294,8 @@ post-install:
 		${FIND} var/spool/${PORTNAME}/voicemail/ -type d | ${SED} "s,^,@dir /," >> ${TMPPLIST} && \
 		${ECHO} "@owner" >> ${TMPPLIST} && \
 		${ECHO} "@group" >> ${TMPPLIST});
+
+post-install-ASTVERSION-off:
+	@${RM} ${STAGEDIR}${PREFIX}/sbin/astversion
 
 .include <bsd.port.post.mk>

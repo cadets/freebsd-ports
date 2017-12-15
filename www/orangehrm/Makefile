@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	orangehrm
-PORTVERSION=	3.3.2
+PORTVERSION=	4.0
 CATEGORIES=	www misc
 MASTER_SITES=	SF/${PORTNAME}/stable/${PORTVERSION}
 
@@ -12,10 +12,8 @@ COMMENT=	Open Source Human Resource Management
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license/LICENSE.TXT
 
-BROKEN_powerpc64=	Does not build
-
-USES=		cpe zip
-USE_PHP=	mysql
+USES=		cpe php zip
+USE_PHP=	iconv json pdo_mysql ctype xml session simplexml
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
 SUB_FILES=	pkg-message

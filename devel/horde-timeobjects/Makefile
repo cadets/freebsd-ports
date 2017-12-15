@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	timeobjects
-PORTVERSION=	2.1.2
+PORTVERSION=	2.1.4
 CATEGORIES=	devel www pear
 PKGNAMEPREFIX=	horde-
 

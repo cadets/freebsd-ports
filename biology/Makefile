@@ -10,7 +10,6 @@
     SUBDIR += bcftools
     SUBDIR += bedtools
     SUBDIR += biococoa
-    SUBDIR += biojava
     SUBDIR += blat
     SUBDIR += bowtie
     SUBDIR += bowtie2
@@ -27,6 +26,7 @@
     SUBDIR += fasta3
     SUBDIR += fastdnaml
     SUBDIR += fastool
+    SUBDIR += fastqc
     SUBDIR += fasttree
     SUBDIR += fastx-toolkit
     SUBDIR += fluctuate
@@ -38,8 +38,10 @@
     SUBDIR += hmmer
     SUBDIR += htslib
     SUBDIR += iolib
+    SUBDIR += iqtree
     SUBDIR += jalview
     SUBDIR += jellyfish
+    SUBDIR += kallisto
     SUBDIR += lagan
     SUBDIR += lamarc
     SUBDIR += libgtextutils
@@ -55,10 +57,13 @@
     SUBDIR += muscle
     SUBDIR += ncbi-blast+
     SUBDIR += ncbi-toolkit
+    SUBDIR += njplot
     SUBDIR += p5-AcePerl
     SUBDIR += p5-Bio-ASN1-EntrezGene
+    SUBDIR += p5-Bio-Coordinate
     SUBDIR += p5-Bio-Das
     SUBDIR += p5-Bio-Das-Lite
+    SUBDIR += p5-Bio-FeatureIO
     SUBDIR += p5-Bio-GFF3
     SUBDIR += p5-Bio-Glite
     SUBDIR += p5-Bio-Graphics
@@ -66,8 +71,9 @@
     SUBDIR += p5-Bio-NEXUS
     SUBDIR += p5-Bio-Phylo
     SUBDIR += p5-Bio-SCF
-    SUBDIR += p5-bioperl
-    SUBDIR += p5-bioperl-run
+    SUBDIR += p5-BioPerl
+    SUBDIR += p5-BioPerl-Run
+    SUBDIR += p5-TrimGalore
     SUBDIR += p5-transdecoder
     SUBDIR += paml
     SUBDIR += phrap
@@ -81,11 +87,16 @@
     SUBDIR += psi88
     SUBDIR += py-biom-format
     SUBDIR += py-biopython
+    SUBDIR += py-bx-python
+    SUBDIR += py-cutadapt
+    SUBDIR += py-macs2
+    SUBDIR += py-pysam
     SUBDIR += pycogent
     SUBDIR += pyfasta
     SUBDIR += python-nexus
     SUBDIR += recombine
     SUBDIR += ruby-bio
+    SUBDIR += rubygem-bio
     SUBDIR += samtools
     SUBDIR += seaview
     SUBDIR += seqan
@@ -100,7 +111,6 @@
     SUBDIR += t_coffee
     SUBDIR += tinker
     SUBDIR += treepuzzle
-    SUBDIR += treeviewx
     SUBDIR += trimmomatic
     SUBDIR += ugene
     SUBDIR += vcftools

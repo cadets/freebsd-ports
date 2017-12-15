@@ -1,17 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	meta1
-PORTVERSION=	1.1.0a.2.0
-DISTVERSION=	1.1.Alpha2.0
+PORTVERSION=	1.1.0a.8.0
 PORTREVISION=	0
 CATEGORIES=	mail ipv6
-MASTER_SITES=	http://www.MeTA1.org/download/.alpha/dane1/
+MASTER_SITES=	http://www.MeTA1.org/download/.alpha/dlck/
 PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${BERKELEYDB_SUFFIX}${PMILTER_SUFFIX}${PKGNAMESUFFIX2}
+DISTNAME=	${PORTNAME}-1.1.Alpha8.0
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Secure and efficient mail gateway
 
-NOT_FOR_ARCHS=	ia64
+LICENSE=	BSD4CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
 MAKE_JOBS_UNSAFE=	yes
 CONFLICTS=	smx-*
 MANUAL_PACKAGE_BUILD=	needs hostname
@@ -24,7 +26,6 @@ IGNORE=		your system does not support sysvipc
 .endif
 
 USES=	libtool
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--disable-dependency-tracking
 MAKE_ENV+=	META1CONFDIR="${META1CONFDIR}"

@@ -3,7 +3,7 @@
 
 PORTNAME=	gnotime
 PORTVERSION=	2.4.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	SF/gttr/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -21,7 +21,6 @@ USE_GNOME=	gnomeprefix gtkhtml3 intlhack libgnomeui
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	GUILE_CFLAGS="$$(guile-config compile)" \
 		GUILE_LIBS="$$(guile-config link)"
-CONFIGURE_ARGS=	--disable-silent-rules
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 INSTALLS_OMF=	yes

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	postfix
-PORTVERSION=	3.1.2
+PORTVERSION=	3.2.4
 PORTEPOCH=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.porcupine.org/mirrors/postfix-release/ \
@@ -24,7 +24,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libicuuc.so:devel/icu
 
-PORTSCOUT=	limit:^3\.1\.
+PORTSCOUT=	limit:^3\.2\.
 
 CONFLICTS_INSTALL?=	courier-0.* opensmtpd-[0-9]* \
 		sendmail-8.* sendmail+*-8.* smail-3.* zmailer-2.* \
@@ -279,7 +279,7 @@ pre-patch:
 	fi
 .endif
 
-	@${ECHO} '<HTML><BODY>See <A HREF="header_checks.5.html">header_checks.5.html</A></BODY></HTML>' \
+	@${ECHO_CMD} '<HTML><BODY>See <A HREF="header_checks.5.html">header_checks.5.html</A></BODY></HTML>' \
 		> ${WRKSRC}/html/body_checks.5.html
 	@${REINPLACE_CMD} -E -e 's!^(#define DEF_SGID_GROUP[^"]+)"postdrop"$$!\1"maildrop"!' \
 		${WRKSRC}/src/global/mail_params.h
@@ -289,12 +289,12 @@ pre-patch:
 
 post-patch:
 .for f in ${HTML1}
-	@${ECHO} '$$html_directory/$f:f:root:-:644' \
+	@${ECHO_CMD} '$$html_directory/$f:f:root:-:644' \
 		>> ${WRKSRC}/conf/postfix-files
 .endfor
-	@${ECHO} '$$manpage_directory/man1/posttls-finger.1:f:root:-:644' \
+	@${ECHO_CMD} '$$manpage_directory/man1/posttls-finger.1:f:root:-:644' \
 		>> ${WRKSRC}/conf/postfix-files
-	@${ECHO} '$$command_directory/posttls-finger:f:root:-:755' \
+	@${ECHO_CMD} '$$command_directory/posttls-finger:f:root:-:755' \
 		>> ${WRKSRC}/conf/postfix-files
 
 do-configure:
@@ -304,7 +304,7 @@ do-configure:
 	dynamicmaps=yes \
 	${POSTFIX_DYN_AUXLIBS} \
 	AUXLIBS="${POSTFIX_AUXLIBS}" && \
-	${ECHO} "all: default" >> Makefile)
+	${ECHO_CMD} "all: default" >> Makefile)
 
 pre-install-INST_BASE-on:
 	${MKDIR} ${STAGEDIR}/etc/rc.d
@@ -328,11 +328,6 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/auxiliary/qshape/qshape.pl ${STAGEDIR}${PREFIX}/bin/qshape
 	${INSTALL_MAN} ${WRKSRC}/man/man1/qshape.1 ${STAGEDIR}${MANPREFIX}/man/man1
 
-do-install-TEST-on:
-	${INSTALL_PROGRAM} ${BINTEST:S|^|${WRKSRC}/bin/|} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${MANTEST:S|^|${WRKSRC}/man/man1/|} ${STAGEDIR}${MANPREFIX}/man/man1
-
-post-stage:
 # == do not overwrite existing config
 	${MV} ${STAGEDIR}${ETCDIR}/main.cf ${STAGEDIR}${ETCDIR}/main.cf.sample
 	${MV} ${STAGEDIR}${ETCDIR}/master.cf ${STAGEDIR}${ETCDIR}/master.cf.sample
@@ -361,5 +356,9 @@ post-stage:
 	-@${STRIP_CMD} ${STRIP_LIBEXEC:S|^|${STAGEDIR}${DAEMONDIR}/|}
 	-@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/*
 	-@${STRIP_CMD} ${STAGEDIR}${SHLIB_DIRECTORY}/*.so
+
+do-install-TEST-on:
+	${INSTALL_PROGRAM} ${BINTEST:S|^|${WRKSRC}/bin/|} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${MANTEST:S|^|${WRKSRC}/man/man1/|} ${STAGEDIR}${MANPREFIX}/man/man1
 
 .include <bsd.port.mk>

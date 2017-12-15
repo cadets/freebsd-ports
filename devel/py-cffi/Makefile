@@ -14,17 +14,19 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libffi.so:devel/libffi
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycparser>=2.10:devel/py-pycparser
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycparser>=2.10:devel/py-pycparser@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${FLAVOR}
 
 # Actually 2.6-2.7,3.2-3.5
-USES=		localbase python
+USES=		localbase python compiler
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000
+.if ${COMPILER_TYPE:Mclang}
 CFLAGS+=	-Wno-shift-negative-value
+.endif
 .endif
 
 # Tests assume gcc, and fail on pure clang systems

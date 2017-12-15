@@ -3,6 +3,7 @@
 
 PORTNAME=	polygraph
 PORTVERSION=	4.9.0
+PORTREVISION=	4
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	benchmarks www
 MASTER_SITES=	http://www.web-polygraph.org/downloads/srcs/
@@ -20,6 +21,9 @@ SHEBANG_FILES=	tools/*.pl
 USE_GCC=	any
 GNU_CONFIGURE=	yes
 
+# The port does not build with C++11 or later (bug 219275).
+USE_CXXSTD=	gnu++03
+
 CONFLICTS=	ltrace-0*
 
 OPTIONS_DEFINE=		DOCS GNUPLOT GSSAPI LDNS PERL SSL ZLIB
@@ -35,7 +39,7 @@ LDNS_LIB_DEPENDS=	libldns.so:dns/ldns
 LDNS_CONFIGURE_ON=	--with-ldns=${LOCALBASE}/bin/ldns-config
 LDNS_CONFIGURE_OFF=	--without-ldns
 SSL_DESC=		SSL/HTTPS support
-SSL_USE=		openssl=yes
+SSL_USES=		ssl
 SSL_CONFIGURE_ON=	--with-ssl=${OPENSSLBASE}
 SSL_CONFIGURE_OFF=	--without-ssl
 PERL_DESC=		Install Perl for PolyGraph tools

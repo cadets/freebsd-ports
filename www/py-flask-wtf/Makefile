@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Flask-WTF
-PORTVERSION=	0.12
+PORTVERSION=	0.14.2
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,21 +12,21 @@ COMMENT=	Simple integration of Flask and WTForms
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>0:www/py-flask \
-		${PYTHON_PKGNAMEPREFIX}werkzeug>0:www/py-werkzeug \
-		${PYTHON_PKGNAMEPREFIX}wtforms>0:textproc/py-wtforms
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose \
-		${PYTHON_PKGNAMEPREFIX}Flask-Babel>0:devel/py-flask-babel
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>0:www/py-flask@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wtforms>0:textproc/py-wtforms@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}Flask-Babel>0:devel/py-flask-babel@${FLAVOR}
 
 OPTIONS_DEFINE=		TESTS
 TESTS_DESC=		Install test suite dependencies
 TESTS_BUILD_DEPENDS=	${RUN_DEPENDS} \
 			${TEST_DEPENDS}
 
-USES=		python
+NO_ARCH=	yes
+USES=		python:2.7+
 USE_PYTHON=	autoplist distutils
 
-regression-test: build
+do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

@@ -34,25 +34,27 @@ OPTIONS_DEFINE=	DOCS
 
 .if ${PORT_OPTIONS:MTOMCAT6}
 TOMCATVER=	apache-tomcat-6.0
-TCPORT=	8180
+TCPORT=		8180
 BUILD_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat6
 RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat6
 .endif
 
 .if ${PORT_OPTIONS:MTOMCAT7}
 TOMCATVER=	apache-tomcat-7.0
-TCPORT=	8080
+TCPORT=		8080
 BUILD_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat7
 RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat7
 .endif
 
 post-extract:
-	@${MKDIR} ${WRKDIR}/${PORTDIRNAME}
-	@${TAR} xf ${WRKDIR}/deegree-wps.war -C ${WRKDIR}/${PORTDIRNAME}
+	@${MKDIR} ${WRKDIR}/${PKGBASE}
+	@${TAR} xf ${WRKDIR}/deegree-wps.war -C ${WRKDIR}/${PKGBASE}
 
 do-install:
-	${INSTALL} -d ${STAGEDIR}${WEBAPPDIR}/${PORTDIRNAME}
-	@cd ${WRKDIR}/${PORTDIRNAME} && ${COPYTREE_SHARE} \* ${STAGEDIR}${WEBAPPDIR}/${PORTDIRNAME}
+	@${MKDIR} ${STAGEDIR}${WEBAPPDIR}/${PKGBASE}
+	@cd ${WRKDIR}/${PKGBASE} && ${COPYTREE_SHARE} \* ${STAGEDIR}${WEBAPPDIR}/${PKGBASE}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKDIR}/|} ${STAGEDIR}${DOCSDIR}
 

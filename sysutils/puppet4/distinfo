@@ -1,2 +1,3 @@
-SHA256 (puppet-4.5.1.tar.gz) = e1bdc63c2d043827434bfaebba084b802d226f4b6d787b1620cc98706102b6f6
-SIZE (puppet-4.5.1.tar.gz) = 2750198
+TIMESTAMP = 1510991624
+SHA256 (puppet-4.10.9.tar.gz) = e667bd825e54bbc38c30534c25adc441ed638fc484fe0abe278f0335770cd161
+SIZE (puppet-4.10.9.tar.gz) = 2981668

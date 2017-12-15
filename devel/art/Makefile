@@ -3,6 +3,7 @@
 
 PORTNAME=	art
 PORTVERSION=	0.9.01
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://skylark.tsu.ru/art/0.9/download/src/ \
 		SF/art-project/src/
@@ -13,6 +14,8 @@ COMMENT=	Resource tracing, debugging, and profiling tool
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libxml++-2.6.so:textproc/libxml++26
+
+BROKEN=		fails to compile: ustring.h: expected ';' at end of declaration list
 
 USES=	gmake pkgconfig
 

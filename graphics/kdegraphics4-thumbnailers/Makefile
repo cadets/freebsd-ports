@@ -2,9 +2,8 @@
 
 PORTNAME=	kdegraphics-thumbnailers
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	graphics kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	1
+CATEGORIES=	graphics kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Thumbnailers for various graphics file formats

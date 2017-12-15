@@ -3,8 +3,10 @@
 
 PORTNAME=	gnome-mplayer
 PORTVERSION=	1.0.9
+PORTREVISION=	2
 CATEGORIES=	multimedia gnome
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE:S,/files/,/svn/packages/,}
+MASTER_SITES=	https://launchpad.net/ubuntu/+archive/primary/+files/
+DISTNAME=	gnome-mplayer_1.0.9.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNOME frontend for MPlayer
@@ -19,12 +21,12 @@ USES=		desktop-file-utils gettext gmake pkgconfig
 USE_XORG=	x11 xscrnsaver
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules \
-		--disable-nautilus \
+CONFIGURE_ARGS=	--disable-nautilus \
 		--disable-nemo \
 		--disable-schemas-install \
 		--without-libgda
 INSTALLS_ICONS=	yes
+WRKSRC=		${WRKDIR}/gnome-mplayer-${PORTVERSION}
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lintl

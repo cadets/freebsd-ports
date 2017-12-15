@@ -2,7 +2,7 @@
 
 PORTNAME=	libmspub
 PORTVERSION=	0.1.2
-PORTREVISION=	3
+PORTREVISION=	15
 CATEGORIES=	print graphics devel
 MASTER_SITES=	http://dev-www.libreoffice.org/src/${PORTNAME}/
 PKGNAMESUFFIX=	01
@@ -10,7 +10,7 @@ PKGNAMESUFFIX=	01
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Library and tools for parsing Microsoft Publisher file format
 
-LICENSE=	LGPL21 MPL GPLv2
+LICENSE=	GPLv2+ LGPL21+ MPL20
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/ptr_container/ptr_map.hpp:devel/boost-libs
@@ -19,14 +19,10 @@ LIB_DEPENDS=	libicui18n.so:devel/icu \
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		libtool pathfix pkgconfig tar:xz
+USES=		compiler:c++0x libtool pathfix pkgconfig tar:xz
 INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS=	--disable-werror --without-docs
-CONFIGURE_ENV=	ZLIB_CFLAGS="-I/usr/include" ZLIB_LIBS="-lz"
 CPPFLAGS+=	-I${LOCALBASE}/include
-
-post-patch:
-	@${REINPLACE_CMD} -e "s,zlib,,g" ${WRKSRC}/libmspub.pc.in
 
 .include <bsd.port.mk>

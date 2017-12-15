@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	postfix
-PORTVERSION=	2.11.8
+PORTVERSION=	2.11.10
 PORTEPOCH=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.porcupine.org/mirrors/postfix-release/ \
@@ -25,7 +25,6 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 PORTSCOUT=	limit:^2\.11\.
 
-VDAVERSION=	2.10.0
 CONFLICTS_INSTALL?=	courier-0.* opensmtpd-[0-9]* \
 		sendmail-8.* sendmail+*-8.* smail-3.* zmailer-2.* \
 		postfix2?-* postfix-3.* postfix-current-*
@@ -239,8 +238,7 @@ _REQUIRE+=		ypserv
 .endif
 
 .if ${PORT_OPTIONS:MVDA}
-PATCH_SITES+=		http://vda.sourceforge.net/VDA/:vda
-PATCHFILES+=		postfix-vda-v13-${VDAVERSION}.patch:-p1:vda
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-postfix-vda-v13-2.11.x
 .endif
 
 .if ${PORT_OPTIONS:MTEST}
@@ -319,6 +317,9 @@ do-configure:
 	AUXLIBS="${POSTFIX_AUXLIBS}" && \
 	${ECHO} "all: default" >> Makefile)
 
+post-stage-VDA-on:
+	${HEAD} -n 17 ${FILESDIR}/extra-patch-postfix-vda-v13-2.11.x >> ${WRKDIR}/pkg-message
+
 pre-install-INST_BASE-on:
 	${MKDIR} ${STAGEDIR}/etc/rc.d
 
@@ -339,11 +340,6 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/auxiliary/qshape/qshape.pl ${STAGEDIR}${PREFIX}/bin/qshape
 	${INSTALL_MAN} ${WRKSRC}/man/man1/qshape.1 ${STAGEDIR}${MANPREFIX}/man/man1
 
-do-install-TEST-on:
-	${INSTALL_PROGRAM} ${BINTEST:S|^|${WRKSRC}/bin/|} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${MANTEST:S|^|${WRKSRC}/man/man1/|} ${STAGEDIR}${MANPREFIX}/man/man1
-
-post-stage:
 # == do not overwrite existing config
 	${MV} ${STAGEDIR}${ETCDIR}/main.cf ${STAGEDIR}${ETCDIR}/main.cf.sample
 	${MV} ${STAGEDIR}${ETCDIR}/master.cf ${STAGEDIR}${ETCDIR}/master.cf.sample
@@ -354,5 +350,9 @@ post-stage:
 	${SED} -i '' -E -e "s|(man[158]/.*.[158]):|\1.gz:|g" ${STAGEDIR}${DAEMONDIR}/postfix-files
 	-@${STRIP_CMD} ${STRIP_LIBEXEC:S|^|${STAGEDIR}${DAEMONDIR}/|}
 	-@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/*
+
+do-install-TEST-on:
+	${INSTALL_PROGRAM} ${BINTEST:S|^|${WRKSRC}/bin/|} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${MANTEST:S|^|${WRKSRC}/man/man1/|} ${STAGEDIR}${MANPREFIX}/man/man1
 
 .include <bsd.port.mk>

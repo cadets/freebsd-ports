@@ -2,9 +2,8 @@
 
 PORTNAME=	kremotecontrol
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	comms kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	1
+CATEGORIES=	comms kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE frontend for your remote controls

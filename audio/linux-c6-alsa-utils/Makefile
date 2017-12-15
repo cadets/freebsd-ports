@@ -3,22 +3,21 @@
 
 PORTNAME=	alsa-utils
 PORTVERSION=	1.1.0
+PORTREVISION=	4
 CATEGORIES=	audio linux
-MASTER_SITES=	CENTOS_LINUX
 
 MAINTAINER=	emulation@FreeBSD.org
-COMMENT=	Advanced Linux Sound Architecture libraries (Linux CentOS ${LINUX_DIST_VER})
+COMMENT=	Advanced Linux Sound Architecture utilities (Linux CentOS ${LINUX_DIST_VER})
 
 LICENSE=	GPLv3
 
-CONFLICTS=	linux-alsa-lib-[0-9]* linux-f10-alsa-lib-[0-9]*
-
-BRANDELF_FILES=	sbin/alsactl usr/bin/aconnect usr/bin/alsamixer usr/bin/amidi usr/bin/aplay usr/bin/aplaymidi usr/bin/arecord usr/bin/arecordmidi usr/bin/aseqdump usr/bin/aseqnet usr/bin/iecset usr/bin/speaker-test  usr/sbin/alsactl
-USE_LINUX_APPS=	alsalib alsa-plugins-oss
-
-ONLY_FOR_ARCHS=	i386 amd64
-USE_LINUX=	c6
+DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
+RPMVERSION=	10.el6
+USES=		linux:c6
+USE_LINUX=	alsalib alsa-plugins-oss
 USE_LINUX_RPM=	nolib
-RPMVERSION=	8.el6
+
+OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_SUB=	yes
 
 .include <bsd.port.mk>

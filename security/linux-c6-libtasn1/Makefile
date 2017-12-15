@@ -3,23 +3,17 @@
 
 PORTNAME=	libtasn1
 PORTVERSION=	2.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security linux
 
 MAINTAINER=	emulation@FreeBSD.org
-COMMENT=	ASN.1 structure parser library
+COMMENT=	ASN.1 structure parser library (Linux CentOS ${LINUX_DIST_VER})
 
-USES+=	cpe
-CPE_VENDOR=	gnu
-
-USE_LINUX=	c6
-USE_LINUX_RPM=	yes
-
+DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 RPMVERSION=	6.el6_5
+USES=		cpe linux:c6
+CPE_VENDOR=	gnu
 USE_LDCONFIG=	yes
-
-DOCSDIR=	${PREFIX}/usr/share/doc/${PORTNAME}-${PORTVERSION}
-PORTDOCS=	AUTHORS COPYING COPYING.LIB ChangeLog NEWS README THANKS TODO libtasn1.pdf
-DESCR=		${.CURDIR}/../libtasn1/pkg-descr
+USE_LINUX_RPM=	yes
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	maradns
-PORTVERSION=	2.0.13
+PORTVERSION=	2.0.14
 CATEGORIES=	dns
 MASTER_SITES=	http://maradns.samiam.org/download/2.0/${PORTVERSION}/\
 		SF/${PORTNAME}/MaraDNS/${PORTVERSION}/
@@ -13,11 +13,10 @@ COMMENT=	DNS server with focus on security and simplicity
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-DEADWOOD_VER=	3.2.09
+DEADWOOD_VER=	3.2.10
 
 REINPLACE_ARGS=	-i ""
 MAKE_ENV=	FLAGS="${CFLAGS}"
-CONFIGURE_ENV=	LANG=
 
 HAS_CONFIGURE=	yes
 USE_RC_SUBR=	${PORTNAME} zoneserver Deadwood
@@ -32,7 +31,7 @@ OPTIONS_SUB=	yes
 CONV_DESC=	Install bind2csv2 tool (needs python)
 
 IPV6_CONFIGURE_ON=	--ipv6
-CONV_USES=	python:run
+CONV_USES=	python:2.7,run
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -66,7 +65,7 @@ do-install:
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc/en && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
-	@${RM} -rf ${STAGEDIR}${DOCSDIR}/man \
+	@${RM} -r ${STAGEDIR}${DOCSDIR}/man \
 		${STAGEDIR}${DOCSDIR}/source \
 		${STAGEDIR}${DOCSDIR}/pdf
 	@${FIND} ${STAGEDIR}${DOCSDIR} -name Makefile -delete

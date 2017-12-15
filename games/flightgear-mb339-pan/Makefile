@@ -15,6 +15,8 @@ RUN_DEPENDS=	${LOCALBASE}/share/flightgear/version:games/flightgear-data
 
 RESTRICTED=	Redistribution prohibited
 
+BROKEN_powerpc64=	fails to build: runaway process
+
 NO_BUILD=	yes
 USES=		zip
 WRKSRC=	${WRKDIR}/${PORTNAME}
@@ -28,7 +30,7 @@ pre-extract:
 	@${MKDIR} ${WRKSRC}
 
 pre-install:
-	@${RM} -f ${PLIST}
+	@${RM} ${PLIST}
 	@cd ${WRKSRC} && \
 	${FIND} * -type d -empty | ${SORT} \
 		| ${SED} -e 's|^|@exec ${MKDIR} %D/share/flightgear/Aircraft/|' >> ${PLIST} && \

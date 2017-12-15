@@ -2,7 +2,6 @@
 
 PORTNAME=	printsupport
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
 CATEGORIES=	print
 PKGNAMEPREFIX=	qt5-
 
@@ -33,12 +32,6 @@ QT_CONFIG+=	cups
 .else
 QT_DEFINES+=	-CUPS
 QT_CONFIG+=	-cups
-.endif
-
-post-configure:
-.if ${PORT_OPTIONS:MCUPS}
-	@cd ${WRKSRC}/src/plugins/${PORTNAME}/cups && \
-		${SETENV} ${QMAKE_ENV} ${WRKSRC}/bin/qmake ${QMAKE_ARGS}
 .endif
 
 post-build:

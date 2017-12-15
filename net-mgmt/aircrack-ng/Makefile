@@ -12,13 +12,15 @@ COMMENT=	802.11 WEP and WPA-PSK keys cracking program
 LICENSE=	GPLv2 BSD3CLAUSE APACHE20
 LICENSE_COMB=	dual
 
-BROKEN_FreeBSD_9=	Does not build
+BROKEN_powerpc64=	fails to compile: sse-intrinsics.c: error: emmintrin.h: No such file or directory
 
 USES=		cpe dos2unix gmake ssl
 CPE_VERSION=	${DISTVERSION:C/-.*//}
 CPE_UPDATE=	${DISTVERSION:C/^[^-]*$//:C/.*-//}
 DOS2UNIX_FILES=	src/osdep/byteorder.h
 MAKE_ARGS=	experimental=true libnl=false prefix=${PREFIX}
+CFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
 # Don't call 'strip' target with WITH_DEBUG set
 INSTALL_TARGET=	${STRIP:S/-s/strip/} install
 

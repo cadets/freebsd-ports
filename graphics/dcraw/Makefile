@@ -2,25 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	dcraw
-PORTVERSION=	9.26
+PORTVERSION=	9.27
 CATEGORIES=	graphics
 MASTER_SITES=	LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Decoder for RAW files from digital cameras
 
+LICENSE=	GPLv2+
+
 LIB_DEPENDS=	libjasper.so:graphics/jasper \
 		liblcms2.so:graphics/lcms2
 
-CFLAGS+=	-I${LOCALBASE}/include/jasper
-LDFLAGS+=	-ljasper -ljpeg -llcms2 -lm
+CPPFLAGS+=	-I${LOCALBASE}/include/jasper
+LIBS+=		-ljasper -ljpeg -llcms2 -lm
 USES=		jpeg localbase tar:xz
 
 PLIST_FILES=	bin/${PORTNAME} \
 		man/man1/${PORTNAME}.1.gz
 
 do-build:
-	@cd ${WRKSRC}/ && ${CC} -o ${PORTNAME} ${CFLAGS} ${PORTNAME}.c ${LDFLAGS}
+	@cd ${WRKSRC}/ && ${CC} -o ${PORTNAME} ${CPPFLAGS} ${CFLAGS} \
+		${PORTNAME}.c ${LDFLAGS} ${LIBS}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/

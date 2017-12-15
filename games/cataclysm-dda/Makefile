@@ -3,18 +3,22 @@
 
 PORTNAME=	cataclysm-dda
 PORTVERSION=	0.C
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fork/variant of Cataclysm Roguelike by Whales
 
-LICENSE=	CCPL.BY-SA.30
-LICENSE_NAME=	Creative Commons Attribution-ShareAlike 3.0 Unported License
+LICENSE=	CC-BY-SA-3.0
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		alias compiler:c++11-lib execinfo gmake shebangfix
+BROKEN_aarch64=		fails to compile: comparison of integers of different signs: wchar_t and const int
+BROKEN_armv6=		fails to compile: comparison of integers of different signs: wchar_t and const int
+BROKEN_armv7=		fails to compile: comparison of integers of different signs: wchar_t and const int
+BROKEN_powerpc64=	fails to compile: overmap.cpp: 'pow' is not a member of 'std'
+
+USES=		alias compiler:c++11-lib gmake shebangfix
 SHEBANG_FILES=	lang/*.sh
 bash_CMD=	/bin/sh
 
@@ -24,8 +28,7 @@ GH_PROJECT=	Cataclysm-DDA
 
 MAKE_ARGS=	CXX="${CXX}" LD="${CXX}" RELEASE=1
 
-CPPFLAGS+=	${EXECINFO_CPPFLAGS}
-LDFLAGS+=	${EXECINFO_LDFLAGS} -lexecinfo
+LDFLAGS+=	-lexecinfo
 
 MAKE_JOBS_UNSAFE=	yes
 

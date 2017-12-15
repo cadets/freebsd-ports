@@ -3,6 +3,7 @@
 
 PORTNAME=	elmo
 PORTVERSION=	1.3.2
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -14,24 +15,20 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	elmo-devel-[0-9]*
 
-OPTIONS_DEFINE=	GPGME NLS
-
 GNU_CONFIGURE=	yes
-USES=		iconv ncurses shebangfix perl5
-USE_OPENSSL=	yes
-USE_PERL5=	run
+USES=		iconv localbase ncurses shebangfix perl5 ssl
 SHEBANG_FILES=	src/elmoconf.pl
+USE_PERL5=	run
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+OPTIONS_DEFINE=	GPGME NLS
+OPTIONS_SUB=	yes
 
 GPGME_DESC=		GnuPG support using GPGME
 GPGME_LIB_DEPENDS=	libgpgme.so:security/gpgme
 GPGME_CONFIGURE_ENV_OFF=ac_cv_header_gpgme_h=no
 NLS_CONFIGURE_ON=	--with-libintl-prefix="${LOCALBASE}"
 NLS_CONFIGURE_OFF=	--disable-nls
-NLS_USES=	gettext
-OPTIONS_SUB=	yes
+NLS_USES=		gettext
 
 post-patch:
 	@${REINPLACE_CMD} -e '/if test/s|==|=|g' ${WRKSRC}/configure

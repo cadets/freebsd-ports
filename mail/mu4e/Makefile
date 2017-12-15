@@ -2,8 +2,10 @@
 
 PORTNAME=	mu4e
 PORTVERSION=	0.9.16
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
+PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Emacs frontend for Mu
@@ -18,8 +20,7 @@ GH_PROJECT=	mu
 GH_ACCOUNT=	djcb
 USE_EMACS=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules \
-		--disable-gtk \
+CONFIGURE_ARGS=	--disable-gtk \
 		--disable-webkit \
 		--disable-guile \
 		--docdir="${DOCSDIR}" \
@@ -28,6 +29,8 @@ INFO=		mu4e
 BUILD_WRKSRC=	${WRKSRC}/mu4e
 INSTALL_WRKSRC=	${WRKSRC}/mu4e
 INSTALL_TARGET=	install-strip
+
+MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		DOCS
 OPTIONS_SUB=		yes

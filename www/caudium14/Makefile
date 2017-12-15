@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	caudium14
-PORTVERSION=	${DISTVERSION}.${PIKEVERSION}
-DISTVERSION=	1.4.18
+PORTVERSION=	${CAUDIUMVERSION}.${PIKEVERSION}
 PORTREVISION=	2
 CATEGORIES=	www
-MASTER_SITES=	http://caudium.googlecode.com/files/
-DISTNAME=	Caudium-${DISTVERSION}
+MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/caudium/ \
+		ftp://ftp.stack.nl/pub/users/johans/caudium/
+DISTNAME=	Caudium-${CAUDIUMVERSION}
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Free webserver based on the Roxen Challenger 1.3 code base
@@ -15,6 +15,8 @@ COMMENT=	Free webserver based on the Roxen Challenger 1.3 code base
 BUILD_DEPENDS=	pike78:lang/pike78
 LIB_DEPENDS=	libsablot.so:textproc/sablotron
 RUN_DEPENDS=	lsof:sysutils/lsof
+
+CAUDIUMVERSION=	1.4.18
 
 USES=		gmake tar:bzip2
 
@@ -47,7 +49,7 @@ post-patch:
 		-e 's,/etc/caudium,${PREFIX}&,' ${WRKSRC}/Makefile.in
 
 post-install:
-	@${INSTALL_SCRIPT} ${WRKDIR}/caudium ${STAGEDIR}${PREFIX}/etc/rc.d/
+	${INSTALL_SCRIPT} ${WRKDIR}/caudium ${STAGEDIR}${PREFIX}/etc/rc.d/
 
 .include <bsd.port.pre.mk>
 

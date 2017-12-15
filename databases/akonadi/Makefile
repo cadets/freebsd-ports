@@ -3,6 +3,7 @@
 
 PORTNAME=	akonadi
 PORTVERSION=	1.13.0
+PORTREVISION=	5
 CATEGORIES=	databases kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/src
 DIST_SUBDIR=	KDE
@@ -16,8 +17,8 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 # Let process generate meaningful backtrace on core dump.
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 
-USES=		cmake:outsource execinfo kde:4 shared-mime-info \
-		compiler:c++11-lang tar:bzip2
+USES=		cmake:outsource kde:4 shared-mime-info \
+		compiler:c++11-lang pathfix tar:bzip2
 USE_KDE=	automoc4 soprano
 USE_QT4=	corelib dbus gui network qtestlib_build sql xml \
 		moc_build qmake_build rcc_build uic_build
@@ -48,8 +49,6 @@ SQLITE_CMAKE_OFF=	-DAKONADI_BUILD_QSQLITE=off
 OPTIONS_DEFAULT=	MYSQL
 
 post-patch:
-	${REINPLACE_CMD} -e '/akonadi.pc/ s|pkgconfig|../libdata/pkgconfig|' \
-		${PATCH_WRKSRC}/CMakeLists.txt
 	${REINPLACE_CMD} -e '/find_program/ s|mysqld|mysqld_safe ${LOCALBASE}/bin|g' \
 		${PATCH_WRKSRC}/server/CMakeLists.txt
 	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \

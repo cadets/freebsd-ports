@@ -3,7 +3,7 @@
 
 PORTNAME=	kyra
 PORTVERSION=	2.1.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}2/${PORTVERSION}
 DISTNAME=	${PORTNAME}_src_${PORTVERSION:S/./_/g}
@@ -25,6 +25,10 @@ MAKEFILE=	MakefileKyra
 MAKE_ENV=	MAKE_KYRA=RELEASE KYRA_OPENGL=YES
 MAKE_ARGS=	CC="${CC}" CXX="${CXX}" LD="${CXX}" \
 		RELEASE_CFLAGS="${CFLAGS}" RELEASE_CXXFLAGS="${CXXFLAGS}"
+
+BROKEN_aarch64=		Fails to compile: error: invalid output constraint =A in asm
+BROKEN_armv6=		Fails to compile: error: invalid output constraint =A in asm
+BROKEN_armv7=		Fails to compile: error: invalid output constraint =A in asm
 
 do-install:
 .for i in encoder spriteed

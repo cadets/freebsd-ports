@@ -4,6 +4,7 @@
 PORTNAME=		yasm
 PORTVERSION=		1.2.0.29
 DISTVERSIONSUFFIX=	.g87c0
+PORTREVISION=		1
 CATEGORIES=		devel lang
 MASTER_SITES=		http://www.tortall.net/projects/yasm/snapshots/v${DISTVERSION}${DISTVERSIONSUFFIX}/
 PKGNAMESUFFIX=		-devel
@@ -32,10 +33,6 @@ CONFLICTS_INSTALL=	yasm-[0-9]*
 
 .if ${PORT_OPTIONS:MDEBUG} || defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-debug
-.endif
-
-.if ${ARCH} == "ia64"
-CFLAGS:=	${CFLAGS:C/-O[0-9]//g}
 .endif
 
 regression-test: build

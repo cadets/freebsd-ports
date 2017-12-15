@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	phonon
-PORTVERSION=	4.8.3
+PORTVERSION=	4.9.1
+PORTREVISION=	1
 CATEGORIES=	multimedia kde
-MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE
 
 MAINTAINER=	kde@FreeBSD.org
@@ -14,9 +15,9 @@ LICENSE=	LGPL21
 
 LIB_DEPENDS=	libqzeitgeist.so:sysutils/qzeitgeist
 
-USES=		cmake kde:4 tar:xz
+USES=		cmake kde:4 pathfix tar:xz
 USE_KDE=	automoc4
-USE_QT4=	corelib dbus gui \
+USE_QT4=	corelib dbus declarative gui testlib\
 		qmake_build moc_build rcc_build uic_build
 CMAKE_ARGS=	-DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT:BOOL=TRUE \
 		-DPHONON_NO_PLATFORMPLUGIN:BOOL=TRUE \

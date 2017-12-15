@@ -14,8 +14,6 @@ COMMENT=	PHP application to administer LDAP over the web
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64=	Does not build
-
 USES=		cpe tar:tgz
 CPE_VENDOR=	deon_george
 
@@ -45,15 +43,15 @@ post-patch:
 	${CAT} ${PKGDIR}/pkg-plist-chunk		       >>${PLIST}
 
 do-install:
-	cd ${WRKSRC} ;				    	 \
+	cd ${WRKSRC} ;					 \
 	for src in $$( ${FIND} . ! -name .cvsignore	 \
 		! -name .gitignore ! -name *.orig ) ; do \
-	    dst=${STAGEDIR}${WWWDIR}$${src#.} ;	    	 \
-	    if ${TEST} -d $$src ; then		    	 \
-		${MKDIR} $$dst ;		    	 \
-	    else				    	 \
-		${INSTALL_DATA} $$src $$dst ;	    	 \
-	    fi					    	 \
+	    dst=${STAGEDIR}${WWWDIR}$${src#.} ;		 \
+	    if ${TEST} -d $$src ; then			 \
+		${MKDIR} $$dst ;			 \
+	    else					 \
+		${INSTALL_DATA} $$src $$dst ;		 \
+	    fi						 \
 	done
 
 .include <bsd.port.mk>

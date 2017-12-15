@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	awstats
-PORTVERSION=	7.5
+PORTVERSION=	7.6
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/AWStats/${PORTVERSION}
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free real-time logfile analyzer to get advanced web statistics
 
 LICENSE=	GPLv3
@@ -18,7 +18,7 @@ RUN_DEPENDS=	p5-Net-XWhois>=0:net/p5-Net-XWhois
 USES=		cpe dos2unix perl5 shebangfix
 CPE_VENDOR=	laurent_destailleur
 
-SHEBANG_FILES=	tools/*.pl wwwroot/cgi-bin/*.pl wwwroot/cgi-bin/plugins/*.pm
+SHEBANG_GLOB=	*.pl *.pm
 DOS2UNIX_GLOB=	*.xml *.pm
 
 NO_BUILD=	yes
@@ -55,6 +55,8 @@ post-patch:
 		${WRKSRC}/tools/nginx/* \
 		${WRKSRC}/wwwroot/cgi-bin/*.pl \
 		${WRKSRC}/wwwroot/cgi-bin/*.conf
+	@${REINPLACE_CMD} -e 's|/etc/awstats|${ETCDIR}|' \
+		${WRKSRC}/tools/awstats_updateall.pl
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 			-e 's|%%WWWDIR%%|${WWWDIR}|' \
 			-e 's|AWSTATS_PATH/wwwroot|AWSTATS_PATH|' \

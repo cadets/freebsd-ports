@@ -2,19 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	scummvm
-DISTVERSION=	1.8.0
+PORTVERSION=	1.9.0
 CATEGORIES=	games emulators
-MASTER_SITES=	SF
+MASTER_SITES=	http://www.scummvm.org/frs/scummvm/${PORTVERSION}/
 
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	Interpreter for several adventure games
 
-LICENSE= 	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake jpeg tar:bzip2
+LIB_DEPENDS=	libtheoradec.so:multimedia/libtheora \
+		libfaad.so:audio/faad \
+		libmpeg2.so:multimedia/libmpeg2 \
+		libfreetype.so:print/freetype2
+
+USES=		gmake jpeg tar:xz
 HAS_CONFIGURE=	yes
-USE_SDL=	sdl
-INSTALLS_ICONS= 	yes
+USE_SDL=	sdl2
+INSTALLS_ICONS=	yes
 
 CONFIGURE_ARGS=	--with-sdl-prefix=${LOCALBASE} \
 		--with-jpeg-prefix=${LOCALBASE} \
@@ -22,15 +28,12 @@ CONFIGURE_ARGS=	--with-sdl-prefix=${LOCALBASE} \
 		--with-zlib-prefix=/usr \
 		--disable-debug \
 		--disable-nasm \
-		--disable-tremor
-
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
-CONFIGURE_ARGS+=	--enable-verbose-build
-.endif
+		--disable-tremor \
+		--enable-verbose-build
 
 LDFLAGS+=	-lpthread
 
-OPTIONS_DEFINE=	VORBIS MP3 PNG FLAC FLUIDSYNTH MT32EMU DOCS
+OPTIONS_DEFINE=	VORBIS MP3 PNG FLAC FLUIDSYNTH MT32EMU DOCS SNDIO
 MT32EMU_DESC=	MT-32 emulator
 OPTIONS_DEFAULT=	VORBIS MP3 PNG MT32EMU
 
@@ -58,9 +61,13 @@ FLUIDSYNTH_CONFIGURE_OFF=	--disable-fluidsynth
 
 MT32EMU_CONFIGURE_OFF=	--disable-mt32emu
 
+SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
+SNDIO_CONFIGURE_ON=	--with-sndio-prefix=${LOCALBASE}
+SNDIO_CONFIGURE_OFF=	--disable-sndio
+
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "armv6"
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 CONFIGURE_ENV+=	ASFLAGS=-meabi=5
 .endif
 
@@ -71,6 +78,6 @@ post-patch:
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/dists/${PORTNAME}.desktop \
 		${STAGEDIR}${DESKTOPDIR}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.post.mk>

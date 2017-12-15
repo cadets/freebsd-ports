@@ -3,7 +3,7 @@
 
 PORTNAME=	Crypt-SSLeay
 PORTVERSION=	0.72
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -18,9 +18,12 @@ BUILD_DEPENDS=	p5-LWP-Protocol-https>=6.02:www/p5-LWP-Protocol-https \
 		p5-Try-Tiny>=0.19:lang/p5-Try-Tiny
 RUN_DEPENDS=	p5-LWP-Protocol-https>=6.02:www/p5-LWP-Protocol-https
 
-USES=		perl5
+USES=		perl5 ssl
 USE_PERL5=	configure
-USE_OPENSSL=	yes
 CONFIGURE_ARGS=	--no-live-tests
+CFLAGS+=	-I${OPENSSLINC}
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Crypt/SSLeay/SSLeay.so
 
 .include <bsd.port.mk>

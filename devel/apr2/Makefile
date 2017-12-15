@@ -3,6 +3,7 @@
 
 PORTNAME=	apr
 PORTVERSION=	2.0.${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/ohauer
 PKGNAMESUFFIX=	2
@@ -15,7 +16,7 @@ LICENSE=	APACHE20
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-NO_PACKAGE=	Developper only package
+NO_PACKAGE=	Developer only package
 
 # r1676013
 SNAPDATE=	20150425134304

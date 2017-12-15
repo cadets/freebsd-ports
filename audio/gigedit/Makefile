@@ -3,12 +3,14 @@
 
 PORTNAME=	gigedit
 PORTVERSION=	0.2.0
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	audio
 MASTER_SITES=	http://download.linuxsampler.org/packages/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Instrument editor for gig files
+
+BROKEN=		fails to build
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,12 +18,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 LIB_DEPENDS=	libgig.so:audio/libgig \
 		libgtkmm-2.4.so:x11-toolkits/gtkmm24
-RUN_DEPENDS=	${LOCALBASE}/lib/linuxsampler/liblinuxsampler.so.3:audio/linuxsampler
+RUN_DEPENDS=	${LOCALBASE}/lib/linuxsampler/liblinuxsampler.so:audio/linuxsampler
 BUILD_DEPENDS:=	${RUN_DEPENDS}
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-L${LOCALBASE}/lib -Wl,-rpath=${LOCALBASE}/lib/linuxsampler
 LIBS+=		-lsigc-2.0
 USES=		gettext gmake pkgconfig libtool
 USE_LDCONFIG=	yes

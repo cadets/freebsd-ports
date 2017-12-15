@@ -3,7 +3,7 @@
 
 PORTNAME=	base
 PORTVERSION=	${LICQ_VER}
-PORTREVISION=	2
+PORTREVISION=	8
 CATEGORIES=	net-im
 PKGNAMESUFFIX=	${SOCKS_SUFFIX}${PKGNAMESUFFIX2}
 
@@ -12,12 +12,11 @@ COMMENT=	Popular ICQ-compatible plugin-based program
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	Does not build
-
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs
 
-USES=		cmake iconv
-USE_OPENSSL=	yes
+BROKEN_sparc64=		Does not build: fails to link
+
+USES=		cmake:noninja iconv ssl
 WRKSRC=		${WRKDIR}/${DISTNAME}
 LICQ_PORT?=	net-im/licq
 

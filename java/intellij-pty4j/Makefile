@@ -6,13 +6,11 @@ PORTVERSION=	0.5
 PORTREVISION=	1
 CATEGORIES=	java devel
 
-MAINTAINER=	t@tobik.me
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	FreeBSD-compatible replacement for IntelliJ's bundled Pty4J
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc64=	Does not build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	idea4bsd

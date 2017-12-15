@@ -3,13 +3,12 @@
 
 PORTNAME=	script
 DISTVERSION=	${QT4_VERSION}
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt4-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt scripting module
-
-BROKEN_powerpc64=	Does not build
 
 USES=		pkgconfig
 USE_QT4=	qmake_build moc_build corelib

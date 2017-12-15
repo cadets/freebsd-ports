@@ -2,10 +2,8 @@
 
 PORTNAME=	cantor
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	1
-CATEGORIES=	math kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	8
+CATEGORIES=	math kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE 4 frontend to mathematical software
@@ -34,8 +32,7 @@ OCTAVE_DESC=	Install Octave
 OCTAVE_RUN_DEPENDS=	octave:math/octave
 
 R_DESC=		Build R backend and install R
-R_BUILD_DEPENDS=	R:math/R
-R_RUN_DEPENDS=		R:math/R
+R_LIB_DEPENDS=	libR.so:math/R
 # Required to set CFLAGS for -lgfortran.
 R_USES=		fortran
 R_CMAKE_OFF=	-DWITH_R:BOOL=FALSE

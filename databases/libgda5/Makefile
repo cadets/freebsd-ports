@@ -3,7 +3,7 @@
 
 PORTNAME=	libgda
 PORTVERSION?=	5.2.4
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	databases gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX?=	5
@@ -12,8 +12,9 @@ DIST_SUBDIR=	gnome3
 MAINTAINER?=	gnome@FreeBSD.org
 COMMENT?=	Provides uniform access to different kinds of data sources
 
-USES=		tar:xz
+USES=		python readline shebangfix tar:xz
 LIBGDA5_SLAVE?=	no
+SHEBANG_FILES=	libgda-report/RML/*/*.py
 
 .if !defined(REFERENCE_PORT)
 
@@ -22,7 +23,7 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libsoup-2.4.so:devel/libsoup \
 		libjson-glib-1.0.so:devel/json-glib
 
-USES+=		gettext gmake libtool pathfix pkgconfig
+USES+=		gettext gmake libtool localbase pathfix pkgconfig
 USE_GNOME=	glib20 libxslt intlhack referencehack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -32,8 +33,6 @@ CONFIGURE_ARGS=	--without-oracle \
 		--disable-crypto \
 		--disable-default-binary \
 		--enable-introspection
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 
 .include <bsd.port.options.mk>
 

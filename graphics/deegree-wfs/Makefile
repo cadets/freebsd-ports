@@ -12,7 +12,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}_${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Deegree Web Feature Service(WFS)
 
-LICENSE=	GPL21+
+LICENSE=	LGPL21+
 
 USES=		zip
 USE_JAVA=	yes
@@ -49,11 +49,11 @@ RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat7
 .endif
 
 post-extract:
-	@${MKDIR} ${WRKDIR}/${PORTDIRNAME}
-	@${TAR} xf ${WRKDIR}/deegree-wfs.war -C ${WRKDIR}/${PORTDIRNAME}
+	@${MKDIR} ${WRKDIR}/${PKGBASE}
+	@${TAR} xf ${WRKDIR}/deegree-wfs.war -C ${WRKDIR}/${PKGBASE}
 
 do-install:
-	cd ${WRKDIR}/${PORTDIRNAME} && ${COPYTREE_SHARE} \* ${STAGEDIR}${WEBAPPDIR}/${PORTDIRNAME}
+	cd ${WRKDIR}/${PKGBASE} && ${COPYTREE_SHARE} \* ${STAGEDIR}${WEBAPPDIR}/${PKGBASE}
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

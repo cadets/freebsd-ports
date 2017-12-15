@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lcms2
-PORTVERSION=	2.7
-PORTREVISION=	2
+PORTVERSION=	2.9
 CATEGORIES=	graphics
 MASTER_SITES=	SF/lcms/lcms/${PORTVERSION} \
 		http://www.littlecms.com/ \
@@ -25,7 +24,7 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
-USES=		libtool localbase pathfix
+USES=		libtool localbase:ldflags pathfix
 
 PORTDOCS=	*
 

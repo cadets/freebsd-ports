@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	sqlite3
-PORTVERSION=	3.14.1
+PORTVERSION=	3.21.0
+PORTREVISION=	1
 CATEGORIES=	databases
-MASTER_SITES=	https://www.sqlite.org/2016/ http://www2.sqlite.org/2016/ http://www3.sqlite.org/2016/
+MASTER_SITES=	https://www.sqlite.org/2017/ http://www2.sqlite.org/2017/ http://www3.sqlite.org/2017/
 DISTNAME=	sqlite-autoconf-${PORTVERSION:C/\.([[:digit:]])[[:>:]]/0\1/g:S/.//g}00
 
 MAINTAINER=	pavelivolkov@gmail.com
@@ -17,17 +18,12 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-# Platform Configuration
-CFLAGS+=	-Os
-CPPFLAGS+=	-DHAVE_ISNAN=1 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_USLEEP=1
-CPPFLAGS+=	${OSVERSION<1000000:?:-DHAVE_STRCHRNUL=1}
-
 MAKE_JOBS_UNSAFE=	yes
 
 # Compilation Options For SQLite https://www.sqlite.org/compile.html
 OPTIONS_DEFINE=	FTS4 UPD_DEL_LIMIT URI URI_AUTHORITY SOUNDEX METADATA \
 		DIRECT_READ MEMMAN SECURE_DELETE UNLOCK_NOTIFY THREADS \
-		EXTENSION ARMOR STMT DBSTAT FTS5 JSON1 RBU \
+		EXTENSION ARMOR STMT DBPAGE DBSTAT FTS5 JSON1 RBU NULL_TRIM \
 		LIKENOTBLOB STSHELL FTS3_TOKEN SESSION UNKNOWN_SQL
 OPTIONS_SINGLE=	RAMT
 OPTIONS_RADIO=	STAT
@@ -44,6 +40,9 @@ SECURE_DELETE_DESC=	Overwrite deleted information with zeros
 UNLOCK_NOTIFY_DESC=	Enable notification on unlocking
 EXTENSION_DESC=		Allow loadable extensions
 STSHELL_DESC=		Statically link libsqlite3 into shell
+
+# https://sqlite.org/compile.html#enable_null_trim
+NULL_TRIM_DESC=		Omits NULL columns at the ends of rows
 
 # https://www.sqlite.org/sessionintro.html
 SESSION_DESC=		Enable the Session Extension
@@ -91,6 +90,9 @@ STAT_DESC=		Which query planner to use, Stability or ...
 STAT3_DESC=		collect histogram data from leftmost column
 STAT4_DESC=		collect histogram data from all columns
 
+# https://sqlite.org/compile.html#enable_dbpage_vtab
+DBPAGE_DESC=		Enable DBPAGE Virtual Table
+
 # https://www.sqlite.org/dbstat.html
 DBSTAT_DESC=		Enable DBSTAT Virtual Table
 
@@ -116,10 +118,11 @@ EDITLINE_PREVENTS=	READLINES READLINEP
 
 OPTIONS_DEFAULT=	FTS4 URI METADATA SECURE_DELETE UNLOCK_NOTIFY THREADS \
 			EXTENSION TS1 UNICODE61 RTREE DBSTAT STSHELL READLINES \
-			FTS3_TOKEN
+			FTS3_TOKEN FTS5
 # SECURE_DELETE, UNLOCK_NOTIFY, DBSTAT (since 41.0) used by www/firefox et al.
 # RTREE used by graphics/mapnik, databases/spatialite
 # FTS3_TOKEN used by audio/clementine-player
+# FTS5 used by sysutils/tracker
 
 PLIST_FILES=	bin/sqlite3 include/sqlite3.h include/sqlite3ext.h \
 		lib/libsqlite3.a lib/libsqlite3.so lib/libsqlite3.so.0 \
@@ -142,8 +145,9 @@ TS3_CPPFLAGS=	-DSQLITE_TEMP_STORE=3
 RTREE_CPPFLAGS=	-DSQLITE_ENABLE_RTREE=1
 RTREE_INT_CPPFLAGS=	-DSQLITE_RTREE_INT_ONLY=1
 
-FTS4_CPPFLAGS=	-DSQLITE_ENABLE_FTS3_PARENTHESIS=1 -DSQLITE_ENABLE_FTS4=1
+FTS4_CPPFLAGS=	-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1 -DSQLITE_ENABLE_FTS4=1
 FTS5_CONFIGURE_ENABLE=	fts5
+FTS5_LIBS=		-lm
 FTS3_TOKEN_CPPFLAGS=	-DSQLITE_ENABLE_FTS3_TOKENIZER=1
 
 SOUNDEX_CPPFLAGS=	-DSQLITE_SOUNDEX=1
@@ -156,6 +160,7 @@ UNLOCK_NOTIFY_CPPFLAGS=	-DSQLITE_ENABLE_UNLOCK_NOTIFY=1
 METADATA_CPPFLAGS=	-DSQLITE_ENABLE_COLUMN_METADATA=1
 STAT3_CPPFLAGS=	-DSQLITE_ENABLE_STAT3=1
 STAT4_CPPFLAGS=	-DSQLITE_ENABLE_STAT4=1
+DBPAGE_CPPFLAGS=	-DSQLITE_ENABLE_DBPAGE_VTAB=1
 DBSTAT_CPPFLAGS=	-DSQLITE_ENABLE_DBSTAT_VTAB=1
 URI_CPPFLAGS=	-DSQLITE_USE_URI=1
 URI_AUTHORITY_CPPFLAGS=	-DSQLITE_ALLOW_URI_AUTHORITY=1
@@ -166,13 +171,14 @@ STMT_CPPFLAGS=	-DSQLITE_ENABLE_STMT_SCANSTATUS=1
 EXTENSION_CONFIGURE_ENABLE=	dynamic-extensions
 
 THREADS_CONFIGURE_ENABLE=	threadsafe
-THREADS_LDFLAGS=		-lpthread
+THREADS_LIBS=		-lpthread
 
 ICU_BUILD_DEPENDS=	${LOCALBASE}/bin/icu-config:devel/icu
 ICU_LIB_DEPENDS=	libicudata.so:devel/icu
 ICU_CPPFLAGS=	`${LOCALBASE}/bin/icu-config --cppflags` -DSQLITE_ENABLE_ICU=1
-ICU_LDFLAGS=	`${LOCALBASE}/bin/icu-config --ldflags`
+ICU_LIBS=	`${LOCALBASE}/bin/icu-config --ldflags`
 
+UNICODE61_CPPFLAGS=	""
 UNICODE61_CPPFLAGS_OFF=	-DSQLITE_DISABLE_FTS3_UNICODE=1
 
 READLINES_CONFIGURE_ON=	--enable-readline
@@ -194,17 +200,34 @@ SESSION_CONFIGURE_ENABLE=	session
 
 UNKNOWN_SQL_CPPFLAGS=	-DSQLITE_ENABLE_UNKNOWN_SQL_FUNCTION=1
 
+NULL_TRIM_CPPFLAGS=	-DSQLITE_ENABLE_NULL_TRIM=1
+
 .include <bsd.port.options.mk>
+
+# Platform Configuration
+CPPFLAGS+=	-DHAVE_ISNAN=1 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_USLEEP=1 -DHAVE_STRCHRNUL=1
 
 post-configure:
 	@${ECHO_MSG} "===> CONFIGURE_ARGS=${CONFIGURE_ARGS}"
 	@${ECHO_MSG} "===> CPPFLAGS=${CPPFLAGS}"
 	@${ECHO_MSG} "===> CFLAGS=${CFLAGS}"
 	@${ECHO_MSG} "===> LDFLAGS=${LDFLAGS}"
+	@${ECHO_MSG} "===> LIBS=${LIBS}"
 
 post-build:
 .if ${ARCH}=="i386"
 	@${ECHO_MSG} "===> WARNING: on ${ARCH} don't pass atof1-* tests"
+.endif
+
+post-install:
+	${RM} ${STAGEDIR}${PREFIX}/include/msvc.h
+
+# for compares with checksum from of the site
+sha1: fetch
+.if defined(SHA1) && !empty(SHA1)
+	@sha1 -c ${SHA1} ${DISTDIR}/${ALLFILES}
+.else
+	@sha1 ${DISTDIR}/${ALLFILES}
 .endif
 
 .include <bsd.port.mk>

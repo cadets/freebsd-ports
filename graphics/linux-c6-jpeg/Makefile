@@ -3,23 +3,19 @@
 
 PORTNAME=	jpeg
 PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics linux
-DISTNAME=	lib${PORTNAME}-turbo-${PORTVERSION}-${RPMVERSION}
+DISTNAME=	${LINUXNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	emulation@FreeBSD.org
-COMMENT=	RPM of the JPEG lib (Linux CentOS ${LINUX_DIST_VER})
+COMMENT=	SIMD-accelerated JPEG codec (Linux CentOS ${LINUX_DIST_VER})
 
-CONFLICTS=	linux-jpeg-[0-9]* linux-f10-jpeg-[0-9]*
-
-ONLY_FOR_ARCHS=	i386 amd64
-USE_LINUX=	c6
-USE_LINUX_RPM=	yes
+DESCR=		${.CURDIR}/../${PORTNAME}-turbo/pkg-descr
+DOCSDIR=	${PREFIX}/usr/share/doc/${LINUXNAME}-${PORTVERSION}
+LINUXNAME=	libjpeg-turbo
 RPMVERSION=	3.el6_5
-LINUX_NAME=	lib${PORTNAME}
-BRANDELF_DIRS=	usr/bin
+USES=		linux:c6
 USE_LDCONFIG=	yes
-
-DESCR=		${.CURDIR}/../jpeg/pkg-descr
+USE_LINUX_RPM=	yes
 
 .include <bsd.port.mk>

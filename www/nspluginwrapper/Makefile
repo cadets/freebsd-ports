@@ -3,7 +3,7 @@
 
 PORTNAME=	nspluginwrapper
 PORTVERSION=	1.4.4
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	www linux emulators
 MASTER_SITES=	http://nspluginwrapper.org/download/ \
 		LOCAL/jkim \
@@ -26,34 +26,26 @@ BINFILE=	${PORTNAME}-i386-${PORTVERSION}-${BINBUILD}${EXTRACT_SUFX}
 ONLY_FOR_ARCHS=	i386 amd64
 
 HAS_CONFIGURE=	yes
+USES=		gmake gnome linux pkgconfig
 USE_GNOME=	glib20 gtk20
 USE_LDCONFIG=	yes
-USE_LINUX=	yes
-USE_LINUX_APPS=	gtk2
+USE_LINUX=	gtk2
 USE_XORG=	x11 xext xt
-USES=		gmake pkgconfig
 
 CFLAGS+=	-std=c99
 
 CONFIGURE_ARGS=	--enable-generic --enable-strip --prefix=${PREFIX} \
-		--target-os=linux --target-cpu=i386 \
+		--target-cpu=i386 --target-os=linux \
 		--with-cc=${CC} --with-cxx=${CXX}
 
 LIBDIR=		${PREFIX}/lib/${PORTNAME}
 LINUX_BINDIR=	usr/lib/nspluginwrapper/i386/linux
 
-PLIST_SUB=	LIBDIR="${LIBDIR:C/^${PREFIX}\///}" HOST_ARCH="${HOST_ARCH}"
+PLIST_SUB=	HOST_ARCH="${ARCH:S/amd64/x86_64/}" \
+		LIBDIR="${LIBDIR:C/^${PREFIX}\///}"
 
 SUB_FILES=	npviewer
-SUB_LIST+=	NSPLUGINWRAPPER="${LIBDIR}"
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "amd64"
-HOST_ARCH=	x86_64
-.else
-HOST_ARCH=	${ARCH}
-.endif
+SUB_LIST=	NSPLUGINWRAPPER="${LIBDIR}"
 
 post-patch:
 	${REINPLACE_CMD} -e 's,%%LOCALBASE%%,${LOCALBASE},g' \
@@ -67,4 +59,4 @@ post-install:
 	    ${WRKDIR}/${LINUX_BINDIR}/*.so ${STAGEDIR}${LIBDIR}/i386/linux/
 	${INSTALL_SCRIPT} ${WRKDIR}/npviewer ${STAGEDIR}${LIBDIR}/i386/linux/
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

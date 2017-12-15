@@ -11,7 +11,7 @@ COMMENT=	Measures neutrality of your network connection in the background
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		python:2
 NO_BUILD=	yes
@@ -35,7 +35,7 @@ PKGMESSAGE=	${WRKDIR}/pkg_message
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${RM} -rf ${STAGEDIR}${LSTATEDIR}
+	${RM} -r ${STAGEDIR}${LSTATEDIR}
 	(cd ${STAGEDIR}${PREFIX} \
 	&& ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
 	-d ${PREFIX} -f ${DATADIR:S;${PREFIX}/;;})

@@ -3,16 +3,17 @@
 
 PORTNAME=	cycle
 PORTVERSION=	0.3.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	deskutils biology python
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Calendar program for women
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 
-USES=		python:run tar:bzip2
+USES=		python:2.7,run shebangfix tar:bzip2
+SHEBANG_FILES=	cycle.py
 USE_WX=		3.0+
 WX_COMPS=	python
 NO_BUILD=	yes

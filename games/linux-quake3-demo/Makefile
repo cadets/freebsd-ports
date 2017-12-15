@@ -15,11 +15,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake III Arena Demo
 
 RESTRICTED=	Restrictive license by Loki Software
-NO_CDROM=	${RESTRICTED}
-NO_PACKAGE=	${RESTRICTED}
 
-USE_LINUX=	yes
-USE_LINUX_APPS+=dri
+USES=		linux
+USE_LINUX=	dri
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 

@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	renpy
-PORTVERSION=	6.99.10
+PORTVERSION?=	6.99.13
 DISTVERSIONSUFFIX=-sdk
-PORTREVISION=	0
+PORTREVISION?=	2
 CATEGORIES=	devel games
-MASTER_SITES=	http://www.renpy.org/dl/${PORTVERSION}/
+MASTER_SITES=	https://www.renpy.org/dl/${PORTVERSION}/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Framework for developing visual-novel type games
@@ -16,28 +16,38 @@ LICENSE_NAME_DejaVu=	Bitstream Vera and Arev fonts license
 LICENSE_FILE_DejaVu=	${WRKSRC}/renpy/common/DejaVuSans.txt
 LICENSE_PERMS_DejaVu=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game_sdl2>0:devel/py-game_sdl2 \
-		cython:lang/cython
+BUILD_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}game_sdl2>0:devel/py-game_sdl2@${FLAVOR}
 LIB_DEPENDS=	libfribidi.so:converters/fribidi \
 		libpng.so:graphics/png \
 		libavcodec.so:multimedia/ffmpeg \
 		libfreetype.so:print/freetype2
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game_sdl2>=${PORTVERSION}:devel/py-game_sdl2
+RUN_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}game_sdl2>=${PORTVERSION}:devel/py-game_sdl2@${FLAVOR}
+
+CONFLICTS_INSTALL?=	${PORTNAME}6-*
 
 # Upstream tends to reroll distfiles before moving under /release/
-PORTSCOUT=	site:http://www.renpy.org/dl/release/
+PORTSCOUT?=	site:http://www.renpy.org/dl/release/
 
 USES=		python:2.7 shebangfix tar:bz2
 USE_GL=		glew
-USE_PYTHON=	autoplist distutils
-USE_SDL=	sdl2
+USE_PYTHON=	autoplist distutils cython
+USE_SDL?=	sdl2
 EXCLUDE=	gen 'module/*.py[co]' 'renpy/*.py[co]'
 EXTRACT_AFTER_ARGS=${EXCLUDE:S,^,--exclude ,}
 SHEBANG_FILES=	renpy.py launcher/game/tkaskdir.py
+.ifndef PKGNAMESUFFIX
+python3_CMD?=	${PYTHON_CMD}
+SHEBANG_LANG=	python3
+SHEBANG_FILES+=	tutorial/recrop.py
+.endif
+TARGET_ORDER_OVERRIDE=610:fix-shebang
 BUILD_WRKSRC=	${WRKSRC}/module
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
 MAKE_ENV+=	RENPY_DEPS_INSTALL="${LOCALBASE}"
 PORTDATA=	launcher renpy renpy.py templates
+.ifndef PKGNAMESUFFIX
+PORTDATA+=	gui
+.endif
 PORTDOCS=	*
 PLIST_FILES=	bin/${PORTNAME}
 
@@ -55,8 +65,11 @@ DIST_DESC=	Distribution runtimes for Windows, OS X, Linux
 DIST_VARS=	LICENSE+="ART20 PSFL" \
 		PORTDATA+="lib renpy.app renpy.exe renpy.sh"
 EXAMPLES_VARS=	PORTDATA+="the_question tutorial"
+.ifndef PKGNAMESUFFIX
+EXAMPLES_VARS+=	PORTDATA+="oldtutorial"
+.endif
 TKINTER_DESC=	Install Tkinter to allow choosing Projects Directory
-TKINTER_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter
+TKINTER_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${FLAVOR}
 
 . for lic in FREETYPE LIBJPEG LIBPNG MSVCR90
 DIST_VARS+=	LICENSE+=${lic}
@@ -65,9 +78,17 @@ LICENSE_FILE_${lic}=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS_${lic}=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 . endfor
 
+post-extract:
+	@${FIND} ${WRKSRC}/lib ${WRKSRC}/renpy.app -type d -empty -delete
+
+.if !target(post-patch)
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/bin/python,${PYTHON_CMD},' \
 		${WRKSRC}/launcher/game/choose_directory.rpy
+.endif
+
+post-patch:	common-post-patch
+common-post-patch:
 # Avoid having to add -I/usr/include -L/usr/lib
 	@${REINPLACE_CMD} '/library("z")/d' ${BUILD_WRKSRC}/${PYSETUP}
 
@@ -77,14 +98,15 @@ post-build:
 
 add-plist-post: add-empty-dirs
 add-empty-dirs:
-# Keep images directory in templates, see renpy@d81ea29
-	${FIND} ${WRKSRC}/templates -type d ! -name "saves" -empty | \
+# Keep images directory in gui and templates, see renpy@d81ea29
+	${FIND} ${WRKSRC} -type d -empty \
+		! \( -name "saves" -or -name "pysdlsound" \) | \
 		${SED} 's,^${WRKSRC},@dir ${DATADIR},' >>${TMPPLIST}
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} -name \*.so \
 		-exec ${STRIP_CMD} {} +
-	${LN} -fs ${DATADIR}/renpy.py \
+	${LN} -fs ../${DATADIR_REL}/renpy.py \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
 		"${PORTDATA}" ${STAGEDIR}${DATADIR} \

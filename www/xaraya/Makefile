@@ -11,11 +11,9 @@ COMMENT=	Framework to create fully dynamic Content Management Solutions
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	Does not build
-
 OPTIONS_DEFINE=	PGSQL MYSQL
 
-USES=		cpe tar:bzip2
+USES=		cpe tar:bzip2 php
 CPE_VERSION=	${DISTVERSION:C/-.*//}
 CPE_UPDATE=	${DISTVERSION:C/[^-]*((-.*)?)/\1/:C/-//}
 USE_PHP=	pcre xml simplexml

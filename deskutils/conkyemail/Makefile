@@ -13,7 +13,7 @@ COMMENT=	Email script for conky
 
 RUN_DEPENDS=	conky:sysutils/conky
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -23,6 +23,6 @@ WRKSRC=		${WRKDIR}/src
 post-patch:
 	cd ${WRKSRC} && ${REINPLACE_CMD} -e 's,/usr/share/${PORTNAME},${DATADIR},g' \
 		conkyEmail  conkyEmail.py setup.py example/conkyrc
-	cd ${WRKSRC} && ${RM} -fr example/conkyrc.bak
+	cd ${WRKSRC} && ${RM} -r example/conkyrc.bak
 
 .include <bsd.port.mk>

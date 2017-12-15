@@ -2,19 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	plexmediaserver
-PORTVERSION?=	1.0.3.2461
+PORTVERSION?=	1.10.1.4602
+DISTVERSIONSUFFIX?=	f54242b6b
 PORTREVISION?=	0
 CATEGORIES=	multimedia
-MASTER_SITES=	https://downloads.plexapp.com/plex-media-server/${PORTVERSION}-${PLEX_BUILD}/
-DISTNAME=	PlexMediaServer-${PORTVERSION}-${PLEX_BUILD}-freebsd-${ARCH}
+MASTER_SITES=	https://downloads.plex.tv/plex-media-server/${DISTVERSION}-${DISTVERSIONSUFFIX}/
+DISTNAME=	PlexMediaServer-${DISTVERSION}-${DISTVERSIONSUFFIX}-freebsd-${ARCH}
 
 MAINTAINER?=	feld@FreeBSD.org
 COMMENT=	Plex Media Server component
 
 USES=		cpe tar:bzip2
-PLEX_BUILD?=	35f0caa
 NO_BUILD=	yes
-WRKSRC=	${WRKDIR}/PlexMediaServer-${PORTVERSION}-${PLEX_BUILD}
+WRKSRC=	${WRKDIR}/PlexMediaServer-${PORTVERSION}-${DISTVERSIONSUFFIX}
 
 CPE_VENDOR=	plex
 CPE_PRODUCT=	plex_media_server
@@ -24,7 +24,7 @@ USE_RC_SUBR?=	${PORTNAME}
 
 SUB_FILES=	pkg-message
 SUB_LIST?=	PORTNAME=${PORTNAME} DATADIR=${DATADIR} USERS=${USERS} GROUPS=${GROUPS}
-PLIST_SUB+=	PLEX_BUILD=${PLEX_BUILD}
+PLIST_SUB+=	PLEX_BUILD=${DISTVERSIONSUFFIX}
 
 USERS=	plex
 GROUPS=	${USERS}
@@ -32,6 +32,13 @@ BUNDLE_LIBS=	yes
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	binary-only program, source code not available
+
+OPTIONS_DEFINE=	RELAY
+OPTIONS_DEFAULT=	RELAY
+OPTIONS_SUB=	yes
+RELAY_DESC=	Install Plex Relay daemon
+
+.include <bsd.port.options.mk>
 
 .include <bsd.port.pre.mk>
 
@@ -52,8 +59,8 @@ post-patch:
 do-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}/${DATADIR})
 	# Python fix for older releases of Plex
-	@${LN} -s ${DATADIR}/libpython2.7.so.1 ${STAGEDIR}/${DATADIR}/libpython2.7.so
+	(cd ${STAGEDIR}/${DATADIR} && ${LN} -s libpython2.7.so.1 libpython2.7.so)
 	# Workaround for space in binary name
-	@${LN} -s ${DATADIR}/Plex\ Media\ Server ${STAGEDIR}${DATADIR}/Plex_Media_Server
+	(cd ${STAGEDIR}${DATADIR} && ${LN} -s Plex\ Media\ Server Plex_Media_Server)
 
 .include <bsd.port.post.mk>

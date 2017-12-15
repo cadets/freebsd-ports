@@ -2,19 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	stats
-PORTVERSION=	1.0.3
-PORTREVISION=	1
+PORTVERSION=	1.0.5
 CATEGORIES=	math textproc pear
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	PECL extension which with routines for statistical computation
+MAINTAINER=	dbaio@FreeBSD.org
+COMMENT=	PECL extension with routines for statistical computation
 
-LICENSE=	PHP30
+LICENSE=	PHP301
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		php:ext tar:tgz
-IGNORE_WITH_PHP=	70
+PORTSCOUT=	limit:^1.*
+
+USES=		php:pecl
+IGNORE_WITH_PHP=	70 71 72
 
 .include <bsd.port.mk>

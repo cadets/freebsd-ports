@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	django-tagging
-PORTVERSION=	0.4.3
+PORTVERSION=	0.4.4
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +12,9 @@ COMMENT=	Generic tagging application for Django
 
 LICENSE=	BSD3CLAUSE MIT
 LICENSE_COMB=	multi
-LICENSE_FILE=	${WORKSRC}/LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18@${FLAVOR}
 
 NO_ARCH=	yes
 USES=		python

@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	Dancer2-Plugin-Auth-Extensible-Provider-DBIC
-PORTVERSION=	0.600
-PORTREVISION=	1
+PORTVERSION=	0.623
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	hvo.pm@xs4all.nl
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Extensible authentication framework for Dancer2 apps using DBIC
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-DBIx-Class>=0:databases/p5-DBIx-Class \
@@ -25,5 +24,6 @@ TEST_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

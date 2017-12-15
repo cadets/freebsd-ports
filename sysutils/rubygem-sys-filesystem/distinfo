@@ -1,2 +1,3 @@
-SHA256 (rubygem/sys-filesystem-1.1.5.gem) = 456477dc96b92ba47e666152cb6cdc1e0c78517022aa5af9a88f1dac0438f123
-SIZE (rubygem/sys-filesystem-1.1.5.gem) = 24064
+TIMESTAMP = 1504443422
+SHA256 (rubygem/sys-filesystem-1.1.8.gem) = c00a1bd3ddf6835a01abeabc61b3ba7dce1396fb762ff641b438f09adc3d81e9
+SIZE (rubygem/sys-filesystem-1.1.8.gem) = 24576

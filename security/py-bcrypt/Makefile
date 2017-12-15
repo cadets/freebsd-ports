@@ -2,28 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	bcrypt
-PORTVERSION=	0.4
-PORTREVISION=	2
+PORTVERSION=	3.1.4
 CATEGORIES=	security python
-MASTER_SITES=	GOOGLE_CODE \
-		http://www.mindrot.org/files/py-bcrypt/
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	py-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Python bcrypt module
+MAINTAINER=	dbaio@FreeBSD.org
+COMMENT=	Modern password hashing for your software and your servers
 
-LICENSE=	MIT BSD3CLAUSE BSD4CLAUSE
-LICENSE_COMB=	multi
+LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.1.0:devel/py-cffi@${FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=3.2.1:devel/py-pytest@${FLAVOR}
+
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist concurrent distutils
 
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-
-PROJECTHOST=	py-bcrypt
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/bcrypt/_bcrypt.so

@@ -2,18 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	libsamplerate
-PORTVERSION=	0.1.8
-PORTREVISION=	6
+PORTVERSION=	0.1.9
 CATEGORIES=	audio
 MASTER_SITES=	http://www.mega-nerd.com/SRC/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Secret Rabbit Code: a Sample Rate Converter for audio
 
-LICENSE=	GPLv2
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool pathfix pkgconfig
+USES=		cpe libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
+CPE_VENDOR=	${CPE_PRODUCT}_project
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 

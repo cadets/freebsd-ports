@@ -2,10 +2,10 @@
 
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
-PORTVERSION=	4.7.0
-PORTREVISION=   4
+PORTVERSION=	4.7.2
+PORTREVISION=	2
 CATEGORIES=	sysutils emulators
-MASTER_SITES=	http://bits.xensource.com/oss-xen/release/${PORTVERSION}/
+MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
 
 MAINTAINER=	royger@FreeBSD.org
 COMMENT=	Xen management tool, based on LibXenlight
@@ -28,8 +28,8 @@ OPTIONS_DEFINE=	DOCS
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	"not yet ported to anything other than amd64"
 
-USES=		cpe gmake libtool perl5 pkgconfig python shebangfix localbase \
-		gettext
+USES=		cpe gettext gmake libtool localbase:ldflags perl5 pkgconfig \
+		python:2.7 shebangfix
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -43,7 +43,13 @@ QEMU_ARGS=	--disable-gtk \
 		--disable-curl \
 		--cxx=c++
 
-EXTRA_PATCHES=	${FILESDIR}/var_paths.patch:-p1
+EXTRA_PATCHES=	${FILESDIR}/var_paths.patch:-p1 \
+		${FILESDIR}/0001-libxl-fix-creation-of-pkgconf-install-dir.patch:-p1 \
+		${FILESDIR}/0001-tools-configure-fix-pkg-config-install-path-for-Free.patch:-p1 \
+		${FILESDIR}/0001-libs-xenstore-set-correct-FreeBSD-device.patch:-p1 \
+		${FILESDIR}/kdd.patch:-p1 \
+		${FILESDIR}/0001-xenstored-apply-a-write-transaction-rate-limit.patch:-p1 \
+		${FILESDIR}/0002-xenstored-Log-when-the-write-transaction-rate-limit-.patch:-p1
 
 CONFIGURE_ARGS+=	--with-extra-qemuu-configure-args="${QEMU_ARGS}" \
 			--with-system-seabios=${LOCALBASE}/share/seabios/bios.bin

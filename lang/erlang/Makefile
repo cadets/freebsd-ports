@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	18.3.4.4
-PORTEPOCH=	3
+PORTVERSION=	19.3.6.4
+PORTEPOCH=	4
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -20,14 +20,17 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
 		LOCAL/olgeni
-PATCHFILES=	patch-otp-18.3.1 patch-otp-18.3.2 patch-otp-18.3.3 \
-		patch-otp-18.3.4 patch-otp-18.3.4.1 patch-otp-18.3.4.2 \
-		patch-otp-18.3.4.3 patch-otp-18.3.4.4
+PATCHFILES=	patch-otp-19.3.1 patch-otp-19.3.2 patch-otp-19.3.3 \
+		patch-otp-19.3.4 patch-otp-19.3.5 patch-otp-19.3.6 \
+		patch-otp-19.3.6.1 patch-otp-19.3.6.2 patch-otp-19.3.6.3 \
+		patch-otp-19.3.6.4
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
 
 LICENSE=	APACHE20
+
+BROKEN_sparc64=	Fails to build: error: fp_except undeclared
 
 WRKSRC=		${WRKDIR}/otp_src_${ERL_RELEASE}
 
@@ -39,21 +42,33 @@ PLIST_SUB=	ERLANG_LIB=${ERLANG_LIB}
 
 MAKE_JOBS_UNSAFE=yes
 
-OPTIONS_DEFINE=	DOCS DTRACE GCC GS HIPE JAVA KQUEUE ODBC OPENSSL SCTP SMP THREADS WX DIRTY
+OPTIONS_DEFINE=	DIRTY DOCS DTRACE GS HIPE JAVA KQUEUE NATIVE ODBC OPENSSL SCTP SMP THREADS WX
 
 DIRTY_DESC=	Enable Dirty schedulers (experimental)
 DTRACE_DESC=	Enable DTrace support
 GS_DESC=	Enable GS application (deprecated)
 HIPE_DESC=	Build native HiPE compiler
 KQUEUE_DESC=	Enable Kernel Poll (kqueue) support
+NATIVE_DESC=	Enable native libraries
 SCTP_DESC=	Enable SCTP support
 SMP_DESC=	Enable SMP support
 WX_DESC=	Enable WX application
 
-OPTIONS_DEFAULT=HIPE KQUEUE OPENSSL SCTP SMP THREADS
-OPTIONS_EXCLUDE_DragonFly=	HIPE SCTP
+NATIVE_IMPLIES=	HIPE
 
-ERL_RELEASE=	18.3
+OPTIONS_DEFAULT=HIPE KQUEUE OPENSSL SCTP SMP THREADS DTRACE
+OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
+
+.if !exists(/usr/sbin/dtrace)
+OPTIONS_EXCLUDE+=	DTRACE
+.endif
+
+OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
+OPTIONS_EXCLUDE_i386=		DTRACE
+# ld(1) fails to link probes: missing __dtrace_erlang___* symbols
+OPTIONS_EXCLUDE_aarch64=	DTRACE
+
+ERL_RELEASE=	19.3
 
 USES=		gmake ncurses perl5
 USE_PERL5=	build
@@ -61,16 +76,25 @@ USE_RC_SUBR=	epmd
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-EI_VSN=		3.8.2
-SNMP_VSN=	5.2.2
-TOOLS_VSN=	2.8.3
+APP_UPGRADE=	erts            8.3 8.3.5.3 \
+		lib/crypto    3.7.3   3.7.4 \
+		lib/compiler  7.0.4 7.0.4.1 \
+		lib/inets     6.3.6   6.3.9 \
+		lib/ssh       4.4.1   4.4.2 \
+		lib/ssl       8.1.1 8.1.3.1 \
+		lib/dialyzer    3.1   3.1.1 \
+		lib/xmerl    1.3.13  1.3.14
+
+EI_VSN=		3.9.3
+SNMP_VSN=	5.2.5
+TOOLS_VSN=	2.9.1
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
 DISTFILES+=	${ERLANG_DOCS}:erlangorg		\
 		${DOC_DISTFILES}
-DOC_DISTFILES=	armstrong_thesis_2003.pdf:joe		\
+DOC_DISTFILES=	armstrong_thesis_2003.pdf:local		\
 		bjarnelic.pdf:publications		\
 		erlang-book-part1.pdf:erlangorg		\
 		master_thesis_patterns.pdf:local	\
@@ -82,14 +106,8 @@ DOC_DISTFILES=	armstrong_thesis_2003.pdf:joe		\
 # probes fixed does not match the number of defined probes (54 != 132,
 # respectively)" you probably misconfigured DTrace in some way.
 
-.if ${OSVERSION} < 1000000
-.if ${ARCH} == "amd64" && ${PORT_OPTIONS:MDTRACE} && ! ${PORT_OPTIONS:MGCC}
-IGNORE=		support for DTrace on amd64 requires GCC option
-.endif
-.endif
-
-.if ${PORT_OPTIONS:MGCC}
-USE_GCC?=	yes
+.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1100000
+CFLAGS+=	-DMAP_NORESERVE=0
 .endif
 
 .if ${PORT_OPTIONS:MDTRACE}
@@ -101,7 +119,7 @@ CONFIGURE_ARGS+=--without-dynamic-trace
 .endif
 
 .if ${PORT_OPTIONS:MOPENSSL}
-USE_OPENSSL=	yes
+USES+=		ssl
 CONFIGURE_ARGS+=--with-ssl=${OPENSSLBASE}
 .else
 CONFIGURE_ARGS+=--without-ssl
@@ -121,6 +139,12 @@ CONFIGURE_ARGS+=--enable-hipe
 CONFIGURE_ARGS+=--disable-hipe
 .endif
 
+.if ${PORT_OPTIONS:MNATIVE}
+CONFIGURE_ARGS+=--enable-native-libs
+.else
+CONFIGURE_ARGS+=--disable-native-libs
+.endif
+
 .if ${PORT_OPTIONS:MKQUEUE}
 CONFIGURE_ARGS+=--enable-kernel-poll
 .else
@@ -134,8 +158,8 @@ USES+=		tk:run
 .if ${PORT_OPTIONS:MWX}
 USE_WX=		2.8+
 WX_COMPS=	wx contrib
-WX_UNICODE=	yes
 CONFIGURE_ARGS+=--with-wx-config=${WX_CONFIG}
+USE_GL+=	gl glu
 .endif
 
 .if ${PORT_OPTIONS:MODBC}
@@ -178,7 +202,7 @@ CONFIGURE_ARGS+=--enable-dirty-schedulers
 MAKE_ARGS+=	ARCH=x86
 .endif
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
 .endif
 
@@ -195,14 +219,6 @@ post-patch:
 	@${ECHO_CMD} "MANPATH ${PREFIX}/lib/erlang/man" > ${WRKDIR}/erlang.conf
 
 pre-configure:
-.if ${PORT_OPTIONS:MDTRACE}
-	@if ! /sbin/kldstat | ${GREP} dtraceall >/dev/null 2>&1; then \
-		${ECHO_CMD}; \
-		${ECHO_CMD} "DTRACE option requires kernel module \"dtraceall\" to be loaded."; \
-		${ECHO_CMD}; \
-		exit 1; \
-	fi
-.endif
 .if ! ${PORT_OPTIONS:MWX}
 	echo "disabled by port options" > ${WRKSRC}/lib/wx/SKIP
 .endif
@@ -210,6 +226,11 @@ pre-configure:
 post-configure:
 .if ${PORT_OPTIONS:MODBC}
 	${RM} ${WRKSRC}/lib/odbc/SKIP
+.endif
+
+.if ${PORT_OPTIONS:MNATIVE}
+pre-build:
+	@cd ${WRKSRC} && ${MAKE_CMD} clean
 .endif
 
 post-install:
@@ -220,35 +241,15 @@ post-install:
 			-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB} \
 			"man/man$${SECTION}/*.$${SECTION}" || ${TRUE}; \
 	done
-	${RM} -rf ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/man/cat?
+	${RM} -r ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/man/cat?
 .if ${PORT_OPTIONS:MDOCS}
 	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
 		-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-7.3/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-7.3.1.2
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-7.3
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-6.2/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-6.2.4
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-6.2
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/mnesia-4.13.3/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/mnesia-4.13.4
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/mnesia-4.13.3
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-7.3/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-7.3.3.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-7.3
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/common_test-1.12/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/common_test-1.12.1.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/common_test-1.12
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-4.2.2/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-4.2.2.2
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-4.2.2
-
+.for app v1 v2 in ${APP_UPGRADE}
+	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v1}/* \
+		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v2}
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v1}
+.endfor
 	${INSTALL_DATA} ${WRKSRC}/lib/dialyzer/doc/*.txt \
 		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-*/doc/
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -281,4 +282,10 @@ post-install:
 		| ${SORT} \
 		>> ${TMPPLIST}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MOPENSSL} && ${SSL_DEFAULT:Mopenssl-devel}
+BROKEN=		Does not build with openssl-devel
+.endif
+
+.include <bsd.port.post.mk>

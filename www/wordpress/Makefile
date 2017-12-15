@@ -2,17 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	wordpress
-PORTVERSION=	4.6
+DISTVERSION=	4.9.1
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://wordpress.org/
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	State-of-the-art semantic personal publishing platform
 
 LICENSE=	GPLv2
-
-BROKEN_powerpc64=	Does not build
 
 CONFLICTS_INSTALL=	de-wordpress-[0-9].* ja-wordpress-[0-9].* ru-wordpress-[0-9].*
 
@@ -22,8 +20,8 @@ USES=		php:web cpe
 USE_PHP=	curl gd hash mysqli pcre tokenizer xml zip zlib ftp
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-.if ${PORTVERSION:N*.*.*}
-CPE_VERSION=	${PORTVERSION}.0
+.if ${DISTVERSION:N*.*.*}
+CPE_VERSION=	${DISTVERSION}.0
 .endif
 
 SUB_FILES=	pkg-message
@@ -49,7 +47,7 @@ pre-install:
 do-install:
 	${INSTALL} -d -m 755 ${STAGEDIR}${WWWDIR}/
 	${CP} -R ${WRKSRC}/ ${STAGEDIR}${WWWDIR}/
-	${FIND} ${STAGEDIR}${WWWDIR}/ -type d -exec ${CHMOD} g+w '{}' \;
+	${FIND} ${STAGEDIR}${WWWDIR}/ -type d -exec ${CHMOD} g+w {} \;
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 

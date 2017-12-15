@@ -3,27 +3,29 @@
 
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION} # to keep in sync with thrift
-PORTREVISION=	2
+PORTREVISION=	11
 PORTEPOCH=	1
 CATEGORIES=	devel
+MASTER_SITES=	APACHE/thrift/${PORTVERSION}
 PKGNAMESUFFIX=	-cpp
-MASTER_SITES=		APACHE/thrift/${PORTVERSION}
-DISTNAME=		thrift-${PORTVERSION}
+DISTNAME=	thrift-${PORTVERSION}
 
 MAINTAINER=	komarov@valerka.net
 COMMENT=	C++ interface to Thrift
 
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+		libevent.so:devel/libevent
+
 DISTINFO_FILE=		${.CURDIR}/../thrift/distinfo
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
-		libevent.so:devel/libevent2
+BROKEN_powerpc64=	fails to compile: undefined reference to std::__throw_out_of_range_fmt
 
-USES=			autoreconf pkgconfig gmake compiler:c++11-lang libtool
+USES=			autoreconf pkgconfig gmake compiler:c++11-lang \
+			libtool pathfix ssl
 GNU_CONFIGURE=		yes
 USE_LDCONFIG=		yes
 MAKE_JOBS_UNSAFE=	yes
 PLIST_SUB=		PORTVERSION="${THRIFT_PORTVERSION}"
-USE_OPENSSL=		yes
 
 OPTIONS_DEFINE=		QT4
 QT4_CONFIGURE_WITH=	qt4
@@ -45,21 +47,18 @@ CONFIGURE_ARGS+=	\
 		--without-ruby \
 		--without-go
 
-.include <bsd.port.pre.mk>
+LDFLAGS+=	-L${OPENSSLLIB}
+CFLAGS+=	-I${OPENSSLINC}
 
-.if ${SSL_DEFAULT} == base && \
-	${OPSYS} == FreeBSD && ${OSVERSION} < 1000015
-# src/thrift/transport/TSSLSocket.cpp:147: error: 'TLSv1_1_method' was not declared in this scope
-# src/thrift/transport/TSSLSocket.cpp:149: error: 'TLSv1_2_method' was not declared in this scope
-BROKEN=		does not build with 9.x base OpenSSL
-.endif
+.include <bsd.port.pre.mk>
 
 .if ${COMPILER_TYPE} == clang
 USE_CXXSTD=	c++11
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} 's,^pkgconfigdir = .*,pkgconfigdir=$${prefix}/libdata/pkgconfig,' ${WRKSRC}/lib/cpp/Makefile.am
+.if ${SSL_DEFAULT} == openssl-devel
+BROKEN=		cannot find libcrypto
+.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*.so

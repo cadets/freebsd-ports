@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gkrellm
-PORTVERSION=	2.3.7
-#PORTREVISION=	0
+PORTVERSION=	2.3.10
+PORTREVISION=	1
 CATEGORIES=	sysutils ipv6
 MASTER_SITES=	http://gkrellm.srcbox.net/releases/ \
 		LOCAL/ume
@@ -15,7 +15,6 @@ LICENSE=	GPLv3
 
 USES=		gmake pkgconfig tar:bzip2
 USE_RC_SUBR=	gkrellmd
-WANT_GNOME=	yes
 
 OPTIONS_DEFINE=		DOCS CLIENT NLS NTLM OPENSSL
 OPTIONS_DEFAULT=	CLIENT NTLM OPENSSL
@@ -39,7 +38,7 @@ USES+=		gettext
 MAKE_ENV+=	enable_nls=0
 .endif
 .if ${PORT_OPTIONS:MOPENSSL}
-USE_OPENSSL=	yes
+USES+=		ssl
 MAKE_ENV+=	without-gnutls=1
 .else
 MAKE_ENV+=	without-gnutls=1 without-ssl=1

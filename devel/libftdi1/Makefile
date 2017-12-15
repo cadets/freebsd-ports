@@ -1,16 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	libftdi1
-PORTVERSION=	1.1
+PORTVERSION=	1.4
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.intra2net.com/en/developer/libftdi/download/
 
-MAINTAINER=	uffe@uffe.org
+MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	Library (using libusb) to talk to FTDI chips
 
 LICENSE=	GPLv2
-
-BROKEN_powerpc64=	Does not build
 
 LIB_DEPENDS=	libconfuse.so:devel/libconfuse
 
@@ -21,7 +20,9 @@ OPTIONS_SUB=		yes
 BOOST_DESC=	Build with boost
 PYTHON_DESC=	Build Python bindings
 
-USES=		cmake pkgconfig tar:bzip2
+BROKEN_sparc64=		Does not build: fails to link
+
+USES=		cmake gettext-runtime pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 
 PORTDOCS=	COPYING.LIB ChangeLog README

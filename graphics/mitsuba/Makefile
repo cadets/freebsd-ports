@@ -3,6 +3,7 @@
 
 PORTNAME=	mitsuba
 PORTVERSION=	0.5.0
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.mitsuba-renderer.org/repos/mitsuba/archive/${HG_REVISION}${EXTRACT_SUFX}?dummy=
 DISTNAME=	${PORTNAME}-${HG_REVISION}
@@ -11,6 +12,8 @@ MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Research-oriented physically based rendering system
 
 LICENSE=	GPLv3
+
+BROKEN=		fails to build with boost 1.65, see bug 220719
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/eigen3.pc:math/eigen3
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
@@ -38,16 +41,6 @@ MAKE_JOBS_UNSAFE=	yes
 HG_REVISION=	11ee1d7236f3
 FETCH_ARGS=	-o ${DISTNAME}${EXTRACT_SUFX}
 
-.include <bsd.port.pre.mk>
-
-# Unfortunately, the code is not GCC 4.2.1 compatible (due to bugs in GCC
-# itself).  Use system compiler if it is Clang.
-.if ${OSVERSION} < 1000024
-CC=		clang
-CXX=		clang++
-CPP=		clang-cpp
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e '/CMAKE_SYSTEM_NAME/s,Linux,${OPSYS},' \
 		${WRKSRC}/data/cmake/MitsubaExternal.cmake \
@@ -57,7 +50,6 @@ post-patch:
 
 post-install:
 # XXX: palliative; better fix installation routine not to pollute ${STAGEDIR}
-	@${RMDIR} ${STAGEDIR}${PREFIX}/share/mitsuba/data/ior/CMakeFiles/ior_database.dir
 	@${RMDIR} ${STAGEDIR}${PREFIX}/share/mitsuba/data/ior/CMakeFiles
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

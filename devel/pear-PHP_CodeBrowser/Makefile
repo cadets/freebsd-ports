@@ -7,18 +7,20 @@ CATEGORIES=	devel pear
 MASTER_SITES=	http://pear.phpunit.de/get/
 PKGNAMEPREFIX=	pear-
 
-MAINTAINER=	gasol.wu@gmail.com
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Code browser that augments the code with information
 
-BUILD_DEPENDS=	pear-Console_CommandLine>=1.1.3:devel/pear-Console_CommandLine \
-		pear-File_Iterator>=1.3.0:devel/pear-File_Iterator \
-		pear-Log>=1.2.1:sysutils/pear-Log
-RUN_DEPENDS=	pear-Console_CommandLine>=1.1.3:devel/pear-Console_CommandLine \
-		pear-File_Iterator>=1.3.0:devel/pear-File_Iterator \
-		pear-Log>=1.2.1:sysutils/pear-Log
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=	pear
-USE_PHP=	dom
+BUILD_DEPENDS=	pear-Console_CommandLine>=1.2.2:devel/pear-Console_CommandLine \
+		pear-File_Iterator>=1.4.2:devel/pear-File_Iterator \
+		pear-Log>=1.13.1:sysutils/pear-Log
+RUN_DEPENDS=	pear-Console_CommandLine>=1.2.2:devel/pear-Console_CommandLine \
+		pear-File_Iterator>=1.4.2:devel/pear-File_Iterator \
+		pear-Log>=1.13.1:sysutils/pear-Log
+
+USES=	pear php
 PEAR_CHANNEL=	phpunit
 
 .include <bsd.port.mk>

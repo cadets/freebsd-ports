@@ -3,18 +3,21 @@
 
 PORTNAME=	gish-demo
 PORTVERSION=	1.60
+PORTREVISION=	1
 CATEGORIES=	games linux
 MASTER_SITES=	http://s159260531.onlinehome.us/demos/
 DISTNAME=	gishdemo
 
-MAINTAINER=	mva@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Platform game with a gelatinous 12-pound ball of tar (Demo version)
+
+BROKEN=		unfetchable
 
 RESTRICTED=	(c) Copyright 2004 Chronic Logic All rights reserved
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	is an i386 Linux binary
-USE_LINUX=	yes
-USE_LINUX_APPS=	libvorbis openal-soft
+USES=		linux
+USE_LINUX=	libvorbis openal-soft
 NO_BUILD=	yes
 DATADIR=	${PREFIX}/lib/${PORTNAME}
 SUB_FILES=	rungish.sh

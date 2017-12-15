@@ -5,8 +5,7 @@ PORTNAME=	ibus-anthy
 PORTVERSION=	1.2.7
 PORTREVISION=	6
 CATEGORIES=	japanese
-PROJECTHOST=	ibus
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://github.com/ibus/ibus-anthy/releases/download/${PORTVERSION}/
 PKGNAMEPREFIX=	ja-
 
 MAINTAINER=	daichi@FreeBSD.org
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libanthy.so:japanese/anthy \
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/gtk-2.0/pynotify/_pynotify.so:devel/py-notify
 
 GNU_CONFIGURE=	yes
-USES=		libtool gettext gmake pkgconfig python
+USES=		libtool gettext gmake pkgconfig python:2.7
 USE_GNOME=	intltool pygtk2
 
 LOCALBASE_REPLACE_FILES= \

@@ -13,8 +13,6 @@ COMMENT=	Subversion repository web frontend
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-BROKEN_powerpc64=	Does not build
-
 USES=		cpe
 USE_PHP=	iconv pcre xml
 NO_BUILD=	yes
@@ -29,6 +27,6 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${WEBSVNDIR}
 	(cd ${WRKSRC} \
 	    && ${COPYTREE_SHARE} \* ${STAGEDIR}${PREFIX}/${WEBSVNDIR})
-	${FIND} ${STAGEDIR}${PREFIX}/${WEBSVNDIR} -type f -exec ${CHMOD} 644 '{}' +
+	${FIND} ${STAGEDIR}${PREFIX}/${WEBSVNDIR} -type f -exec ${CHMOD} 644 {} +
 
 .include <bsd.port.mk>

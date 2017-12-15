@@ -1,15 +1,17 @@
 # $FreeBSD$
 
-PORTNAME=  	3d
+PORTNAME=	3d
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt3D module
 
-# Base GCC fails to build the code, pull in a more recent compiler.
-USES=		compiler:c++0x qmake
+LIB_DEPENDS=	libassimp.so:multimedia/assimp
+
+USES=		pkgconfig qmake
 USE_QT5=	concurrent core gui qml quick buildtools_build
 QT_DIST=	${PORTNAME}
 

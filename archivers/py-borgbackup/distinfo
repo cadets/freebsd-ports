@@ -1,3 +1,3 @@
-TIMESTAMP = 1468508239
-SHA256 (borgbackup-1.0.6.tar.gz) = b72444d260b66538b6b5394f4f1919ab095214d130b5ffbb18ed83dac94db6b7
-SIZE (borgbackup-1.0.6.tar.gz) = 469242
+TIMESTAMP = 1511927007
+SHA256 (borgbackup-1.1.3.tar.gz) = cc2a329956dc42e7e461d2f506a28e398c4cc6dc53a67cc2c8a17dcacc4276e7
+SIZE (borgbackup-1.1.3.tar.gz) = 2942183

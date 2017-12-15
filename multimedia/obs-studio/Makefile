@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	obs-studio
-PORTVERSION=	0.15.2
+PORTVERSION=	20.1.3
 CATEGORIES=	multimedia
 
 MAINTAINER=	ports@FreeBSD.org
@@ -37,6 +37,8 @@ CMAKE_ARGS=	-DUNIX_STRUCTURE:BOOL=ON \
 GH_ACCOUNT=	jp9000
 
 INSTALLS_ICONS=	yes
+
+BROKEN_aarch64=		Fails to compile: invalid conversion between vector type and integer type
 
 .include <bsd.port.pre.mk>
 

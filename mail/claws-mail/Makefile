@@ -17,9 +17,10 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 RUN_DEPENDS=	mime-support>0:misc/mime-support
 
 USE_XORG=	ice sm
-USE_GNOME=	cairo gtk20
-USES=		cpe desktop-file-utils execinfo pathfix shebangfix ssl
+USE_GNOME=	cairo gtk20 librsvg2
+USES=		cpe desktop-file-utils pathfix shebangfix ssl
 SHEBANG_FILES=	tools/*.pl tools/*.py tools/tb2claws-mail
+python_CMD=	${LOCALBASE}/bin/python2
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	COMPFACE DEBUG DOCS ENCHANT IPV6 JPILOT LDAP \
@@ -53,7 +54,7 @@ MANUAL_CONFIGURE_OFF=	--disable-manual
 MANUAL_BUILD_DEPENDS=	docbook-utils>0:textproc/docbook-utils
 
 NLS_CONFIGURE_OFF=	--disable-nls
-NLS_USES=		gettext
+NLS_USES=		gettext-tools
 
 STARTUP_DESC=		Startup notification support
 STARTUP_CONFIGURE_ENABLE=	startup-notification
@@ -65,10 +66,7 @@ THEMES_RUN_DEPENDS=	claws-mail-themes>0:x11-themes/claws-mail-themes
 .include "Makefile.claws"
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc|${LOCALBASE}&|g ; s|/usr/share|${LOCALBASE}/share|g' \
-		${WRKSRC}/src/procmime.c
-	@${REINPLACE_CMD} -e "/(GPGME_LIBS)/d" \
-		${WRKSRC}/src/Makefile.in
+	@${REINPLACE_CMD} 's|-dirty||' ${WRKSRC}/version
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

@@ -11,9 +11,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION:S,.,_,g}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced Open Source eCommerce Platform
 
-BROKEN_powerpc64=	Does not build
-
-USES=		shebangfix
+USES=		shebangfix php
 SHEBANG_FILES=	admin/htmlarea/plugins/SpellChecker/spell-check-logic.cgi
 USE_PHP=	mysql
 WRKSRC=		${WRKDIR}/${PORTNAME}

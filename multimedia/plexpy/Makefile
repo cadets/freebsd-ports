@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	plexpy
-PORTVERSION=	1.4.10
+PORTVERSION=	1.4.22
 PORTREVISION=	0
 CATEGORIES=	multimedia python
 DISTVERSIONPREFIX=v
@@ -13,8 +13,8 @@ COMMENT=	Monitoring, analytics, and notifications for Plex Media Server
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}openssl>0:security/py-openssl@${PY_FLAVOR} \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 USE_RC_SUBR=	${PORTNAME}
@@ -27,6 +27,7 @@ python_OLD_CMD=	/bin/sh
 USE_GITHUB=	yes
 GH_ACCOUNT=	drzoidberg33
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/plexpy

@@ -8,7 +8,7 @@ MASTER_SITES=	http://www.opensmtpd.org/archives/ \
 		http://distfiles.pirateparty.in/ashish/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	ashish@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Asynchronous DNS resolver library (development snapshot)
 
 LICENSE=	ISCL BSD4CLAUSE BSD3CLAUSE BSD2CLAUSE
@@ -19,7 +19,7 @@ CONFLICTS=	libasr-[0-9]*
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-USES=		libtool
+USES=		groff libtool
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

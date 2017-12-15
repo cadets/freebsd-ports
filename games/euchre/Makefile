@@ -3,7 +3,7 @@
 
 PORTNAME=	euchre
 PORTVERSION=	0.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -19,7 +19,6 @@ LICENSE=	GPLv2
 USES=		pkgconfig
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 
 PLIST_FILES=	bin/${PORTNAME} \
 		share/pixmaps/${PORTNAME}.png

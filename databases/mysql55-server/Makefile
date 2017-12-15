@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mysql
-PORTVERSION=	5.5.50
+PORTVERSION=	5.5.58
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	MYSQL/MySQL-5.5
@@ -13,10 +13,8 @@ COMMENT?=	Multithreaded SQL database (server)
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	Does not build
-
 SLAVEDIRS=	databases/mysql55-client
-USES=		cmake readline shebangfix
+USES=		cmake:noninja readline shebangfix
 CXXFLAGS+=	${CPPFLAGS}
 NO_OPTIONS_SORT=yes
 
@@ -65,6 +63,7 @@ USE_MYSQL=	yes
 WANT_MYSQL_VER=	55
 
 CONFLICTS_INSTALL=	mysql5[0-46-9]-server-* \
+			mysqlwsrep* \
 			mariadb*-server-* \
 			percona*-server-*
 
@@ -88,7 +87,7 @@ post-patch:
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "armv6"
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-config.h.cmake
 .endif
 

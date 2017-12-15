@@ -3,7 +3,7 @@
 
 PORTNAME=	enblend
 PORTVERSION=	4.1.4
-PORTREVISION=	1
+PORTREVISION=	14
 CATEGORIES=	graphics
 MASTER_SITES=	SF/enblend/enblend-enfuse/enblend-enfuse-${PORTVERSION:R}
 DISTNAME=	enblend-enfuse-${PORTVERSION}
@@ -11,27 +11,33 @@ DISTNAME=	enblend-enfuse-${PORTVERSION}
 MAINTAINER=	grog@FreeBSD.org
 COMMENT=	Tool for image blending with multiresolution splines
 
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 BUILD_DEPENDS=	help2man:misc/help2man \
-		${LOCALBASE}/bin/makeinfo:print/texinfo \
 		OpenEXR>=1.0:graphics/OpenEXR
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libtiff.so:graphics/tiff \
 		libboost_filesystem.so:devel/boost-libs \
 		libvigraimpex.so:graphics/vigra \
-		libgsl.so:math/gsl
+		libgsl.so:math/gsl \
+		libpng.so:graphics/png
 RUN_DEPENDS=	OpenEXR>=1.0:graphics/OpenEXR
 
+BROKEN_powerpc64=	fails to configure: libvigraimpex is required to compile Enblend
+
 USE_AUTOTOOLS=	automake:env autoconf:env
-USES=		compiler:features gmake jpeg makeinfo
-# We need a newer version of makeinfo for this.
-# Remove this line when we remove texinfo from the base system.
-CONFIGURE_ARGS=	MAKEINFO="${LOCALBASE}/bin/makeinfo"
+USES=		compiler:features gmake jpeg localbase makeinfo
+CONFIGURE_ARGS=	--with-boost-filesystem
 
 USE_GL=		glew glut
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--with-boost-filesystem
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib -lboost_system
+
+INFO=		enfuse enblend
+PLIST_FILES=	bin/enblend bin/enfuse man/man1/enblend.1.gz man/man1/enfuse.1.gz
+PORTDOCS=	AUTHORS NEWS README
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
@@ -44,10 +50,11 @@ USE_GCC=	yes
 CXXFLAGS+=	-Wno-c++11-extensions
 .endif
 
-INFO=		enfuse enblend
-PLIST_FILES=	bin/enblend bin/enfuse man/man1/enblend.1.gz man/man1/enfuse.1.gz
-
 post-install:
-		${INSTALL_DATA} ${WRKSRC}/doc/*.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
+	${INSTALL_DATA} ${WRKSRC}/doc/*.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

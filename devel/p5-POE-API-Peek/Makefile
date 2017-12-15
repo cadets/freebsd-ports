@@ -10,7 +10,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BINGOS
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	jase@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Peek into the internals of a running POE environment
 
 LICENSE=	BSD3CLAUSE
@@ -23,8 +23,5 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		perl5
 USE_PERL5=	configure
 INSTALL_TARGET=	pure_install
-
-regression-test:
-	@(cd ${WRKSRC} && ${PERL} ${CONFIGURE_SCRIPT} && ${MAKE} test)
 
 .include <bsd.port.mk>

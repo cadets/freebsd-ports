@@ -3,7 +3,7 @@
 
 PORTNAME?=		${SAMBA4_BASENAME}44
 PORTVERSION?=		${SAMBA4_VERSION}
-PORTREVISION?=		1
+PORTREVISION?=		0
 CATEGORIES?=		net
 MASTER_SITES=		SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=		${SAMBA4_DISTNAME}
@@ -13,13 +13,13 @@ COMMENT?=		Free SMB/CIFS and AD/DC server and client for Unix
 
 LICENSE=		GPLv3
 
-CONFLICTS?=		*samba3[2-6]-3.* samba4-4.0.* samba41-4.1.* samba42-4.2.* samba43-4.3.*
+CONFLICTS?=		*samba3[2-6]-3.* samba4-4.0.* samba4[1-35-9]-4.* p5-Parse-Pidl-4.*
 
 #EXTRA_PATCHES=		${PATCHDIR}/extra-patch-security:-p1
 
 SAMBA4_BASENAME=	samba
 SAMBA4_PORTNAME=	${SAMBA4_BASENAME}4
-SAMBA4_VERSION=		4.4.5
+SAMBA4_VERSION=		4.4.16
 SAMBA4_DISTNAME=	${SAMBA4_BASENAME}-${SAMBA4_VERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
 
 WRKSRC?=		${WRKDIR}/${DISTNAME}
@@ -84,15 +84,16 @@ LIB_DEPENDS+=		libsunacl.so:sysutils/libsunacl
 BUILD_DEPENDS+=		libarchive>=3.1.2:archivers/libarchive
 RUN_DEPENDS+=		libarchive>=3.1.2:archivers/libarchive
 # External Samba dependencies
-# IDL compiler
-BUILD_DEPENDS+=		p5-Parse-Pidl>=4.3.1:devel/p5-Parse-Pidl
+# Needed for IDL compiler
+BUILD_DEPENDS+=		p5-Parse-Yapp>=0:devel/p5-Parse-Yapp
+PLIST_SUB+=		PIDL=""
 # External Python modules
-BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}dnspython>=1.9.4:dns/py-dnspython
-RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}dnspython>=1.9.4:dns/py-dnspython
+BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}dnspython>=1.9.4:dns/py-dnspython@${PY_FLAVOR}
+RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}dnspython>=1.9.4:dns/py-dnspython@${PY_FLAVOR}
 PLIST_SUB+=		PY_DNSPYTHON="@comment "
 #
-BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}iso8601>=0.1.11:devel/py-iso8601
-RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}iso8601>=0.1.11:devel/py-iso8601
+BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}iso8601>=0.1.11:devel/py-iso8601@${PY_FLAVOR}
+RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}iso8601>=0.1.11:devel/py-iso8601@${PY_FLAVOR}
 PLIST_SUB+=		PY_ISO8601="@comment "
 # talloc
 BUILD_DEPENDS+=		talloc>=2.1.6:devel/talloc
@@ -128,7 +129,6 @@ ADS_DESC=		Active Directory client support
 DNSUPDATE_DESC=		Dynamic DNS update (require ADS)
 EXP_MODULES_DESC=	Experimental modules
 FAM_DESC=		File Alteration Monitor support
-DEBUG_DESC=		With debug information in the binaries
 LDAP_DESC=		LDAP client support
 PAM_SMBPASS_DESC=	PAM authentication via passdb backends
 PTHREADPOOL_DESC=	Pthread pool
@@ -141,11 +141,12 @@ DEVELOPER_DESC=		With development support
 MANPAGES_DESC=		Build manpages from DOCBOOK templates
 
 OPTIONS_RADIO=		DNS ZEROCONF
-OPTIONS_RADIO_DNS=	NSUPDATE BIND99 BIND910
+OPTIONS_RADIO_DNS=	NSUPDATE BIND99 BIND910 BIND911
 OPTIONS_RADIO_ZEROCONF=	AVAHI MDNSRESPONDER
 
 BIND99_DESC=		Use bind99 as AD DC DNS server frontend
 BIND910_DESC=		Use bind910 as AD DC DNS server frontend
+BIND911_DESC=		Use bind911 as AD DC DNS server frontend
 NSUPDATE_DESC=		Use samba NSUPDATE utility for AD DC
 
 .include <bsd.port.options.mk>
@@ -157,19 +158,15 @@ CONFIGURE_ARGS+=	\
 			--disable-rpath \
 			--without-gettext \
 			--with-sendfile-support \
-			--builtin-libraries=smbclient \
 			${ICONV_CONFIGURE_BASE}
-
-# for libexecinfo: (so that __builtin_frame_address() finds the top of the stack)
-.if ${ARCH} == "amd64"
-CFLAGS+=		-fno-omit-frame-pointer
-.endif
-
 .if ${PORT_OPTIONS:MBIND99}
 RUN_DEPENDS+=		bind99>=9.9.0.0:dns/bind99
 SUB_LIST+=		NSUPDATE="@comment "
 .elif ${PORT_OPTIONS:MBIND910}
 RUN_DEPENDS+=		bind910>=9.10.0.0:dns/bind910
+SUB_LIST+=		NSUPDATE="@comment "
+.elif ${PORT_OPTIONS:MBIND911}
+RUN_DEPENDS+=		bind911>=9.11.0.0:dns/bind911
 SUB_LIST+=		NSUPDATE="@comment "
 .elif ${PORT_OPTIONS:MNSUPDATE}
 RUN_DEPENDS+=		samba-nsupdate:dns/samba-nsupdate
@@ -194,11 +191,12 @@ GDB_CMD?=		${LOCALBASE}/bin/gdb
 BUILD_DEPENDS+=		${GDB_CMD}:devel/gdb
 RUN_DEPENDS+=		${GDB_CMD}:devel/gdb
 SAMBA4_MODULES+=	auth_skel perfcount_test pdb_test vfs_shadow_copy_test vfs_skel_opaque vfs_skel_transparent vfs_fake_acls
-CONFIGURE_ARGS+=	--enable-developer --enable-selftest --abi-check-disable
-PLIST_SUB+=		DEVELOPER=""
+CONFIGURE_ARGS+=	--enable-developer --enable-selftest --with-ntvfs-fileserver --abi-check-disable
+PLIST_SUB+=		DEVELOPER="" NTVFS=""
 .else
 GDB_CMD=		true
-PLIST_SUB+=		DEVELOPER="@comment "
+CONFIGURE_ARGS+=	--without-ntvfs-fileserver
+PLIST_SUB+=		DEVELOPER="@comment " NTVFS="@comment "
 .endif
 ##############################################################################
 # XXX: That will blow up your installation
@@ -326,13 +324,14 @@ CONFIGURE_ARGS+=	--without-utmp
 
 .if defined(SAMBA4_WANT_ADS)
 CONFIGURE_ARGS+=	--with-ads
+PLIST_SUB+=		ADS=""
 .else
 CONFIGURE_ARGS+=	--without-ads
+PLIST_SUB+=		ADS="@comment "
 .endif
 
 .if defined(SAMBA4_WANT_LDAP)
 USE_OPENLDAP=		yes
-#WANT_OPENLDAP_SASL=	yes
 CONFIGURE_ARGS+=	--with-ldap
 PLIST_SUB+=		LDAP=""
 .else
@@ -395,10 +394,19 @@ SUB_FILES=		pkg-message README.FreeBSD
 # Make sure that the right version of Python is used by the tools
 # https://bugzilla.samba.org/show_bug.cgi?id=7305
 SHEBANG_FILES=		${PATCH_WRKSRC}/source4/scripting/bin/*
+
+# for libexecinfo: (so that __builtin_frame_address() finds the top of the stack)
+.if ${ARCH} == "amd64"
+CFLAGS+=		-fno-omit-frame-pointer
+.endif
 # No fancy color error messages
 .if ${COMPILER_TYPE} == "clang"
 CFLAGS+=		-fno-color-diagnostics
 .endif
+.if ${readline_ARGS} == port
+CFLAGS+=			-D_FUNCTION_DEF
+.endif
+
 CONFIGURE_ENV+=		NOCOLOR=yes WAF_LOG_FORMAT='%(c1)s%(zone)s%(c2)s %(message)s'
 MAKE_ENV+=		NOCOLOR=yes WAF_LOG_FORMAT='%(c1)s%(zone)s%(c2)s %(message)s'
 
@@ -439,13 +447,12 @@ PORTDOCS=		README.FreeBSD
 IGNORE_NONTHREAD_PYTHON=needs port lang/python${PYTHON_SUFFIX} to be build with THREADS support
 
 post-extract:
-			@${RM} -rf ${WRKSRC}/pidl
+			@${RM} -r ${WRKSRC}/pidl/lib/Parse/Yapp
 
 post-patch:
 			@${REINPLACE_CMD} -e 's|$${PKGCONFIGDIR}|${PKGCONFIGDIR}|g' \
 				${PATCH_WRKSRC}/buildtools/wafsamba/pkgconfig.py
 			@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
-				${PATCH_WRKSRC}/buildtools/wafsamba/samba_pidl.py \
 				${PATCH_WRKSRC}/buildtools/wafsamba/wafsamba.py
 			@${REINPLACE_CMD} -e 's|%%GDB_CMD%%|${GDB_CMD}|g' \
 				${PATCH_WRKSRC}/buildtools/scripts/abi_gen.sh
@@ -460,13 +467,6 @@ pre-configure:
 				${ECHO_CMD}; \
 				${FALSE}; \
 			fi
-
-# XXX: Gross hack to allow build newer Samba while old one is installed.
-# This implies that LINKFLAGS_PYEMBED contains flags which are already
-# used in other parts of LINKFLAGS, namely -L${LOCALBASE}/lib and -pthread
-post-configure:
-	-${REINPLACE_CMD} -e 's|LINKFLAGS_PYEMBED.*|LINKFLAGS_PYEMBED = []|' \
-		${CONFIGURE_WRKSRC}/bin/c4che/default.cache.py
 
 pre-build:
 .if ! ${PORT_OPTIONS:MMANPAGES}

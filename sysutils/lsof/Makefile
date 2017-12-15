@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	lsof
-DISTVERSION=	4.90E
+DISTVERSION=	4.90Q
 PORTEPOCH=	8
 CATEGORIES=	sysutils
-MASTER_SITES=	http://ftp.cerias.purdue.edu/pub/tools/unix/sysutils/lsof/ \
-		ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/  \
+MASTER_SITES=	ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/ \
 		ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/NEW/ \
-		http://www.lerctr.org/lsof/ \
+		LOCAL/ler/lsof \
 		ftp://ftp.ayamura.org/pub/lsof/ \
 		ftp://ftp.ayamura.org/pub/lsof/NEW/ \
 		ftp://ftp.cerias.purdue.edu/pub/tools/unix/sysutils/lsof/ \
@@ -22,13 +21,13 @@ MASTER_SITES=	http://ftp.cerias.purdue.edu/pub/tools/unix/sysutils/lsof/ \
 		ftp://ftp.tau.ac.il/pub/unix/admin/
 DISTNAME=	${PORTNAME}_${DISTVERSION}${DISTNAME_SUFFIX}
 
-MAINTAINER=	ler@lerctr.org
+MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Lists information about open files (similar to fstat(1))
 
-LICENSE=lsof
-LICENSE_NAME=lsof
-LICENSE_FILE=${FILESDIR}/LICENSE
-LICENSE_PERMS=	 dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE=	lsof
+LICENSE_NAME=	lsof
+LICENSE_FILE=	${FILESDIR}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 #Please leave the below line in for the next clean up.
 FIXUP_RELEASE=	YES
@@ -44,10 +43,6 @@ USES=		shebangfix tar:bzip2
 SHEBANG_FILES=	scripts/sort_res.perl5
 
 .include <bsd.port.pre.mk>
-
-.if !empty(ARCH:Marm*) && ((${OSVERSION} < 1001505) || (${OSVERSION} > 1100000 && ${OSVERSION} < 1100052))
-BROKEN=	Not supported on ARM platform below release 10.1 or a more recent current
-.endif
 
 CONFIGURE_SCRIPT=	Configure
 CONFIGURE_ARGS=	-n freebsd

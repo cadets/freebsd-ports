@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pev
-PORTVERSION=	0.70
-PORTREVISION=	1
+PORTVERSION=	0.80
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 
@@ -16,11 +15,13 @@ LIB_DEPENDS=	libpcre.so:devel/pcre
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		gmake
+USES=		gmake ssl
 USE_LDCONFIG=	yes
-USE_OPENSSL=	yes
+
+INSTALL_TARGET=	install-strip
 
 MAKE_ARGS=	MAKE=${MAKE_CMD}
-CFLAGS+=	-I${LOCALBASE}/include
+CFLAGS+=	-I${OPENSSLINC} -I${LOCALBASE}/include
+LDFLAGS+=	-L${OPENSSLLIB}
 
 .include <bsd.port.mk>

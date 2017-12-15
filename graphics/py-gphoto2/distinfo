@@ -1,2 +1,3 @@
-SHA256 (python-gphoto2/gphoto2-1.2.0.tar.gz) = 444277aacbd48d6262057da76a71c6da8824b752ac49c00640a5f4e6bba066a0
-SIZE (python-gphoto2/gphoto2-1.2.0.tar.gz) = 925837
+TIMESTAMP = 1502712471
+SHA256 (python-gphoto2/gphoto2-1.7.0.tar.gz) = e36b5690fd6db5d9cfb196b571ea35b2f5ef0e1d15235fe877f3f4eeebbf12d2
+SIZE (python-gphoto2/gphoto2-1.7.0.tar.gz) = 6831640

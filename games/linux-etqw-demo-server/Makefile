@@ -17,8 +17,7 @@ NO_CDROM=	Redistribution is limited
 NO_BUILD=	yes
 
 ONLY_FOR_ARCHS=	i386 amd64
-USE_LINUX=	yes
-USES=		zip:infozip
+USES=		linux zip:infozip
 
 ETQWDIR=	${PREFIX}/lib/${PORTNAME}${PKGNAMESUFFIX}
 
@@ -37,21 +36,21 @@ post-patch:
 do-install:
 	@${MKDIR} ${STAGEDIR}${ETQWDIR}
 
-	${INSTALL_PROGRAM} ${WRKSRC}/etqwded-demo ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/etqwded-demo ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/data/etqwded.x86 ${STAGEDIR}${ETQWDIR}
 	@cd ${WRKSRC}/data && \
 		${FIND} -E . -type f -iregex ".*\.so\.[0-9]+" \
-			-exec ${INSTALL_DATA} "{}" "${STAGEDIR}${ETQWDIR}/{}" \;
+			-exec ${INSTALL_DATA} {} "${STAGEDIR}${ETQWDIR}/{}" \;
 
 	@${MKDIR} ${STAGEDIR}${ETQWDIR}/base/bots
 	@cd ${WRKSRC}/data && \
 		${FIND} base -type f \
-			-exec ${INSTALL_DATA} "{}" "${STAGEDIR}${ETQWDIR}/{}" \;
+			-exec ${INSTALL_DATA} {} "${STAGEDIR}${ETQWDIR}/{}" \;
 
 	@${MKDIR} ${STAGEDIR}${ETQWDIR}/pb/htm
 	@cd ${WRKSRC}/data && \
 		${FIND} pb -type f \
-			-exec ${INSTALL_DATA} "{}" "${STAGEDIR}${ETQWDIR}/{}" \;
+			-exec ${INSTALL_DATA} {} "${STAGEDIR}${ETQWDIR}/{}" \;
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for FILE in EULA.txt README.txt copyrights.txt etqwtv.txt pb/PBEULA.txt

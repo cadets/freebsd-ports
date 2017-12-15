@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Interface to the Google AJAX Search API and suggestion API
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	p5-Any-Moose>=0:devel/p5-Any-Moose \
@@ -25,5 +25,6 @@ BUILD_DEPENDS:=	${RUN_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

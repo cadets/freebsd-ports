@@ -41,6 +41,11 @@ TOOLS_DESC=		Install several tools
 FREEBSD_TEMPLATE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-fbsd-template
 SVNSERVE_WRAPPER_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-svnserve-wrapper
 
+USES+=			shebangfix
+python_CMD=		${LOCALBASE}/bin/python2
+python_OLD_CMD+=	"/bin/env python"
+SHEBANG_REGEX=		./tools/.*
+
 .include "Makefile.common"
 
 SVNREPOS?=	/home/svn/repos
@@ -130,7 +135,7 @@ pre-configure:
 	fi
 .endif
 .if ${PORT_OPTIONS:MSTATIC}
-	@if ${GREP} -q icui18n ${LOCALBASE}/lib/libsqlite3.la ; then \
+	@if ${GREP} -q ucol_close ${LOCALBASE}/lib/libsqlite3.a ; then \
 		${ECHO_MSG} "" ; \
 		${ECHO_MSG} "You can not build static subversion if your SQLite3 is built with ICU enabled."; \
 		${ECHO_MSG} "Please, reinstall 'devel/sqlite3' port with disabled ICU support."; \

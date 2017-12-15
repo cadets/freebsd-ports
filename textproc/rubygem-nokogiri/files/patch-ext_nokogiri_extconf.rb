@@ -1,8 +1,8 @@
---- ext/nokogiri/extconf.rb.orig	2016-04-02 21:13:17 UTC
+--- ext/nokogiri/extconf.rb.orig	2017-09-20 14:58:44 UTC
 +++ ext/nokogiri/extconf.rb
-@@ -587,6 +587,43 @@ if ENV['CPUPROFILE']
-   end
- end
+@@ -658,6 +658,43 @@ have_func('xmlRelaxNGSetValidStructuredE
+ have_func('xmlSchemaSetValidStructuredErrors')
+ have_func('xmlSchemaSetParserStructuredErrors')
  
 +$INSTALLFILES = [
 +  ['html_document.h', '$(archdir)'],

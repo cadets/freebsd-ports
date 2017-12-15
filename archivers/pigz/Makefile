@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pigz
-PORTVERSION=	2.3.3
-PORTREVISION=	1
+PORTVERSION=	2.3.4
 CATEGORIES=	archivers
 MASTER_SITES=	http://www.zlib.net/pigz/ \
 		http://freebsd.unixfreunde.de/sources/
@@ -15,7 +14,7 @@ LICENSE=	ZLIB
 
 LIB_DEPENDS=	libzopfli.so:archivers/zopfli
 
-USES=		cpe gmake localbase
+USES=		cpe gmake localbase:ldflags
 CPE_VENDOR=	zlib
 ALL_TARGET=	dev
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"

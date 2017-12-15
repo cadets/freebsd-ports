@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	uftp
-PORTVERSION=	4.9.2
+PORTVERSION=	4.9.3
 PORTEPOCH=	1
 CATEGORIES=	ftp
 MASTER_SITES=	SF/uftp-multicast/source-tar
@@ -13,7 +13,8 @@ COMMENT=	Multicast capable FTP client and server
 LICENSE=	GPLv3
 
 MAKEFILE=	makefile
-USES=		gmake
+USES=		gmake ssl
+MAKE_ARGS=	OPENSSL=${OPENSSLBASE}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/uftp ${STAGEDIR}${PREFIX}/bin/

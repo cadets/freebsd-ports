@@ -3,23 +3,22 @@
 PORTNAME=	libpololu-avr
 PORTVERSION=	151002
 CATEGORIES=	devel
-MASTER_SITES=	http://www.pololu.com/file/download/
-EXTRACT_SUFX=	.zip?file_id=0J1058
 
 MAINTAINER=	jonathan@FreeBSD.org
 COMMENT=	Support libraries for Pololu robots
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	avr-gcc:devel/avr-gcc \
-		${LOCALBASE}/avr/lib/libc.a:devel/avr-libc
+BUILD_DEPENDS=	${LOCALBASE}/avr/lib/libc.a:devel/avr-libc
+RUN_DEPENDS=	${LOCALBASE}/avr/lib/libc.a:devel/avr-libc
 
-USES=		gmake zip
+BROKEN_powerpc64=	fails to build: OrangutanAnalog.h: internal compiler error: Segmentation fault
 
-PREFIX=		${LOCALBASE}/avr
+USES=		gmake
+USE_GITHUB=	yes
+GH_ACCOUNT=	pololu
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
-MAKE_ENV=	LIB=${STAGEDIR}${PREFIX}/lib
+MAKE_ENV=	LIB=${STAGEDIR}${PREFIX}/avr/lib
 ALL_TARGET=	library_files
 
 .include <bsd.port.mk>

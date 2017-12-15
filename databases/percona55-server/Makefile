@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.5.48-37.8
-PORTREVISION?=	0
+DISTVERSION=	5.5.54-38.6
+PORTREVISION?=	2
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.5/Percona-Server-${DISTVERSION}/source/tarball/
 PKGNAMESUFFIX?=	55-server
@@ -11,10 +11,8 @@ DISTNAME=	percona-server-${DISTVERSION}
 MAINTAINER=	flo@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 
-BROKEN_powerpc64=	Does not build
-
 SLAVEDIRS=	databases/percona55-client
-USES=		bison cmake readline shebangfix
+USES=		bison cmake:noninja readline shebangfix
 
 CXXFLAGS+=	${CPPFLAGS}
 
@@ -47,14 +45,11 @@ CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 
 SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
 
-.ifdef USE_MYSQL
-.error You have `USE_MYSQL' variable defined either in environment or in make(1) arguments. Please undefine and try again.
-.endif
-
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MOPENSSL}
-CMAKE_ARGS+=	-DWITH_SSL=bundled
+CMAKE_ARGS+=	-DWITH_SSL=system
+OPENSSL_USES=	ssl
 .endif
 .if ${PORT_OPTIONS:MFASTMTX}
 CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1
@@ -62,10 +57,10 @@ CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1
 
 # MySQL-Server part
 .if !defined(CLIENT_ONLY)
-USE_MYSQL=	yes
-WANT_MYSQL_VER=	55p
+USES+=mysql:55p
 
 CONFLICTS_INSTALL=	mysql*-server-* \
+			mysqlwsrep* \
 			mariadb*-server-* \
 			percona5[0-46-9]-server-*
 

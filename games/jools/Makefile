@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYGAME}
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils
 
 PORTDOCS=	POINTS manual.html manual.pdf manual.tex
@@ -32,7 +32,7 @@ post-extract:
 .endfor
 
 post-patch:
-	@${FIND} ${WRKSRC} -name ".arch-ids" | ${XARGS} ${RM} -fr
+	@${FIND} ${WRKSRC} -name ".arch-ids" | ${XARGS} ${RM} -r
 	@${FIND} ${WRKSRC} -name ".arch-ids" -delete \
 		-or -name ".placeholder" -delete
 

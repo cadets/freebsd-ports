@@ -16,16 +16,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis
 
-CONFLICTS=	libshout2-[0-9]*
-
 OPTIONS_DEFINE=	DOCS SPEEX THEORA
 OPTIONS_DEFAULT=SPEEX THEORA
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USE_OPENSSL=	yes
-USES=		gmake libtool pathfix pkgconfig
+USES=		gmake libtool pathfix pkgconfig ssl
 
 PORTDOCS=	*
 

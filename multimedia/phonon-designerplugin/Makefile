@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	phonon
-PORTVERSION=	4.8.3
+PORTVERSION=	4.9.1
 CATEGORIES=	multimedia kde
-MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 PKGNAMESUFFIX=	-designerplugin
 DIST_SUBDIR=	KDE
 
@@ -12,7 +12,7 @@ COMMENT=	Qt Designer plugin for Phonon
 
 LICENSE=	LGPL21
 
-USE_QT4=	phonon designer \
+USE_QT4=	corelib designer gui phonon  \
 		qmake_build moc_build rcc_build uic_build
 USES=		cmake tar:xz
 CMAKE_ARGS=	-DPHONON_QT_PLUGIN_INSTALL_DIR=${PREFIX}/${QT_PLUGINDIR_REL}/designer

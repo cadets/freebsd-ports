@@ -10,8 +10,6 @@ MASTER_SITES=	http://flyspray.org/packed/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, easy-to-use web based bug tracking system
 
-BROKEN_powerpc64=	Does not build
-
 RUN_DEPENDS=	${LOCALBASE}/share/adodb/adodb.inc.php:databases/adodb
 
 USE_PHP=	pcre session zlib xml gd
@@ -61,7 +59,7 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|%%FLYSPRAYDIR%%|"${FLYSPRAYDIR}"|g" \
 		-e "s|%%DOCSDIR%%|"${DOCSDIR}"|g" \
 		${WRKSRC}/docs/README.FreeBSD
-	@${FIND} ${WRKSRC} -name \*.orig -exec ${RM} '{}' ';'
+	@${FIND} ${WRKSRC} -name \*.orig -exec ${RM} {} ';'
 	@${REINPLACE_CMD} "s|E_ALL|E_ALL \& ~E_STRICT|g" \
 		${WRKSRC}/includes/fix.inc.php
 	@${RM} ${WRKSRC}/includes/fix.inc.php.bak

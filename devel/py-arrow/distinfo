@@ -1,3 +1,3 @@
-TIMESTAMP = 1466124135
-SHA256 (arrow-0.8.0.tar.gz) = b210c17d6bb850011700b9f54c1ca0eaf8cbbd441f156f0cd292e1fbda84e7af
-SIZE (arrow-0.8.0.tar.gz) = 81664
+TIMESTAMP = 1511612324
+SHA256 (arrow-0.11.0.tar.gz) = 5c44e897cde7ff54d7336ee2072fd32395a525d070df0e9034ea64029d4a61b5
+SIZE (arrow-0.11.0.tar.gz) = 119719

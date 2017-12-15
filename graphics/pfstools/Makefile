@@ -3,7 +3,7 @@
 
 PORTNAME=	pfstools
 PORTVERSION=	1.8.5
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -17,12 +17,11 @@ RUN_DEPENDS+=	bash:shells/bash
 PFS_BUILD=	${MACHINE_ARCH}-portbld-freebsd${OSREL}
 PLIST_SUB+=	PFS_BASE=${PREFIX}
 
-USES=		gmake pkgconfig libtool
+USES=		gmake libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_TARGET=	${PFS_BUILD}
 CONFIGURE_ARGS+=	--disable-jpeghdr --disable-matlab \
 		--with-bash=${LOCALBASE}/bin/bash
-CONFIGURE_ENV+=	PKG_CONFIG_PATH=${LOCALBASE}/libdata/pkgconfig
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
@@ -61,6 +60,7 @@ OCTAVE_CONFIGURE_ENABLE=	octave
 OCTAVE_PATCH_DEPENDS=		octave-config:math/octave
 OCTAVE_BUILD_DEPENDS=		mkoctfile:math/octave
 OCTAVE_RUN_DEPENDS=		octave:math/octave
+OCTAVE_USES=			shebangfix
 
 .include <bsd.port.options.mk>
 
@@ -73,14 +73,11 @@ PLIST_SUB+=	\
 		OCTAVE_BASE=${OCTAVE_BASE} \
 		OCTAVE_SITE_M=${OCTAVE_SITE_M:S|^${OCTAVE_BASE}/||} \
 		OCTAVE_SITE_OCT=${OCTAVE_SITE_OCT:S|^${OCTAVE_BASE}/||}
-USES+=		shebangfix
 SHEBANG_FILES=	src/octave/*
 SHEBANG_LANG+=	octave
-octave_OLD_CMD?=/usr/bin/octave
-octave_CMD?=	${OCTAVE_BASE}/bin/octave
 .endif
 
-post-stage:
+post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib//libpfs-1.2.so.0.0.0
 
 .include <bsd.port.mk>

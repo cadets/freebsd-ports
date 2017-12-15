@@ -1,22 +1,22 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
-PORTNAME=	cups-libs
+PORTNAME=	cups
 PORTVERSION=	1.4.2
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	print linux
-MASTER_SITES=	CENTOS_LINUX
+PKGNAMESUFFIX=	-libs
+LIB_DISTNAMES=	${LINUXNAME}-${DISTVERSIONFULL}
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Common UNIX Printing System libraries
 
-USE_LINUX=	c6
-USE_LINUX_RPM=	yes
-USE_LINUX_APPS=	gnutls
-SRC_DISTFILES=	cups-${PORTVERSION}-${RPMVERSION}${SRC_SUFX}:SOURCE
-RPMVERSION=	74.el6
+DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
+LINUXNAME=	${PORTNAME}${PKGNAMESUFFIX}
+RPMVERSION=	77.el6
+USES=		linux:c6
 USE_LDCONFIG=	yes
-
-DESCR=		${.CURDIR}/../cups/pkg-descr
+USE_LINUX=	avahi-libs gnutls jpeg png tiff
+USE_LINUX_RPM=	yes
 
 .include <bsd.port.mk>

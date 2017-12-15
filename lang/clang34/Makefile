@@ -2,7 +2,7 @@
 
 PORTNAME=	clang
 DISTVERSION=	3.4.2
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	lang devel
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -36,7 +36,7 @@ PYTHONLIBDIR=	${LLVM_PREFIX}/lib/python
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
-USES=		gmake libedit perl5 python
+USES=		gmake groff libedit perl5 python
 USE_LDCONFIG=	yes
 
 MAKE_ARGS=	CLANG_TBLGEN=${WRKSRC}/${RELTYPE}/bin/clang-tblgen \
@@ -104,7 +104,7 @@ pre-fetch:
 .endif
 
 post-extract:
-	${RM} -f ${BUILD_WRKSRC}
+	${RM} ${BUILD_WRKSRC}
 	${MV} ${WRKDIR}/${CLANG_EXTRACT} ${BUILD_WRKSRC}
 
 post-patch:
@@ -180,7 +180,7 @@ PLIST_DIR_LIST=		include/clang \
 			lib/python
 
 build-plist:
-	${RM} -f ${PLIST}
+	${RM} ${PLIST}
 .for command in ${COMMANDS}
 	${ECHO_CMD} bin/${command}%%LLVM_SUFFIX%% >> ${PLIST}
 .endfor

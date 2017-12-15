@@ -3,13 +3,12 @@
 
 PORTNAME=	xmlpatterns
 DISTVERSION=	${QT4_VERSION}
+PORTREVISION=	2
 CATEGORIES=	textproc
 PKGNAMEPREFIX=	qt4-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt support for XPath, XQuery, XSLT and XML Schema
-
-BROKEN_powerpc64=	Does not build
 
 USE_QT4=	qmake_build moc_build rcc_build corelib network
 QT_DIST=	yes

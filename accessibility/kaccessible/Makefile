@@ -2,9 +2,8 @@
 
 PORTNAME=	kaccessible
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	accessibility kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	1
+CATEGORIES=	accessibility kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Accessibility services for KDE

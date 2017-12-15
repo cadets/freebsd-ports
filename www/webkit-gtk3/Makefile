@@ -3,7 +3,7 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.4.11
-PORTREVISION=	3
+PORTREVISION=	13
 CATEGORIES=	www
 MASTER_SITES=	http://webkitgtk.org/releases/
 PKGNAMESUFFIX=	-gtk3
@@ -14,11 +14,13 @@ COMMENT=	Opensource browser engine using the GTK+ 3 toolkit
 
 BUILD_DEPENDS=	gtkdoc-rebase:textproc/gtk-doc \
 		p5-Switch>0:lang/p5-Switch \
+		python:lang/python \
 		geoclue>=0:net/geoclue
 LIB_DEPENDS=	libenchant.so:textproc/enchant \
 		libsecret-1.so:security/libsecret \
 		libicutu.so:devel/icu \
 		libharfbuzz.so:print/harfbuzz \
+		libharfbuzz-icu.so:print/harfbuzz-icu \
 		libwebp.so:graphics/webp \
 		libcurl.so:ftp/curl \
 		libsoup-2.4.so:devel/libsoup
@@ -29,7 +31,8 @@ PORTSCOUT=	limit:^2\.4\.
 USE_GSTREAMER1=	yes
 USE_XORG=	xt xdamage xcomposite
 USES=		bison compiler:c++11-lib gettext gmake gperf libtool localbase \
-		perl5 pkgconfig shebangfix sqlite tar:xz
+		pathfix perl5 pkgconfig shebangfix sqlite tar:xz
+PATHFIX_MAKEFILEIN=	GNUmakefile.in
 USE_RUBY=	yes
 RUBY_NO_RUN_DEPENDS=yes
 USE_GNOME=	cairo gtk20 gtk30 introspection:build libxslt
@@ -50,7 +53,6 @@ MAKE_ENV=	XDG_CACHE_HOME=${WRKDIR}
 
 BROKEN_sparc64=	fails to detect working compiler
 
-#CONFIGURE_ARGS+=--disable-silent-rules
 CONFIGURE_ARGS+=--disable-egl \
 		--disable-gles2
 #		--with-acceleration-backend=opengl # clutter broken?
@@ -87,11 +89,6 @@ CFLAGS+=	-mminimal-toc
 
 .include <bsd.port.pre.mk>
 
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	flex>=0:textproc/flex
-CONFIGURE_ENV+=	FLEX="${LOCALBASE}/bin/flex"
-.endif
-
 .if ${ARCH} == i386 && ! ${CFLAGS:M-march=*}
 # Needed for __atomic_fetch_add_8
 CFLAGS+=	-march=i586
@@ -108,8 +105,6 @@ post-patch:
 # Since ruby 2.2 there is no ruby symlink
 	@${REINPLACE_CMD} -e 's|ruby|${RUBY_NAME}|g' \
 		${WRKSRC}/configure
-	@${FIND} ${WRKSRC} -name GNUmakefile.in | ${XARGS} ${REINPLACE_CMD} -e \
-		's|[(]libdir[)]/pkgconfig|(prefix)/libdata/pkgconfig|g'
 
 post-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/Programs/GtkLauncher \
