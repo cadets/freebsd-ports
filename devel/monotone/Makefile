@@ -3,7 +3,7 @@
 
 PORTNAME=	monotone
 PORTVERSION=	1.1
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	http://www.monotone.ca/downloads/${PORTVERSION}/
 
@@ -25,7 +25,7 @@ USES=		cpe gmake iconv localbase lua:51 makeinfo perl5 \
 USE_PERL5=	build
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	MAKEINFO="makeinfo --no-split"
+CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split"
 
 INFO=		monotone
 PORTDOCS=	*
@@ -37,7 +37,7 @@ NLS_USES=		gettext
 NLS_CONFIGURE_OFF=	--disable-nls
 
 post-extract:
-	@${RM} -f ${WRKSRC}/monotone.info*
+	@${RM} ${WRKSRC}/monotone.info*
 
 post-patch:
 	@${REINPLACE_CMD} \

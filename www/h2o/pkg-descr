@@ -9,7 +9,7 @@ It supports:
 - negotiation methods: NPN, ALPN, Upgrade, direct
 - dependency and weight-based prioritization
 - server push
-- TLS
+- TLS up to 1.3
 - uses [OpenSSL](https://www.openssl.org/)
 - forward secrecy
 - AEAD ciphers
@@ -20,4 +20,4 @@ It supports:
 - reverse proxy
 - persistent upstream connection
 
-WWW: http://github.com/h2o/h2o
+WWW: https://github.com/h2o/h2o

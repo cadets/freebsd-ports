@@ -3,6 +3,7 @@
 
 PORTNAME=	libqtelegram-ae
 PORTVERSION=	6.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-stable
 CATEGORIES=	net-im
@@ -17,9 +18,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Aseman-Land
 GH_PROJECT=	libqtelegram-aseman-edition
 
-USES=		qmake:outsource
+USES=		qmake:outsource ssl
 USE_QT5=	qmake_build buildtools_build core gui network multimedia
-USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
 
 post-patch:

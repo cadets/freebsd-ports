@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mosquitto
-PORTVERSION=	1.4.9
+PORTVERSION=	1.4.14
+PORTREVISION=	0
 CATEGORIES=	net
 MASTER_SITES=	http://mosquitto.org/files/source/
 
@@ -30,10 +31,11 @@ WS_CMAKE_ON=	-DWITH_WEBSOCKETS=ON
 
 post-patch:
 # do not run ldconfig in stage dir
-	${REINPLACE_CMD} -e '/ldconfig/d' ${WRKSRC}/src/CMakeLists.txt \
+	@${REINPLACE_CMD} -e '/ldconfig/d' ${WRKSRC}/src/CMakeLists.txt \
 		${WRKSRC}/lib/CMakeLists.txt ${WRKSRC}/lib/cpp/CMakeLists.txt
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/CMakeLists.txt
 
-post-stage:
+post-install:
 # Adjust configuration files
 	${MV} ${STAGEDIR}${ETCDIR}/mosquitto.conf ${STAGEDIR}${ETCDIR}/mosquitto.conf.sample
 	${MV} ${STAGEDIR}${ETCDIR}/pwfile.example ${STAGEDIR}${ETCDIR}/pwfile.sample

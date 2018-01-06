@@ -2,18 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	tikiwiki
-PORTVERSION=	15.2
+DISTVERSION=	17.1
 CATEGORIES=	www
-MASTER_SITES=	SF/${PORTNAME}/Tiki_15.x_Situla/${PORTVERSION}/
+MASTER_SITES=	SF/${PORTNAME}/Tiki_17.x_Zeta_Bootis/${PORTVERSION}/
 DISTNAME=	tiki-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Powerful PHP based Wiki/CMS/Groupware
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/license.txt
-
-BROKEN_powerpc64=	Does not build
 
 USES=		php:web
 USE_PHP=	calendar dom fileinfo gd gettext intl mbstring mcrypt pcre \

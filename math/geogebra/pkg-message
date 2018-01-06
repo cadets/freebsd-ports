@@ -1,4 +1,6 @@
-For proper work you should mount linproc filesystem into /proc or
-/compat/linux/proc.
+This software wants linprocfs mounted on /compat/linux/proc. Add the
+following line to /etc/fstab:
 
-See more on linprocfs(5).
+linprocfs   /compat/linux/proc	linprocfs	rw	0	0
+
+Then run "mount /compat/linux/proc".

@@ -2,20 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=		oolite
-PORTVERSION=		1.82
+PORTVERSION=		1.84
+PORTREVISION=	5
 CATEGORIES=		games gnustep
-MASTER_SITES=		http://github.com/OoliteProject/oolite/releases/download/1.82/
+MASTER_SITES=		https://github.com/OoliteProject/oolite/releases/download/1.84/
 DISTNAME=		${PORTNAME}-source-${PORTVERSION}
 DIST_SUBDIR=		oolite
 
 MAINTAINER=		ports@FreeBSD.org
 COMMENT=		Trade and combat space simulator, clone of Elite
 
-LICENSE=		CCBYNCSAv3 GPLv2 ZLIB
+LICENSE=		CC-BY-NC-SA-3.0 GPLv2 ZLIB
 LICENSE_COMB=		multi
-LICENSE_NAME_CCBYNCSAv3=	Creative Commons Attribution-NonCommercial-ShareAlike License version 3.0
-LICENSE_FILE_CCBYNCSAv3=	${WRKSRC}/Doc/LICENSE.TXT
-LICENSE_PERMS_CCBYNCSAv3=	dist-mirror pkg-mirror auto-accept
+LICENSE_FILE_CC-BY-NC-SA-3.0=	${WRKSRC}/Doc/LICENSE.TXT
 
 BUILD_DEPENDS=		zip:archivers/zip \
 			${LOCALBASE}/bin/unzip:archivers/unzip
@@ -26,8 +25,9 @@ LIB_DEPENDS=		libespeak.so:audio/espeak \
 			libminizip.so:archivers/minizip
 
 USES=			gnustep openal:al perl5 python:build tar:bzip2
-USE_GL=			yes
+USE_GL=			gl glu
 USE_SDL=		sdl
+USE_XORG=		x11
 USE_GNUSTEP=		base build
 # Redefine DO_MAKE_BUILD, because current gnustep in USES overrides MAKEFILE
 # without possibility to change it, as it was done in the previous implementation
@@ -52,26 +52,11 @@ PLIST_FILES+=	bin/oolite %%DATADIR%%/oolite \
 
 OPTIONS_DEFINE=	DOCS
 
+BROKEN_aarch64=		fails to configure: error: These compiler flags are invalid: -O
+BROKEN_armv6=		fails to compile: your compiler does not follow the C++ specification for temporary object destruction order
+BROKEN_armv7=		fails to compile: your compiler does not follow the C++ specification for temporary object destruction order
+
 .include <bsd.port.pre.mk>
-
-.if exists(${CC})
-CCVERSION!=	${CC} --version
-COMPILER_VERSION=	${CCVERSION:M[0-9].[0-9]*:C/([0-9]).?/\1/g}
-COMPILER_IS_CLANG=	${CCVERSION:Mclang}
-# Check for LLVM/Clang v3.4.1
-.if ${COMPILER_IS_CLANG} && ${COMPILER_VERSION} == 341
-# Use compiler from ports, because of errors
-# for ${WRKSRC}/src/Core/Scripting/OOJavaScriptEngine.m file
-WITH_PORTS_CLANG=	yes
-.endif
-.endif
-
-.if defined(WITH_PORTS_CLANG)
-BUILD_DEPENDS+=	clang34:lang/clang34
-CC=		${LOCALBASE}/bin/clang34
-CXX=		${LOCALBASE}/bin/clang++34
-CPP=		${LOCALBASE}/bin/clang-cpp34
-.endif
 
 post-patch: .SILENT
 	${REINPLACE_CMD} -e 's/GNUSTEP_USER_ROOT/GNUSTEP_LOCAL_ROOT/ ; \
@@ -83,9 +68,6 @@ post-patch: .SILENT
 		/ioapi.c/d ; /unzip.c/d ; \
 		s|/usr/X11R6|$${LOCALBASE}|' \
 		${WRKSRC}/GNUmakefile
-# Conversion needed for unsigned int type for using isfinite function
-	${REINPLACE_CMD} -e 's|isfinite(uValue)|isfinite((long double)uValue)|' \
-		${WRKSRC}/src/Core/Scripting/OOJSPlayerShip.m
 # Change value of the SAVEDIR define
 	${REINPLACE_CMD} -e 's|oolite-saves|\.oolite-saves|' \
 		${WRKSRC}/src/Core/NSFileManagerOOExtensions.h

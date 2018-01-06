@@ -3,15 +3,16 @@
 
 PORTNAME=	ark
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	1
-CATEGORIES=	archivers kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	2
+CATEGORIES=	archivers kde kde-kde4
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Archiving tool for KDE
 
 LIB_DEPENDS=	libqjson.so:devel/qjson
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cmake:outsource kde:4 libarchive cpe tar:xz
 USE_KDE=	automoc4 kdelibs libkonq

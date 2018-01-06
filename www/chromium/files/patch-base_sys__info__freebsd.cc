@@ -1,4 +1,4 @@
---- base/sys_info_freebsd.cc.orig	2016-03-25 13:04:44 UTC
+--- base/sys_info_freebsd.cc.orig	2017-06-05 19:03:00 UTC
 +++ base/sys_info_freebsd.cc
 @@ -12,12 +12,34 @@
  
@@ -39,11 +39,14 @@
      NOTREACHED();
      return 0;
    }
-@@ -35,4 +57,25 @@ uint64_t SysInfo::MaxSharedMemorySize() 
-   return static_cast<uint64_t>(limit);
+@@ -25,14 +47,24 @@ int64_t SysInfo::AmountOfPhysicalMemory() {
  }
  
-+// static
+ // static
+-uint64_t SysInfo::MaxSharedMemorySize() {
+-  size_t limit;
+-  size_t size = sizeof(limit);
+-  if (sysctlbyname("kern.ipc.shmmax", &limit, &size, NULL, 0) < 0) {
 +std::string SysInfo::CPUModelName() {
 +  int mib[] = { CTL_HW, HW_MODEL };
 +  char name[256];
@@ -58,10 +61,12 @@
 +  int ncpu;
 +  size_t size = sizeof(ncpu);
 +  if (sysctl(mib, arraysize(mib), &ncpu, &size, NULL, 0) == -1) {
-+    NOTREACHED();
+     NOTREACHED();
+-    return 0;
 +    return 1;
-+  }
+   }
+-  return static_cast<uint64_t>(limit);
 +  return ncpu;
-+}
-+
+ }
+ 
  }  // namespace base

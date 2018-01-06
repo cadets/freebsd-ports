@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	enlightenment
-PORTVERSION=	0.20.6
+PORTVERSION=	0.21.10
 PORTEPOCH=	2
 CATEGORIES=	x11-wm enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/apps/${PORTNAME}/
-DIST_SUBDIR=    enlightenment
+DIST_SUBDIR=	enlightenment
 
 MAINTAINER=	enlightenment@FreeBSD.org
 COMMENT=	Artistic X window manager
@@ -14,13 +14,14 @@ COMMENT=	Artistic X window manager
 LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libefl.so:devel/efl \
-		libelementary.so:x11-toolkits/elementary \
 		libxcb-keysyms.so:x11/xcb-util-keysyms
-RUN_DEPENDS=	${LOCALBASE}/lib/evas/utils/evas_image_loader.svg:graphics/evas_generic_loaders-svg
+
+BROKEN_sparc64=		Does not install on sparc64: signal 10
 
 GNU_CONFIGURE=	yes
-USES=		alias autoreconf desktop-file-utils execinfo gettext-tools \
-		libtool pathfix iconv gmake pkgconfig tar:xz
+USES=		alias autoreconf desktop-file-utils gettext-tools \
+		gmake iconv libtool pathfix pkgconfig tar:xz
+USE_XORG=	xcb
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 SUB_FILES=	pkg-message
@@ -31,11 +32,17 @@ CONFIGURE_ARGS=	--with-profile=MEDIUM_PC \
 
 .include "Makefile.plist"
 
-OPTIONS_DEFINE=	NLS
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=		NLS
+OPTIONS_GROUP=		MIXER
+OPTIONS_GROUP_MIXER=	ALSA PULSEAUDIO
+OPTIONS_DEFAULT=	ALSA
+OPTIONS_SUB=		yes
 
 NLS_USES=		gettext-runtime
 NLS_CONFIGURE_ENABLE=	nls
+
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -43,10 +50,4 @@ post-patch:
 		${WRKSRC}/src/bin/Makefile.mk \
 		${WRKSRC}/src/modules/Makefile_cpufreq.mk
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not install on sparc64: signal 10
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

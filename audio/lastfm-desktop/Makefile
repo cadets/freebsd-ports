@@ -3,12 +3,14 @@
 
 PORTNAME=	lastfm-desktop
 PORTVERSION=	2.1.36
+PORTREVISION=	4
 CATEGORIES=	audio
 
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Official Last.fm desktop application suite
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblastfm.so:audio/liblastfm \
 		libavcodec.so:multimedia/ffmpeg \
@@ -39,8 +41,14 @@ GSTREAMER_USE=		QT4=dbus,phonon-gst_run GNOME=gdkpixbuf2,glib20
 VLC_DESC=		Multimedia via Phonon-VLC
 VLC_RUN_DEPENDS=	phonon-vlc>=0.6.1:multimedia/phonon-vlc
 
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} >= 1100000
+BROKEN=		does not buld: Application.cpp:433:25: error: ordered comparison between pointer and zero ('void *' and 'int')
+.endif
+
 do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
+	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/lastfm-desktop.sh ${STAGEDIR}${PREFIX}/bin/lastfm-desktop
 	${INSTALL_PROGRAM} ${WRKSRC}/_bin/fingerprinter ${STAGEDIR}${DATADIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/_bin/lastfm-scrobbler ${STAGEDIR}${DATADIR}
@@ -48,4 +56,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/app/client/audioscrobbler.ico ${STAGEDIR}${PREFIX}/share/pixmaps/
 	(cd ${WRKSRC}/app/client && ${COPYTREE_SHARE} qrc ${STAGEDIR}${DATADIR})
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

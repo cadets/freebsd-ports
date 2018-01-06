@@ -13,8 +13,11 @@ COMMENT=	Python bindings for the Qt5 toolkit, documentation
 DISTINFO_FILE=	${PYQT_DISTINFO_FILE}
 NO_BUILD=	yes
 
+PORTSCOUT=	limit:^${PYQT5_VERSION}
+
 USES=		python pyqt:5
 USE_PYQT=	#
+USE_PYTHON=	flavors
 
 DOCSDIR=	${PREFIX}/share/doc/py-qt5
 

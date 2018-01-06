@@ -1,24 +1,24 @@
 # $FreeBSD$
 
 PORTNAME=	doas
-# When >5.9 comes out, change this to DISTVERSION
-PORTVERSION=	5.9p5
+PORTVERSION=	6.0p2
 CATEGORIES=	security
 
 MAINTAINER=	jsmith@resonatingmedia.com
 COMMENT=	Simple sudo alternative to run commands as another user
 
-LICENSE=	ISCL
+LICENSE=	BSD2CLAUSE ISCL
+LICENSE_COMB=	multi
+LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/LICENSE
+LICENSE_FILE_ISCL=		${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	slicer69
 GH_PROJECT=	doas
-GH_TAGNAME=	8bec4dc
 
 USES=	gmake
 
 BINMODE=	4755
-ETCDIR=	${PREFIX}/etc
 
 SUB_FILES=	pkg-message
 PLIST_FILES=	bin/doas \

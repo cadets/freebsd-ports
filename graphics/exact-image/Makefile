@@ -3,7 +3,7 @@
 
 PORTNAME=	exact-image
 PORTVERSION=	0.9.1
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	graphics perl5 python
 MASTER_SITES=	http://dl.exactcode.de/oss/${PORTNAME}/ LOCAL/bf
 
@@ -23,10 +23,13 @@ LIB_DEPENDS=	libagg.so:graphics/agg \
 		libfreetype.so:print/freetype2 \
 		libexpat.so:textproc/expat2
 
+BROKEN_armv6=		fails to configure: C++ compiler is not installed or does not work correctly
+BROKEN_armv7=		fails to configure: C++ compiler is not installed or does not work correctly
+
 #hack to get custom exactcode configure script to enable tiff support with
 #broken headers on c++ in base system:
 CPPFLAGS+=	-fpermissive -I${LOCALBASE}/include
-USES=		gmake jpeg perl5 pkgconfig python tar:bzip2
+USES=		gmake jpeg perl5 pkgconfig python:2.7 tar:bzip2
 USE_XORG=	x11
 HAS_CONFIGURE=	yes
 INSTALL_WRKSRC=	${WRKSRC}/objdir
@@ -38,7 +41,7 @@ PLIST_FILES=	${BINS:S|^|bin/|} \
 		%%PYTHON_SITELIBDIR%%/_ExactImage.so
 
 post-extract:
-	@${RM} -rf ${WRKSRC}/agg-2.4/
+	@${RM} -r ${WRKSRC}/agg-2.4/
 
 post-patch:
 	@${REINPLACE_CMD} -e '1s|/.*|/bin/sh|;s|/usr/local|${LOCALBASE}|;\

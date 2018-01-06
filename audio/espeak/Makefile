@@ -3,7 +3,7 @@
 
 PORTNAME=	espeak
 PORTVERSION=	1.48.04
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
@@ -52,7 +52,6 @@ BROKEN_sparc64=	Does not compile on sparc64
 
 post-patch:
 	cd ${BUILD_WRKSRC} && ${REINPLACE_CMD} ${REINPLACE_FILES}
-post-patch-PORTAUDIO-on:
 	${MV} ${WRKSRC}/src/portaudio19.h ${WRKSRC}/src/portaudio.h
 
 post-install:

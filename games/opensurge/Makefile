@@ -3,7 +3,7 @@
 
 PORTNAME=	opensurge
 PORTVERSION=	0.1.r${SVN_REV}
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://www.ime.usp.br/~alemart/opensurge_nightly/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/${PORTNAME}/
@@ -13,17 +13,16 @@ DISTFILES=	${PORTNAME}-src-build${SVN_REV}${EXTRACT_SUFX} \
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Game based on the Sonic the Hedgehog universe
 
-LICENSE=	GPLv2 CCbyNCSA3
-LICENSE_COMB=	dual
-LICENSE_NAME_CCbyNCSA3=Attribution-NonCommercial-ShareAlike 3.0 Unported
-LICENSE_FILE=	${WRKSRC}/license.txt
-LICENSE_FILE_CCbyNCSA3=${WRKSRC}/licenses/CC-BY-SA-3.0.txt
-LICENSE_PERMS_CCbyNCSA3=dist-mirror pkg-mirror auto-accept
+LICENSE=	GPLv2+ CC-BY-SA-3.0
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/licenses/GPLv2.txt
+LICENSE_FILE_CC-BY-SA-3.0=	${WRKSRC}/licenses/CC-BY-SA-3.0.txt
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libaldmb.a:audio/dumb-allegro \
 		${LOCALBASE}/include/alfont.h:x11-fonts/alfont \
 		alureplay:audio/alure
-LIB_DEPENDS=	liballeg.so:devel/allegro \
+LIB_DEPENDS=	libalfont.so:x11-fonts/alfont \
+		liballeg.so:devel/allegro \
 		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis
 RUN_DEPENDS=	${LOCALBASE}/lib/libaldmb.a:audio/dumb-allegro
@@ -71,7 +70,7 @@ post-install:
 
 .for s in ${ICON_SIZES}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps/
-	@${INSTALL_DATA} ${WRKSRC}/src/misc/${PORTNAME}_${s}.png \
+	${INSTALL_DATA} ${WRKSRC}/src/misc/${PORTNAME}_${s}.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps/${PORTNAME}.png
 .endfor
 	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \

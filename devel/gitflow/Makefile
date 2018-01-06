@@ -2,25 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	gitflow
-PORTVERSION=	1.8.0
+PORTVERSION=	1.11.0
 CATEGORIES=	devel
 
-MAINTAINER=	nbari@dalmp.com
+MAINTAINER=	nbari@tequila.io
 COMMENT=	Git extensions to provide high-level repository operations
 
-LICENSE=	BSD2CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	BSD2CLAUSE LGPL21
+LICENSE_COMB=	multi
 
 RUN_DEPENDS=	${LOCALBASE}/bin/getopt:misc/getopt
 
+USES=		gmake
+
 USE_GITHUB=	yes
-GH_ACCOUNT=	nbari
+GH_ACCOUNT=	petervanderdoes
+GH_PROJECT=	${PORTNAME}-avh
 
 OPTIONS_DEFINE=	EXAMPLES
 
-USES=		tar:bzip2 gmake
-
 NO_BUILD=	yes
+NO_ARCH=	yes
 MAKE_ARGS=	prefix=${STAGEDIR}${PREFIX}
 
 post-install:

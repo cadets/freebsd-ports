@@ -1,146 +1,98 @@
 # $FreeBSD$
 
 PORTNAME=	hugo
-PORTVERSION=	0.16
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.31.1
 CATEGORIES=	www
 PKGNAMEPREFIX=	go
 DIST_SUBDIR=	${PKGNAMEPREFIX}${PORTNAME}
 
 MAINTAINER=	ben.lavery@hashbang0.com
-COMMENT=	Fast and modern static website engine
+COMMENT=	Fast and flexible static site generator
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	go>=1.5.0:lang/go
-
+USES=		go
 USE_GITHUB=	yes
-GH_ACCOUNT=	eknkc:amber \
-		spf13:DEFAULT,afero,jWalterWeatherman,cast,cobra \
-		spf13:fsync,nitro,pflag,viper \
-		yosssi:ace \
-		BurntSushi:toml \
-		PuerkitoBio:purell,urlesc \
-		bep:inflect \
-		dchest:cssmin \
-		fsnotify:fsnotify \
-		gorilla:websocket \
-		hashicorp:hcl \
-		kardianos:osext \
-		kr:fs \
-		kyokomi:emoji \
-		magiconair:properties \
-		miekg:mmark \
-		mitchellh:mapstructure \
-		pkg:errors,sftp \
-		russross:blackfriday \
-		shurcooL:sanitized_anchor_name \
-		golang:crypto,sys,text \
-		go-yaml:yaml \
-		cpuguy83:go_md2man
-GH_PROJECT=	amber:amber afero:afero \
-		jWalterWeatherman:jWalterWeatherman ace:ace toml:toml \
-		purell:purell urlesc:urlesc inflect:inflect cssmin:cssmin \
-		fsnotify:fsnotify websocket:websocket hcl:hcl osext:osext \
-		fs:fs emoji:emoji properties:properties mmark:mmark \
-		mapstructure:mapstructure errors:errors sftp:sftp \
-		go-md2man:go_md2man blackfriday:blackfriday \
-		sanitized_anchor_name:sanitized_anchor_name cast:cast \
-		cobra:cobra fsync:fsync nitro:nitro pflag:pflag viper:viper \
-		crypto:crypto sys:sys text:text yaml:yaml
-GH_TAGNAME=	91774f0:amber 9d16de2:afero \
-		33c24e7:jWalterWeatherman 71afeb7:ace bec2dac:toml \
-		1d5d1cf:purell 5fa9ff0:urlesc b896c45:inflect \
-		2724a9c:go_md2man fb8d9b4:cssmin a8a77c9:fsnotify \
-		a836c37:websocket d8c773c:hcl 29ae4ff:osext 2788f0d:fs \
-		17c5e70:emoji e2f061e:properties adb5c3e:mmark \
-		d2dd026:mapstructure a2d6902:errors 57fcf4a:sftp \
-		1d6b8e9:blackfriday 10ef21a:sanitized_anchor_name 27b586b:cast \
-		a272c3c:cobra 1773df7:fsync 24d7ef3:nitro 3678644:pflag \
-		c1ccc37:viper 2c99acd:crypto a408501:sys d5d7737:text \
-		a83829b:yaml
+GH_ACCOUNT=	gohugoio
+GH_SUBDIR=	src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}
+GH_TUPLE=	BurntSushi:toml:a368813:toml/src/github.com/BurntSushi/toml \
+		PuerkitoBio:purell:fd18e05:purell/src/github.com/PuerkitoBio/purell \
+		PuerkitoBio:urlesc:de5bf2a:urlesc/src/github.com/PuerkitoBio/urlesc \
+		alecthomas:chroma:02c4adc:chroma/src/github.com/alecthomas/chroma \
+		bep:gitmap:de8030e:gitmap/src/github.com/bep/gitmap \
+		chaseadamsio:goorgeous:7daffad:goorgeous/src/github.com/chaseadamsio/goorgeous \
+		cpuguy83:go-md2man:1d903dc:go_md2man/src/github.com/cpuguy83/go-md2man \
+		danwakefield:fnmatch:cbb64ac:fnmatch/src/github.com/danwakefield/fnmatch \
+		dchest:cssmin:fb8d9b4:cssmin/src/github.com/dchest/cssmin \
+		dlclark:regexp2:7632a26:regexp2/src/github.com/dlclark/regexp2 \
+		eknkc:amber:4ed0bf7:amber/src/github.com/eknkc/amber \
+		fortytw2:leaktest:3b724c3:leaktest/src/github.com/fortytw2/leaktest \
+		fsnotify:fsnotify:4da3e2c:fsnotify/src/github.com/fsnotify/fsnotify \
+		gorilla:websocket:4201258:websocket/src/github.com/gorilla/websocket \
+		hashicorp:go-immutable-radix:8aac270:go_immutable_radix/src/github.com/hashicorp/go-immutable-radix \
+		hashicorp:golang-lru:0a025b7:golang_lru/src/github.com/hashicorp/golang-lru \
+		hashicorp:hcl:68e816d:hcl/src/github.com/hashicorp/hcl \
+		inconshreveable:mousetrap:76626ae:mousetrap/src/github.com/inconshreveable/mousetrap \
+		jdkato:prose:2f88f08:prose/src/github.com/jdkato/prose \
+		kardianos:osext:ae77be6:osext/src/github.com/kardianos/osext \
+		kyokomi:emoji:ddd4753:emoji/src/github.com/kyokomi/emoji \
+		magiconair:properties:8d7837e:properties/src/github.com/magiconair/properties \
+		markbates:inflect:ea17041:inflect/src/github.com/markbates/inflect \
+		miekg:mmark:057eb9e:mmark/src/github.com/miekg/mmark \
+		mitchellh:mapstructure:d0303fe:mapstructure/src/github.com/mitchellh/mapstructure \
+		nicksnyder:go-i18n:0dc1626:go_i18n/src/github.com/nicksnyder/go-i18n \
+		pelletier:go-toml:2009e44:go_toml/src/github.com/pelletier/go-toml \
+		russross:blackfriday:6d1ef89:blackfriday/src/github.com/russross/blackfriday \
+		shurcooL:sanitized_anchor_name:86672fc:sanitized_anchor_name/src/github.com/shurcooL/sanitized_anchor_name \
+		spf13:afero:8a6ade7:afero/src/github.com/spf13/afero \
+		spf13:cast:acbeb36:cast/src/github.com/spf13/cast \
+		spf13:cobra:0dacccf:cobra/src/github.com/spf13/cobra \
+		spf13:fsync:12a01e6:fsync/src/github.com/spf13/fsync \
+		spf13:jWalterWeatherman:12bd96e:jWalterWeatherman/src/github.com/spf13/jwalterweatherman \
+		spf13:nitro:24d7ef3:nitro/src/github.com/spf13/nitro \
+		spf13:pflag:be7121d:pflag/src/github.com/spf13/pflag \
+		spf13:viper:d9cca5e:viper/src/github.com/spf13/viper \
+		stretchr:testify:890a5c3:testify/src/github.com/stretchr/testify \
+		yosssi:ace:ea038f4:ace/src/github.com/yosssi/ace \
+		golang:image:334384d:image/src/golang.org/x/image \
+		golang:net:0a93976:net/src/golang.org/x/net \
+		golang:sys:314a259:sys/src/golang.org/x/sys \
+		golang:text:1cbadb4:text/src/golang.org/x/text \
+		go-yaml:yaml:eb3733d:yaml/src/gopkg.in/yaml.v2 \
+		davecgh:go-spew:04cdfd4:go_spew/src/github.com/davecgh/go-spew \
+		pmezard:go-difflib:d8ed262:go_difflib/src/github.com/pmezard/go-difflib
 
-STRIP=		# stripping can break go binaries
+OPTIONS_DEFINE=		MANPAGES
+OPTIONS_DEFAULT=	MANPAGES
+OPTIONS_SUB=		yes
 
-post-extract:
-	@${MKDIR} ${WRKSRC}/src/github.com/BurntSushi
-	@${MKDIR} ${WRKSRC}/src/github.com/PuerkitoBio
-	@${MKDIR} ${WRKSRC}/src/github.com/bep
-	@${MKDIR} ${WRKSRC}/src/github.com/cpuguy83
-	@${MKDIR} ${WRKSRC}/src/github.com/dchest
-	@${MKDIR} ${WRKSRC}/src/github.com/eknkc
-	@${MKDIR} ${WRKSRC}/src/github.com/fsnotify
-	@${MKDIR} ${WRKSRC}/src/github.com/gorilla
-	@${MKDIR} ${WRKSRC}/src/github.com/hashicorp
-	@${MKDIR} ${WRKSRC}/src/github.com/kardianos
-	@${MKDIR} ${WRKSRC}/src/github.com/kr
-	@${MKDIR} ${WRKSRC}/src/github.com/kyokomi
-	@${MKDIR} ${WRKSRC}/src/github.com/magiconair
-	@${MKDIR} ${WRKSRC}/src/github.com/miekg
-	@${MKDIR} ${WRKSRC}/src/github.com/mitchellh
-	@${MKDIR} ${WRKSRC}/src/github.com/pkg
-	@${MKDIR} ${WRKSRC}/src/github.com/russross
-	@${MKDIR} ${WRKSRC}/src/github.com/shurcooL
-	@${MKDIR} ${WRKSRC}/src/github.com/spf13
-	@${MKDIR} ${WRKSRC}/src/github.com/spf13/hugo
-	@${MKDIR} ${WRKSRC}/src/github.com/yosssi
-	@${MKDIR} ${WRKSRC}/src/golang.org/x
-	@${MKDIR} ${WRKSRC}/src/gopkg.in
-.for src in CONTRIBUTING.md Dockerfile LICENSE.md Makefile README.md bench.sh \
-		bufferpool commands create docs examples helpers hugofs \
-		hugolib livereload main.go parser requirements.txt source \
-		target tpl transform utils watcher wercker.yml
-		@${MV} ${WRKSRC}/${src} \
-			${WRKSRC}/src/github.com/spf13/${PORTNAME}
-.endfor
-	@${MV} ${WRKSRC_toml} ${WRKSRC}/src/github.com/BurntSushi/toml
-	@${MV} ${WRKSRC_purell} ${WRKSRC}/src/github.com/PuerkitoBio/purell
-	@${MV} ${WRKSRC_urlesc} ${WRKSRC}/src/github.com/PuerkitoBio/urlesc
-	@${MV} ${WRKSRC_inflect} ${WRKSRC}/src/github.com/bep/inflect
-	@${MV} ${WRKSRC_go_md2man} ${WRKSRC}/src/github.com/cpuguy83/go-md2man
-	@${MV} ${WRKSRC_cssmin} ${WRKSRC}/src/github.com/dchest/cssmin
-	@${MV} ${WRKSRC_amber} ${WRKSRC}/src/github.com/eknkc/amber
-	@${MV} ${WRKSRC_fsnotify} ${WRKSRC}/src/github.com/fsnotify/fsnotify
-	@${MV} ${WRKSRC_websocket} ${WRKSRC}/src/github.com/gorilla/websocket
-	@${MV} ${WRKSRC_hcl} ${WRKSRC}/src/github.com/hashicorp/hcl
-	@${MV} ${WRKSRC_osext} ${WRKSRC}/src/github.com/kardianos/osext
-	@${MV} ${WRKSRC_fs} ${WRKSRC}/src/github.com/kr/fs
-	@${MV} ${WRKSRC_emoji} ${WRKSRC}/src/github.com/kyokomi/emoji
-	@${MV} ${WRKSRC_properties} ${WRKSRC}/src/github.com/magiconair/properties
-	@${MV} ${WRKSRC_mmark} ${WRKSRC}/src/github.com/miekg/mmark
-	@${MV} ${WRKSRC_mapstructure} ${WRKSRC}/src/github.com/mitchellh/mapstructure
-	@${MV} ${WRKSRC_errors} ${WRKSRC}/src/github.com/pkg/errors
-	@${MV} ${WRKSRC_sftp} ${WRKSRC}/src/github.com/pkg/sftp
-	@${MV} ${WRKSRC_blackfriday} ${WRKSRC}/src/github.com/russross/blackfriday
-	@${MV} ${WRKSRC_sanitized_anchor_name} ${WRKSRC}/src/github.com/shurcooL/sanitized_anchor_name
-	@${MV} ${WRKSRC_afero} ${WRKSRC}/src/github.com/spf13/afero
-	@${MV} ${WRKSRC_cast} ${WRKSRC}/src/github.com/spf13/cast
-	@${MV} ${WRKSRC_cobra} ${WRKSRC}/src/github.com/spf13/cobra
-	@${MV} ${WRKSRC_fsync} ${WRKSRC}/src/github.com/spf13/fsync
-	@${MV} ${WRKSRC_jWalterWeatherman} ${WRKSRC}/src/github.com/spf13/jwalterweatherman
-	@${MV} ${WRKSRC_nitro} ${WRKSRC}/src/github.com/spf13/nitro
-	@${MV} ${WRKSRC_pflag} ${WRKSRC}/src/github.com/spf13/pflag
-	@${MV} ${WRKSRC_viper} ${WRKSRC}/src/github.com/spf13/viper
-	@${MV} ${WRKSRC_ace} ${WRKSRC}/src/github.com/yosssi/ace
-	@${MV} ${WRKSRC_crypto} ${WRKSRC}/src/golang.org/x/crypto
-	@${MV} ${WRKSRC_sys} ${WRKSRC}/src/golang.org/x/sys
-	@${MV} ${WRKSRC_text} ${WRKSRC}/src/golang.org/x/text
-	@${MV} ${WRKSRC_yaml} ${WRKSRC}/src/gopkg.in/yaml.v2
+MANPAGES_DESC=	Build and/or install manual pages
+
+GOENV=		GOPATH=${WRKSRC} CGO_CFLAGS="${CGO_CFLAGS}" \
+		CGO_LDFLAGS="${CGO_LDFLAGS}" GOBIN=""
+
+PORTMANS=	hugo-benchmark.1 hugo-config.1 hugo-convert-toJSON.1 \
+		hugo-convert-toTOML.1 hugo-convert-toYAML.1 hugo-convert.1 \
+		hugo-env.1 hugo-gen-autocomplete.1 hugo-gen-doc.1 hugo-gen-man.1 \
+		hugo-gen.1 hugo-import-jekyll.1 hugo-import.1 hugo-list-drafts.1 \
+		hugo-list-expired.1 hugo-list-future.1 hugo-list.1 hugo-new-site.1 \
+		hugo-new-theme.1 hugo-new.1 hugo-server.1 hugo-undraft.1 \
+		hugo-version.1 hugo.1
 
 do-build:
-	@cd ${WRKSRC}/src/github.com/spf13/${PORTNAME} && ${SETENV} GOPATH=${WRKSRC} go build -o bin/${PORTNAME}
-	@cd ${WRKSRC}/src/github.com/spf13/${PORTNAME} && ./bin/${PORTNAME} gen man --dir man/man1/
+	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME} && \
+	${SETENV} ${MAKE_ENV} ${GOENV} ${GO_CMD} build -o bin/${PORTNAME}
+
+do-build-MANPAGES-on:
+	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME} && ./bin/${PORTNAME} gen man --dir man/man1/
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/spf13/${PORTNAME}/bin/${PORTNAME} ${STAGEDIR}/${PREFIX}/bin/${PORTNAME}
-.for i in hugo.1 hugo_benchmark.1 hugo_check.1 hugo_config.1 hugo_convert.1 \
-		hugo_convert_toJSON.1 hugo_convert_toTOML.1 \
-		hugo_convert_toYAML.1 hugo_gen.1 hugo_gen_autocomplete.1 \
-		hugo_gen_doc.1 hugo_gen_man.1 hugo_import.1 \
-		hugo_import_jekyll.1 hugo_list.1 hugo_list_drafts.1 \
-		hugo_list_future.1 hugo_new.1 hugo_new_site.1 hugo_new_theme.1 \
-		hugo_server.1 hugo_undraft.1 hugo_version.1
-		${INSTALL_MAN} ${WRKSRC}/src/github.com/spf13/${PORTNAME}/man/man1/$i ${STAGEDIR}/${PREFIX}/man/man1
+	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}/bin/${PORTNAME} ${STAGEDIR}/${PREFIX}/bin/${PORTNAME}
+
+do-install-MANPAGES-on:
+.for i in ${PORTMANS}
+	${INSTALL_MAN} ${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}/man/man1/$i ${STAGEDIR}/${PREFIX}/man/man1
 .endfor
 
 .include <bsd.port.mk>

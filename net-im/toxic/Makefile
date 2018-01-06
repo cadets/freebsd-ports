@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	toxic
-PORTVERSION=	0.7.0.151113
-PORTREVISION=	3
+PORTVERSION=	0.8.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -15,28 +15,32 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${LOCALBASE}/lib/libtoxcore.a:net-im/tox	\
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libvpx.so:multimedia/libvpx		\
-		libopus.so:audio/opus		\
+		libsodium.so:security/libsodium		\
+		libpng.so:graphics/png		\
+		libopus.so:audio/opus			\
 		libcurl.so:ftp/curl			\
-		libv4l2.so:multimedia/libv4l	\
+		libv4l2.so:multimedia/libv4l		\
 		libqrencode.so:graphics/libqrencode	\
 		libconfig.so:devel/libconfig
 RUN_DEPENDS=	${LOCALBASE}/lib/libtoxcore.a:net-im/tox
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	Tox
-GH_TAGNAME=	9f0feb7
+GH_ACCOUNT=	JFreegman
 
-OPTIONS_DEFINE=	X11
+OPTIONS_DEFINE=	X11 PYTHON
 OPTIONS_DEFAULT=X11
 
-X11_USE=	XORG=x11
+X11_USE=	GNOME=gdkpixbuf2,glib20 XORG=x11
 X11_MAKE_ARGS_OFF=	DISABLE_X11=1 DISABLE_DESKTOP_NOTIFY=1
 X11_LIB_DEPENDS=libnotify.so:devel/libnotify
+
+PYTHON_VARS=	USES+=python:3.3+
+PYTHON_MAKE_ARGS=	ENABLE_PYTHON=1
 
 MAKE_ENV=	USER_CFLAGS="${CFLAGS}" USER_LDFLAGS="${LDFLAGS}"
 SUB_FILES=	pkg-message
 
-USES=		desktop-file-utils gmake ncurses openal:al,alut pkgconfig
+USES=		desktop-file-utils gettext-runtime gmake ncurses openal:al,alut pkgconfig
 
 pre-configure:
 	${REINPLACE_CMD} -e 's|PREFIX =|PREFIX?=|;s|$$(shell git rev-list HEAD.*$$|${GH_TAGNAME}|'	\

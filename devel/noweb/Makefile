@@ -18,6 +18,11 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 BUILD_DEPENDS=	icont:lang/icon
 RUN_DEPENDS=	iconx:lang/icon
 
+# Master site uses extended passive mode fetch(1) does not support
+FETCH_CMD=	/usr/bin/ftp
+FETCH_ARGS=	# empty
+DISABLE_SIZE=	yes
+
 PORTSCOUT=	skipv:2.11
 
 USES=		tar:tgz

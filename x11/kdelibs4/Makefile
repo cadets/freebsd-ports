@@ -3,15 +3,13 @@
 
 PORTNAME=	kdelibs
 PORTVERSION=	${KDE4_KDELIBS_VERSION}
-PORTREVISION=	7
-CATEGORIES=	x11 kde
-MASTER_SITES=   KDE/${KDE4_APPLICATIONS_BRANCH}/applications/${KDE4_APPLICATIONS_VERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+PORTREVISION=	6
+CATEGORIES=	x11 kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Base set of libraries needed by KDE programs
 
-LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
+LIB_DEPENDS=	libImath-2_2.so:graphics/ilmbase \
 		libjasper.so:graphics/jasper \
 		libpcre.so:devel/pcre \
 		libenchant.so:textproc/enchant \
@@ -20,7 +18,8 @@ LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
 		libhal.so:sysutils/hal \
 		libqca.so:devel/qca \
 		libpolkit-qt-core-1.so:sysutils/polkit-qt \
-		libdbusmenu-qt.so:devel/libdbusmenu-qt
+		libdbusmenu-qt.so:devel/libdbusmenu-qt \
+		libstreams.so:deskutils/libstreams
 
 BUILD_DEPENDS=	docbook-xml>0:textproc/docbook-xml \
 		${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl
@@ -31,17 +30,16 @@ RUN_DEPENDS=	${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-them
 		${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl
 
 USES=		cmake:outsource fam gettext grantlee:4 jpeg kde:4 perl5 \
-		shared-mime-info shebangfix tar:xz
+		shared-mime-info shebangfix tar:xz ssl
 USE_GNOME=	libxml2 libxslt
-USE_KDE=	oxygen-icons4 \
+USE_KDE=	oxygen-icons5 \
 		attica automoc4 ontologies soprano strigi
-USE_OPENSSL=	yes
 USE_QT4=	corelib dbus declarative designer_build gui \
 		network opengl phonon qt3support \
 		qtestlib script sql svg webkit xml \
 		moc_build qmake_build rcc_build uic_build \
 		imageformats_run qdbusviewer_run
-USE_XORG=	sm x11 xcursor xext xfixes xft xpm xrender xtst
+USE_XORG=	ice sm x11 xau xcursor xdmcp xext xfixes xft xpm xrender xtst
 USE_LDCONFIG=	yes
 MAKE_ENV=	XDG_CONFIG_HOME=/dev/null
 
@@ -73,14 +71,18 @@ SHEBANG_FILES=	kdecore/kconfig_compiler/checkkcfg.pl \
 		kio/proxytype.pl \
 		kioslave/http/kcookiejar/kcookiescfg.pl
 
-OPTIONS_DEFINE=	AVAHI UPNP
-OPTIONS_DEFAULT=AVAHI
+OPTIONS_DEFINE=	AVAHI OPENEXR UPNP
+OPTIONS_DEFAULT=	AVAHI OPENEXR
+OPTIONS_SUB=	yes
 
-AVAHI_LIB_DEPENDS=	libavahi-core.so:${PORTSDIR}/net/avahi-app
+AVAHI_LIB_DEPENDS=	libavahi-core.so:net/avahi-app
 
 UPNP_DESC=	UPnP backend for Solid (WARNING: Unstable)
-UPNP_LIB_DEPENDS=	libHUpnp.so:${PORTSDIR}/net/hupnp
+UPNP_LIB_DEPENDS=	libHUpnp.so:net/hupnp
 UPNP_CMAKE_ON=	-DHUPNP_ENABLED:BOOL=On
+
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR
+OPENEXR_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_OpenEXR
 
 post-patch:
 	${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},g' \

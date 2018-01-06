@@ -2,6 +2,7 @@
 
 PORTNAME=	cursor-dmz-aa-theme
 PORTVERSION=	0.4.4
+PORTREVISION=	1
 CATEGORIES=	x11-themes
 MASTER_SITES=	DEBIAN/pool/main/d/dmz-cursor-theme
 DISTNAME=	dmz-cursor-theme_${PORTVERSION}
@@ -9,16 +10,13 @@ DISTNAME=	dmz-cursor-theme_${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DMZ AA style neutral scalable cursor theme
 
-LICENSE=	CCbySA3
-LICENSE_NAME=	Creative Commons Attribution-ShareAlike 3.0 Unported
-LICENSE_TEXT=	See http://creativecommons.org/licenses/by-sa/3.0/
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE=	CC-BY-SA-3.0
 
 BUILD_DEPENDS=	xcursorgen:x11/xcursorgen
 
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME:S/_/-/}/DMZ-Black
-DATADIR=	${PREFIX}/lib/X11/icons/Vanilla-DMZ-AA
+DATADIR=	${PREFIX}/share/icons/Vanilla-DMZ-AA
 
 do-build:
 	(cd ${WRKSRC}/pngs && ${SH} make.sh)

@@ -3,7 +3,7 @@
 
 PORTNAME=	grive
 PORTVERSION=	0.3.0
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	net
 
 MAINTAINER=	ktsin@acm.org
@@ -11,14 +11,14 @@ COMMENT=	Open source client for Google Drive
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	Does not build
-
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 		libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \
 		libgcrypt.so:security/libgcrypt \
 		libjson-c.so:devel/json-c \
 		libyajl.so:devel/yajl
+
+CONFLICTS_INSTALL=	grive2-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Grive

@@ -224,7 +224,7 @@
 %%MPIDIR%%/lib/libmpi.la
 %%MPIDIR%%/lib/libmpi.so
 %%MPIDIR%%/lib/libmpi.so.12
-%%MPIDIR%%/lib/libmpi.so.12.0.3
+%%MPIDIR%%/lib/libmpi.so.12.0.7
 %%MPIDIR%%/lib/libmpi_cxx.la
 %%MPIDIR%%/lib/libmpi_cxx.so
 %%MPIDIR%%/lib/libmpi_cxx.so.1
@@ -236,7 +236,7 @@
 %%MPIDIR%%/lib/libmpi_usempi.la
 %%MPIDIR%%/lib/libmpi_usempi.so
 %%MPIDIR%%/lib/libmpi_usempi.so.5
-%%MPIDIR%%/lib/libmpi_usempi.so.5.1.0
+%%MPIDIR%%/lib/libmpi_usempi.so.5.2.0
 %%MPIDIR%%/lib/libompitrace.la
 %%MPIDIR%%/lib/libompitrace.so
 %%MPIDIR%%/lib/libompitrace.so.0
@@ -244,11 +244,11 @@
 %%MPIDIR%%/lib/libopen-pal.la
 %%MPIDIR%%/lib/libopen-pal.so
 %%MPIDIR%%/lib/libopen-pal.so.13
-%%MPIDIR%%/lib/libopen-pal.so.13.0.3
+%%MPIDIR%%/lib/libopen-pal.so.13.0.4
 %%MPIDIR%%/lib/libopen-rte.la
 %%MPIDIR%%/lib/libopen-rte.so
 %%MPIDIR%%/lib/libopen-rte.so.12
-%%MPIDIR%%/lib/libopen-rte.so.12.0.3
+%%MPIDIR%%/lib/libopen-rte.so.12.0.4
 %%MPIDIR%%/lib/mpi.mod
 %%MPIDIR%%/lib/openmpi/libompi_dbg_msgq.la
 %%MPIDIR%%/lib/openmpi/libompi_dbg_msgq.so
@@ -284,6 +284,8 @@
 %%MPIDIR%%/lib/openmpi/mca_coll_self.so
 %%MPIDIR%%/lib/openmpi/mca_coll_sm.la
 %%MPIDIR%%/lib/openmpi/mca_coll_sm.so
+%%MPIDIR%%/lib/openmpi/mca_coll_sync.la
+%%MPIDIR%%/lib/openmpi/mca_coll_sync.so
 %%MPIDIR%%/lib/openmpi/mca_coll_tuned.la
 %%MPIDIR%%/lib/openmpi/mca_coll_tuned.so
 %%MPIDIR%%/lib/openmpi/mca_compress_bzip.la
@@ -894,10 +896,12 @@
 %%MPIDIR%%/man/man7/orte_sstore.7.gz
 %%MPIDIR%%/%%DATADIR%%/amca-param-sets/example.conf
 %%MPIDIR%%/%%DATADIR%%/help-btl-vader.txt
+%%MPIDIR%%/%%DATADIR%%/help-coll-sync.txt
 %%MPIDIR%%/%%DATADIR%%/help-dash-host.txt
 %%MPIDIR%%/%%DATADIR%%/help-db-base.txt
 %%MPIDIR%%/%%DATADIR%%/help-errmgr-base.txt
 %%MPIDIR%%/%%DATADIR%%/help-ess-base.txt
+%%MPIDIR%%/%%DATADIR%%/help-ess-hnp.txt
 %%MPIDIR%%/%%DATADIR%%/help-hostfile.txt
 %%MPIDIR%%/%%DATADIR%%/help-mca-base.txt
 %%MPIDIR%%/%%DATADIR%%/help-mca-bml-r2.txt

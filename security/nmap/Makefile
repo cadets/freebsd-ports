@@ -2,13 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	nmap
-DISTVERSION=	7.25BETA1
+DISTVERSION=	7.40
+PORTREVISION=	1
 CATEGORIES=	security ipv6
 MASTER_SITES=	http://nmap.org/dist/ \
 		LOCAL/ohauer
 
-MAINTAINER=	ohauer@FreeBSD.org
-COMMENT=	Port scanning utility for large networks
+MAINTAINER?=	ohauer@FreeBSD.org
+COMMENT?=	Port scanning utility for large networks
 
 # nmap-6.47 => svn.nmap.org/nmap-releases/nmap-6.47 (r33605)
 # http://nmap.org/book/man-legal.html
@@ -17,12 +18,13 @@ COMMENT=	Port scanning utility for large networks
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+.if !defined(MASTERDIR)
+
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USES=		tar:bzip2 gmake cpe
 GNU_CONFIGURE=	yes
 
-# Note: nmap does no longer build agains custom kernel without IPv6!
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	DOCS SSL
 OPTIONS_DEFAULT=SSL
@@ -32,8 +34,6 @@ SSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
 SSL_CONFIGURE_OFF=	--without-openssl
 SSL_CFLAGS=		-I${OPENSSLINC}
 SSL_VARS=		STRIP_FILES=ncat
-
-.include <bsd.port.options.mk>
 
 DOCS=	CHANGELOG HACKING
 STRIP_FILES+=	nmap nping
@@ -47,7 +47,7 @@ CONFIGURE_ARGS+=--without-localdirs \
 
 # XXX limit results if we do a grep in the sources!
 post-extract:
-	@${RM} -rf ${WRKSRC}/mswin32
+	@${RM} -r ${WRKSRC}/mswin32
 
 post-configure:
 	@${REINPLACE_CMD} -e "s|^DESTDIR *=|& ${DESTDIR}|" ${WRKSRC}/Makefile
@@ -61,5 +61,7 @@ post-install:
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+
+.endif
 
 .include <bsd.port.mk>

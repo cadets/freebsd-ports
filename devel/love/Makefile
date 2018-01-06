@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	love
-PORTVERSION=	0.10.0
+PORTVERSION=	0.10.2
+PORTREVISION=	3
 CATEGORIES=	devel games
 MASTER_SITES=	https://bitbucket.org/rude/love/downloads/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -19,15 +20,14 @@ LIB_DEPENDS=	libmodplug.so:audio/libmodplug \
 		libvorbisfile.so:audio/libvorbis \
 		libphysfs.so:devel/physfs \
 		libfreetype.so:print/freetype2 \
-		libtheora.so:multimedia/libtheora
+		libtheora.so:multimedia/libtheora \
+		libogg.so:audio/libogg
 
 USES=		compiler:c++11-lib desktop-file-utils gmake libtool \
 		localbase openal pkgconfig shared-mime-info
 USE_SDL=	sdl2
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	zlib_CFLAGS=" " \
-		zlib_LIBS="-lz"
 WRKSRC=		${WRKDIR}/love-${PORTVERSION}
 INSTALL_TARGET=	install-strip
 

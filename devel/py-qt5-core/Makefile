@@ -10,7 +10,7 @@ CONFIGURE_ARGS=	--enable QtCore
 PYQT_DIST=	yes
 
 USES=		python pyqt:5
-USE_PYTHON=	py3kplist
+USE_PYTHON=	py3kplist flavors
 USE_PYQT=	sip_build
 USE_QT5=	core qmake_build
 
@@ -33,9 +33,9 @@ DEBUG_CONFIGURE_ON=	--debug --trace
 PLIST_SUB+=	PYTHON_MAJOR_VER="${PYTHON_MAJOR_VER}"
 post-patch:
 .if ${PYTHON_MAJOR_VER} == "2"
-	${RM} -rf ${WRKSRC}/pyuic/uic/port_v3
+	${RM} -r ${WRKSRC}/pyuic/uic/port_v3
 .elif ${PYTHON_MAJOR_VER} == "3"
-	${RM} -rf ${WRKSRC}/pyuic/uic/port_v2
+	${RM} -r ${WRKSRC}/pyuic/uic/port_v2
 .endif
 
 post-install:

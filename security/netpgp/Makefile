@@ -8,15 +8,15 @@ MASTER_SITES=	ftp://ftp.netbsd.org/pub/pkgsrc/distfiles/LOCAL_PORTS/
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	PGP signing, verification, encryption, and decryption program
 
-USES=		libtool
-USE_OPENSSL=	yes
+USES=		libtool ssl
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
-CFLAGS+=	-Wno-error
-.if !exists(/usr/include/openssl/idea.h)
-CFLAGS+=	-DOPENSSL_NO_IDEA
-.endif
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+CPPFLAGS+=	-I${OPENSSLINC}
+CFLAGS+=	-I${OPENSSLINC} -Wno-error
+LDFLAGS+=	-L${OPENSSLLIB}
+
+.include <bsd.port.post.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	sbxkb
 PORTVERSION=	0.7.6
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	SF/staybox
 
@@ -12,7 +13,6 @@ COMMENT=	XKB keyboard layout indicator and switcher
 LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 LIBS+=		-L${LOCALBASE}/lib -lX11
 USES=		pkgconfig
 USE_GNOME=	gtk20

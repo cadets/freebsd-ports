@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libxml2
-PORTVERSION=	2.9.4
+PORTVERSION=	2.9.7
 PORTREVISION?=	0
 CATEGORIES?=	textproc gnome
 MASTER_SITES=	ftp://xmlsoft.org/libxml2/ \
@@ -12,9 +12,6 @@ DIST_SUBDIR=	gnome2
 
 MAINTAINER?=	gnome@FreeBSD.org
 COMMENT?=	XML parser library for GNOME
-
-LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/COPYING
 
 .if !defined(REFERENCE_PORT)
 
@@ -66,7 +63,7 @@ post-patch:
 
 .if !defined(MASTERDIR)
 post-install:
-	@${RM} -rf ${STAGEDIR}${PREFIX}/share/gtk-doc
+	@${RM} -r ${STAGEDIR}${PREFIX}/share/gtk-doc
 .endif
 
 .include <bsd.port.mk>

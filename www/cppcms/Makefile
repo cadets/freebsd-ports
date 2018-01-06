@@ -1,25 +1,23 @@
 # $FreeBSD$
 
 PORTNAME=	cppcms
-PORTVERSION=	1.0.5
-PORTREVISION=	4
+PORTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	SF/cppcms/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF/cppcms/${PORTNAME}/${PORTVERSION}-beta
 
 MAINTAINER=	kevlo@FreeBSD.org
 COMMENT=	C++ web development framework
 
 LICENSE=	LGPL3
 
-BROKEN_powerpc64=	Does not build
-
-BROKEN_FreeBSD_9=	does not build on 9.x
-
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-USES=		cmake python:2 tar:bzip2
-USE_OPENSSL=	yes
+BROKEN_powerpc64=	Does not build: error: 'localeconv_l' was not declared in this scope
+
+USES=		cmake python:2 shebangfix tar:bzip2 ssl
 USE_LDCONFIG=	yes
+SHEBANG_FILES=	bin/cppcms_tmpl_cc
 
 OPTIONS_DEFINE=		EXAMPLES GCRYPT ICU
 OPTIONS_DEFAULT=	ICU

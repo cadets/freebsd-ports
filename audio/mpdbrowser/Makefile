@@ -3,7 +3,7 @@
 
 PORTNAME=	mpdbrowser
 PORTVERSION=	0.9.20
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio python
 MASTER_SITES=	http://mpdbrowser.tuxfamily.org/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ COMMENT=	GTK+ client for the Music Player Daemon (MPD)
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpd>=0.2.0:audio/py-mpd
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpd>=0.2.0:audio/py-mpd@${FLAVOR}
 
 USES=		gettext iconv python:2 tar:tgz
 USE_GNOME=	intltool pygtk2

@@ -1,17 +1,13 @@
---- version-gen.sh.orig	2016-08-05 21:19:57 UTC
+--- version-gen.sh.orig	2017-11-18 09:03:27 UTC
 +++ version-gen.sh
-@@ -1,13 +1,3 @@
- #!/bin/sh
+@@ -2,10 +2,6 @@
  
--DEFAULT_VERSION="5.5.2.git"
--
--VERSION="`git describe 2> /dev/null | grep collectd | sed -e 's/^collectd-//'`"
--
--if test -z "$VERSION"; then
--	VERSION="$DEFAULT_VERSION"
+ DEFAULT_VERSION="5.8.0.git"
+ 
+-if [ -d .git ]; then
+-	VERSION="`git describe --dirty=+ --abbrev=7 2> /dev/null | grep collectd | sed -e 's/^collectd-//' -e 's/-/./g'`"
 -fi
 -
--VERSION="`echo \"$VERSION\" | sed -e 's/-/./g'`"
--
--printf "%s" "$VERSION"
-+echo -n '5.5.2.git'
+ if test -z "$VERSION"; then
+ 	VERSION="$DEFAULT_VERSION"
+ fi

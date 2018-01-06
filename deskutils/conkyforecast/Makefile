@@ -18,7 +18,7 @@ RUN_DEPENDS=	conky:sysutils/conky \
 		pidof:sysutils/pidof
 
 USES=		gettext python fonts
-USE_PYTHON=	distutils
+USE_PYTHON=	distutils concurrent optsuffix
 SUB_FILES=	pkg-message
 
 WRKSRC=		${WRKDIR}/src
@@ -39,7 +39,7 @@ post-patch:
 	@cd ${WRKSRC} && ${REINPLACE_CMD} -e 's,/usr/bin/python,/usr/bin/env,g' \
 		conkyForecast \
 		conkyForecast-SunsetSunriseCountdown
-	@cd ${WRKSRC} && ${RM} -fr test/*.bak example/*.bak
+	@cd ${WRKSRC} && ${RM} -r test/*.bak example/*.bak
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${FONTSDIR}

@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	gputils
-PORTVERSION=	1.5.0
+DISTVERSION=	1.5.0-1
 CATEGORIES=	devel
-MASTER_SITES=	SF/gputils/gputils/${PORTVERSION}
+MASTER_SITES=	SF/gputils/gputils/${DISTVERSION:C/-.*//}
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Utilities for Microchip PIC microcontrollers
@@ -14,14 +14,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	gplink-[0-9]*
 GNU_CONFIGURE=	yes
-USES=		bison gmake
 CONFIGURE_ARGS= --disable-dependency-tracking --disable-html-doc
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	flex>=2.5.35:textproc/flex
-CONFIGURE_ARGS+=LEX=${LOCALBASE}/bin/flex
-.endif
+USES=		bison gmake tar:bz2
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C/-.*//}
 
 .include <bsd.port.mk>

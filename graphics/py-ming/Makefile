@@ -3,8 +3,7 @@
 
 PORTNAME=	ming
 DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	0_4_7
-PORTREVISION=	1
+DISTVERSION=	0_4_8
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -27,7 +26,7 @@ CONFIGURE_ARGS=	--enable-python
 CONFIGURE_ENV=	PYTHON_LDFLAGS="-L${PYTHON_LIBDIR} -l${PYTHON_VERSION}${PYTHON_ABIVER}"
 GNU_CONFIGURE=	yes
 USE_PYTHON=	autoplist concurrent distutils
-USES=		autoreconf libtool localbase python
+USES=		autoreconf libtool localbase:ldflags python
 
 BUILD_WRKSRC=	${WRKSRC}/py_ext
 INSTALL_WRKSRC=	${WRKSRC}/py_ext

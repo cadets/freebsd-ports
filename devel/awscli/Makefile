@@ -2,29 +2,26 @@
 # $FreeBSD$
 
 PORTNAME=	awscli
-PORTVERSION=	1.10.56
+PORTVERSION=	1.12.1
 CATEGORIES=	devel
 MASTER_SITES=	CHEESESHOP
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	alexey@renatasystems.org
+MAINTAINER=	bhughes@FreeBSD.org
 COMMENT=	Universal Command Line Interface for Amazon Web Services
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}botocore>=1.4.46:devel/py-botocore \
-		${PYTHON_PKGNAMEPREFIX}colorama>=0.2.5:devel/py-colorama \
-		${PYTHON_PKGNAMEPREFIX}s3transfer>=0.1.0:net/py-s3transfer \
-		${PYTHON_PKGNAMEPREFIX}docutils>=0.10:textproc/py-docutils \
-		${PYTHON_PKGNAMEPREFIX}rsa>=3.1.2:security/py-rsa
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}botocore>=1.8.1:devel/py-botocore@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}colorama>=0.2.5:devel/py-colorama@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}s3transfer>=0.1.9:net/py-s3transfer@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}docutils>=0.10:textproc/py-docutils@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}rsa>=3.1.2:security/py-rsa@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yaml>=3.10:devel/py-yaml@${FLAVOR}
 
-USES=		python:2
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist distutils concurrent
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 2700
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}argparse>0:devel/py-argparse
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

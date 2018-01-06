@@ -2,9 +2,10 @@
 
 PORTNAME=	uclcmd
 PORTVERSION=	0.1
+PORTREVISION=	2
 CATEGORIES=	devel
 
-MAINTAINER=	johannes@perceivon.net
+MAINTAINER=	allanjude@FreeBSD.org
 COMMENT=	Command line tool for working with UCL config files
 
 LICENSE=	BSD2CLAUSE
@@ -14,7 +15,7 @@ LIB_DEPENDS=	libucl.so:textproc/libucl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	allanjude
-GH_TAGNAME=	0d336e9
+GH_TAGNAME=	da1ac0f
 
 USES=		pkgconfig
 PLIST_FILES=	bin/uclcmd

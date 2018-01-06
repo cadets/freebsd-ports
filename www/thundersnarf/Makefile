@@ -19,6 +19,8 @@ PGSQL_DESC=	Install PostgreSQL (report data storing)
 
 USES=		tar:bzip2
 
+PHP_USES=	php
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -48,7 +50,7 @@ SUB_FILES=	pkg-message
 
 post-extract:
 	# Present on FreeBSD 8 and 9 after extraction
-	@${RM} -f ${WRKSRC}/protected/data/bin/._thundersnarf
+	@${RM} ${WRKSRC}/protected/data/bin/._thundersnarf
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}

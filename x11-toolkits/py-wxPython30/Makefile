@@ -2,6 +2,7 @@
 
 PORTNAME=	wxPython
 PORTVERSION=	3.0.2.0
+PORTREVISION=	4
 DISTVERSIONPREFIX=	src-
 CATEGORIES=	x11-toolkits python
 MASTER_SITES=	SF/wxpython/wxPython/${PORTVERSION}
@@ -15,13 +16,14 @@ DIST_SUBDIR=	python
 
 WRKSRC_SUBDIR=	wxPython
 
-USES=		compiler:c++11-lib python tar:bzip2
+USES=		compiler:c++11-lib python:2.7 shebangfix tar:bzip2
+SHEBANG_FILES=	wx/tools/Editra/Editra.pyw
 
 .if defined(WITH_WXVERSION_ONLY)
 
 PKGNAMESUFFIX=	-common
 
-USE_PYTHON=	py3kplist
+USE_PYTHON=	py3kplist flavors
 
 do-build:
 	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py -d ${PYTHON_SITELIBDIR} -f ${WRKSRC}/wxversion
@@ -37,7 +39,7 @@ do-install:
 WXPORT=		gtk2
 WX_PYTHON_DIR=	wx-${WX_VERSION}-${WXPORT}
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}wxPython-common>0:x11-toolkits/py-wxPython-common
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}wxPython-common>0:x11-toolkits/py-wxPython-common@${FLAVOR}
 
 USES+=		gettext pkgconfig
 USE_WX=		3.0
@@ -45,7 +47,6 @@ WANT_UNICODE=	yes
 USE_PYTHON=	distutils autoplist
 PYDISTUTILS_BUILDARGS=	WX_CONFIG="${WX_CONFIG}" \
 			WXPORT="${WXPORT}" \
-			NO_HEADERS=1 \
 			NO_SCRIPTS=1 \
 			INSTALL_MULTIVERSION=1
 PYDISTUTILS_CONFIGUREARGS+=	${PYDISTUTILS_BUILDARGS}

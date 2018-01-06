@@ -3,7 +3,7 @@
 
 PORTNAME=	vtk
 PORTVERSION=	6.2.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	6
@@ -178,13 +178,14 @@ PLIST_SUB+=	JAVA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USES+=		python
+USES+=		python:2.7
+USE_PYTHON=	flavors
 CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=ON \
 		-DVTK_INSTALL_PYTHON_MODULE_DIR:STRING=${PYTHONPREFIX_SITELIBDIR} \
 		-DModule_vtkRenderingMatplotlib:BOOL=ON \
 		-DModule_vtkPythonInterpreter:BOOL=ON
 PLIST_SUB+=	PYTHON=""
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib
+RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${FLAVOR}
 .else
 CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=OFF
 PLIST_SUB+=	PYTHON="@comment "
@@ -216,9 +217,5 @@ BUILD_DEPENDS+=	doxygen:devel/doxygen
 .else
 CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=OFF
 .endif
-
-post-install:
-# So that this port doesn't clash with science/paraview:
-	${RM} ${STAGEDIR}${PREFIX}/share/cmake/hdf5/libhdf5.settings
 
 .include <bsd.port.mk>

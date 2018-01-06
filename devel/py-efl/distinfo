@@ -1,2 +1,3 @@
-SHA256 (enlightenment/python-efl-1.15.0.tar.xz) = e6df2bfdedd6a070539c940c3a7dcd94e34e729dc0e80b148954b747472819e4
-SIZE (enlightenment/python-efl-1.15.0.tar.xz) = 9665652
+TIMESTAMP = 1504024229
+SHA256 (enlightenment/python-efl-1.19.0.tar.xz) = ba2969a094886f193cb30761c8172754aac368359c69fff9f7b412d0daf4b880
+SIZE (enlightenment/python-efl-1.19.0.tar.xz) = 9383376

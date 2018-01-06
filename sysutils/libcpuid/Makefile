@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libcpuid
-PORTVERSION=	0.3.0
+PORTVERSION=	0.4.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
-MASTER_SITES=	SF
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Small x86 CPU identification library
@@ -13,9 +13,11 @@ LICENSE=	BSD2CLAUSE
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-USES=		libtool pathfix
+USE_GITHUB=	yes
+GH_ACCOUNT=	anrieff
+
+USES=		autoreconf libtool pathfix
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	dir2ogg
-PORTVERSION=	0.11.8
-PORTREVISION=	4
+PORTVERSION=	0.12
+PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	http://jak-linux.org/projects/dir2ogg/${PORTVERSION:R}/
+MASTER_SITES=	http://jak-linux.org/projects/dir2ogg/${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line {wav,mp3,m4a} to ogg converter
@@ -14,7 +14,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	faad:audio/faad \
-		mutagen-inspect:audio/py-mutagen \
+		${PYTHON_PKGNAMEPREFIX}mutagen>=0:audio/py-mutagen@${PY_FLAVOR} \
 		mplayer:multimedia/mplayer \
 		oggenc:audio/vorbis-tools
 

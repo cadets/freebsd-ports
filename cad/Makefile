@@ -14,6 +14,7 @@
     SUBDIR += brickutils
     SUBDIR += brlcad
     SUBDIR += calculix
+    SUBDIR += calculix-ccx
     SUBDIR += cascade
     SUBDIR += chipvault
     SUBDIR += cider
@@ -25,6 +26,7 @@
     SUBDIR += elmerfem
     SUBDIR += feappv
     SUBDIR += fidocadj
+    SUBDIR += freecad
     SUBDIR += freehdl
     SUBDIR += fritzing
     SUBDIR += gdsreader
@@ -44,10 +46,12 @@
     SUBDIR += jspice3
     SUBDIR += kicad
     SUBDIR += kicad-devel
+    SUBDIR += kicad-library
     SUBDIR += klayout
     SUBDIR += layouteditor
     SUBDIR += ldraw
     SUBDIR += leocad
+    SUBDIR += libopencad
     SUBDIR += librecad
     SUBDIR += linux-eagle5
     SUBDIR += linuxcnc-devel
@@ -67,6 +71,7 @@
     SUBDIR += py-gdspy
     SUBDIR += py-lcapy
     SUBDIR += py-pycam
+    SUBDIR += python-gdsii
     SUBDIR += pythoncad
     SUBDIR += qcad
     SUBDIR += qelectrotech
@@ -77,8 +82,11 @@
     SUBDIR += rubygem-gdsii
     SUBDIR += sceptre
     SUBDIR += scotch
+    SUBDIR += solvespace
+    SUBDIR += sp2sp
     SUBDIR += spice
     SUBDIR += stepcode
+    SUBDIR += sumo
     SUBDIR += sweethome3d
     SUBDIR += tkgate
     SUBDIR += tochnog
@@ -87,5 +95,6 @@
     SUBDIR += verilog-mode.el
     SUBDIR += xcircuit
     SUBDIR += z88
+    SUBDIR += zcad
 
 .include <bsd.port.subdir.mk>

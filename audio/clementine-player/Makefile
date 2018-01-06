@@ -3,6 +3,7 @@
 
 PORTNAME=	clementine
 PORTVERSION=	1.3.1
+PORTREVISION=	16
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-player
 
@@ -13,7 +14,6 @@ LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
-
 LIB_DEPENDS=	libtag.so:audio/taglib \
 		libchromaprint.so:audio/chromaprint \
 		libprotobuf.so:devel/protobuf \
@@ -23,6 +23,8 @@ LIB_DEPENDS=	libtag.so:audio/taglib \
 		libechonest.so:audio/libechonest \
 		libcryptopp.so:security/cryptopp
 
+BROKEN_powerpc64=	fails to compile: tagreader.cpp: undefined reference to TagLib::String::String
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME}${PKGNAMESUFFIX}
 GH_PROJECT=	Clementine
@@ -30,7 +32,6 @@ GH_PROJECT=	Clementine
 USES=		cmake \
 		compiler:c++11-lib \
 		desktop-file-utils \
-		execinfo \
 		gettext-tools \
 		pkgconfig \
 		sqlite
@@ -60,7 +61,7 @@ USE_GSTREAMER1=	cdparanoia \
 		faad \
 		flac \
 		lame \
-		mad \
+		mpg123 \
 		neon \
 		shout2 \
 		soup \
@@ -104,7 +105,7 @@ OPTIONS_DEFINE=		AMAZON \
 			VISUALISATION \
 			WIIMOTEDEV
 
-OPTIONS_SUB=		VISUALISATION
+OPTIONS_SUB=		yes
 
 AMAZON_DESC=		Amazon Drive support
 AUDIOCD_DESC=		Devices: Audio CD support
@@ -145,7 +146,7 @@ AUDIOCD_LIB_DEPENDS=	libcdio.so:sysutils/libcdio
 AUDIOCD_CMAKE_ON=	-DENABLE_AUDIOCD=ON
 AUDIOCD_CMAKE_OFF=	-DENABLE_AUDIOCD=OFF
 
-BOX_BUILD_DEPENDS=	google-sparsehash>=2.0.2:devel/google-sparsehash
+BOX_BUILD_DEPENDS=	sparsehash>=2.0.2:devel/sparsehash
 BOX_CMAKE_ON=		-DENABLE_BOX=ON
 BOX_CMAKE_OFF=		-DENABLE_BOX=OFF
 
@@ -155,7 +156,7 @@ BREAKPAD_CMAKE_OFF=	-DENABLE_BREAKPAD=OFF
 DEVICEKIT_CMAKE_ON=	-DENABLE_DEVICEKIT=ON
 DEVICEKIT_CMAKE_OFF=	-DENABLE_DEVICEKIT=OFF
 
-DROPBOX_BUILD_DEPENDS=	google-sparsehash>=2.0.2:devel/google-sparsehash
+DROPBOX_BUILD_DEPENDS=	sparsehash>=2.0.2:devel/sparsehash
 DROPBOX_CMAKE_ON=	-DENABLE_DROPBOX=ON
 DROPBOX_CMAKE_OFF=	-DENABLE_DROPBOX=OFF
 
@@ -163,7 +164,7 @@ GIO_USE=		GNOME=glib20
 GIO_CMAKE_ON=		-DENABLE_GIO=ON
 GIO_CMAKE_OFF=		-DENABLE_GIO=OFF
 
-GOOGLE_DRIVE_BUILD_DEPENDS=	google-sparsehash>=2.0.2:devel/google-sparsehash
+GOOGLE_DRIVE_BUILD_DEPENDS=	sparsehash>=2.0.2:devel/sparsehash
 GOOGLE_DRIVE_CMAKE_ON=	-DENABLE_GOOGLE_DRIVE=ON
 GOOGLE_DRIVE_CMAKE_OFF=	-DENABLE_GOOGLE_DRIVE=OFF
 
@@ -188,7 +189,7 @@ PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CMAKE_ON=	-DENABLE_LIBPULSE=ON
 PULSEAUDIO_CMAKE_OFF=	-DENABLE_LIBPULSE=OFF
 
-SKYDRIVE_BUILD_DEPENDS=	google-sparsehash>=2.0.2:devel/google-sparsehash
+SKYDRIVE_BUILD_DEPENDS=	sparsehash>=2.0.2:devel/sparsehash
 SKYDRIVE_CMAKE_ON=	-DENABLE_SKYDRIVE=ON
 SKYDRIVE_CMAKE_OFF=	-DENABLE_SKYDRIVE=OFF
 
@@ -198,4 +199,10 @@ VISUALISATION_CMAKE_OFF=-DENABLE_VISUALISATIONS=OFF
 WIIMOTEDEV_CMAKE_ON=	-DENABLE_WIIMOTEDEV=ON
 WIIMOTEDEV_CMAKE_OFF=	-DENABLE_WIIMOTEDEV=OFF
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == clang
+CXXFLAGS+=	-Wno-unknown-warning-option -Wno-undefined-var-template
+.endif
+
+.include <bsd.port.post.mk>

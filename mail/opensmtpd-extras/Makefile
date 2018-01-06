@@ -3,7 +3,7 @@
 
 PORTNAME=	opensmtpd-extras
 PORTVERSION=	201606230001
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES+=	mail
 MASTER_SITES=	http://www.opensmtpd.org/archives/
 
@@ -15,11 +15,12 @@ COMMENT?=	Addons for OpenSMTPD
 
 LICENSE?=	ISCL
 
-LIB_DEPENDS+=	libevent.so:devel/libevent2
+LIB_DEPENDS+=	libevent.so:devel/libevent
 
-USES+=		autoreconf libtool
-USE_OPENSSL=	yes
+USES+=		autoreconf ssl libtool
 GNU_CONFIGURE=	yes
+LDFLAGS+=	-L${OPENSSLLIB}
+CFLAGS+=	-I${OPENSSLINC}
 
 CONFIGURE_ARGS+=	--sysconfdir="${PREFIX}/etc/mail"
 

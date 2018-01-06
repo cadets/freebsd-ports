@@ -11,12 +11,11 @@ DISTNAME=	${PORTNAME}.${PORTVERSION}
 MAINTAINER=	kevlo@FreeBSD.org
 COMMENT=	PHP based music database
 
-BROKEN_powerpc64=	Does not build
-
 RUN_DEPENDS=	lame:audio/lame \
 		oggenc:audio/vorbis-tools \
 		zip:archivers/zip
 
+USES=		php
 USE_PHP=	curl mysql session iconv
 
 WRKSRC=		${WRKDIR}

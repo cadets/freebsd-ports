@@ -3,6 +3,7 @@
 
 PORTNAME=	fcitx
 PORTVERSION=	4.2.9.1
+PORTREVISION=	4
 CATEGORIES=	chinese x11
 MASTER_SITES=	http://download.fcitx-im.org/fcitx/:fcitx \
 		http://download.fcitx-im.org/data/:data
@@ -20,11 +21,9 @@ COMMENT=	Flexible Input Method Framework
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
-		${LOCALBASE}/share/ECM/cmake/ECMConfig.cmake:devel/extra-cmake-modules
+BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libdbus-1.so:devel/dbus \
-		libicuuc.so:devel/icu \
 		libXfixes.so:x11/libXfixes \
 		libXinerama.so:x11/libXinerama \
 		libXrender.so:x11/libXrender \
@@ -37,14 +36,16 @@ SUB_LIST+=	PORTSDIR=${PORTSDIR}
 CONFLICTS=	zh-scim-fcitx-3.*
 
 USE_GNOME=	pango intltool libxml2 introspection
-USE_XORG=	x11 xext xkbfile
+USE_KDE=	ecm
+USE_XORG=	x11 xext xkbfile sm ice
 USE_LDCONFIG=	yes
-USES=		tar:xz cmake desktop-file-utils execinfo gettext iconv:wchar_t \
-		pkgconfig shared-mime-info
+USES=		tar:xz cmake:noninja desktop-file-utils \
+		gettext-tools:build,run gettext-runtime iconv:wchar_t \
+		kde:5 pkgconfig shared-mime-info
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	GTK2 GTK3 QT4 OPENCC TPUNC DOCS
-OPTIONS_DEFAULT=GTK2 QT4
+OPTIONS_DEFAULT=GTK2 GTK3 QT4
 OPTIONS_SUB=	yes
 
 GTK2_DESC=	Enable Gtk2 IM module
@@ -86,7 +87,7 @@ SUB_LIST+=	GTK3_IM=xim
 .endif
 
 .if ${PORT_OPTIONS:MQT4}
-USE_QT4+=	qmake_build moc_build rcc_build uic_build dbus gui inputmethods
+USE_QT4+=	qmake_build moc_build rcc_build uic_build dbus gui inputmethods corelib
 USE_LDCONFIG+=	${PREFIX}/lib/fcitx/qt
 PLIST_SUB+=	QT4=""
 .else

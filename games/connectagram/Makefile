@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	connectagram
-PORTVERSION=	1.2.1
+PORTVERSION=	1.2.5
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	games
 MASTER_SITES=	http://gottcode.org/connectagram/
@@ -16,14 +17,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		compiler:c++11-lib qmake tar:bzip2
-USE_QT5=	buildtools_build network widgets
+USE_QT5=	buildtools_build core gui linguisttools_build network widgets
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		's|share/man|man|' ${WRKSRC}/connectagram.pro
+		's|share/man|man|;s|metainfo|appdata|' ${WRKSRC}/connectagram.pro
 	@${REINPLACE_CMD} -e \
 		's|std::lround|lround|' ${WRKSRC}/src/*.cpp
 

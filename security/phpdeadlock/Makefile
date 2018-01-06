@@ -14,8 +14,6 @@ COMMENT=	Web-based user authentication/password protection system
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-BROKEN_powerpc64=	Does not build
-
 WRKSRC=		${WRKDIR}/Deadlock-1.01
 DLURL?=		${PORTNAME}
 DLDIR=		www/${DLURL}
@@ -27,7 +25,7 @@ USE_PHP=	mysql session ctype pcre
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	70 71
 
 SUB_FILES=	pkg-message
 SUB_LIST=	DLURL=${DLURL} DLDIR=${DLDIR}

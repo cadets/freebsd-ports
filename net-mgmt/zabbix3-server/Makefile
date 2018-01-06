@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix3
-PORTVERSION=	3.0.2
+PORTVERSION=	3.0.13
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
@@ -12,16 +12,12 @@ DISTNAME=	zabbix-${PORTVERSION}
 MAINTAINER=	pg@pakhom.spb.ru
 COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/^-//}) LTS
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	${PKGBASE}-1.[0-8]*
+CONFLICTS=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-24-9]${PKGNAMESUFFIX}
 
-IGNORE_WITH_PHP=	52
 IGNORE_WITH_MYSQL=	41
-
-.if ${PKGNAMESUFFIX} != "-agent"
-CONFLICTS+=	${PORTNAME}-1.[0-8]*
-.endif
 
 ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 
@@ -61,10 +57,8 @@ CONFIGURE_ARGS+=	--enable-${ZABBIX_BUILD} \
 
 .if ${ZABBIX_BUILD} != "agent"
 LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
-USES+=		execinfo
 
-CPPFLAGS+=	${EXECINFO_CPPFLAGS}
-LDFLAGS+=	${EXECINFO_LDFLAGS}
+CPPFLAGS+=	-I${LOCALBASE}/include
 
 SUB_FILES=	pkg-message
 
@@ -73,7 +67,7 @@ CONFIGURE_ARGS+=	--with-net-snmp
 OPTIONS_DEFINE=		IPV6 FPING JABBER CURL LDAP IPMI SSH NMAP JAVAGW \
 			LIBXML2
 
-OPTIONS_DEFAULT=	FPING JABBER CURL UNIXODBC MYSQL SSH OPENSSL
+OPTIONS_DEFAULT=	FPING CURL UNIXODBC MYSQL OPENSSL
 OPTIONS_SUB=		yes
 
 CURL_DESC=		Support for web monitoring
@@ -93,13 +87,13 @@ OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
 OPTIONS_SINGLE_SSL=	OPENSSL GNUTLS POLARSSL
 
 MYSQL_CONFIGURE_WITH=	mysql
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES+=		mysql
 
 PGSQL_CONFIGURE_WITH=	postgresql
-PGSQL_USES=		pgsql
+PGSQL_USES+=		pgsql
 
 SQLITE_CONFIGURE_WITH=	sqlite3
-SQLITE_USES=		sqlite:3
+SQLITE_USES+=		sqlite:3
 
 ORACLE_CONFIGURE_WITH=	oracle
 
@@ -126,8 +120,8 @@ IODBC_LIB_DEPENDS=	libiodbc.so:databases/libiodbc
 UNIXODBC_CONFIGURE_WITH=unixodbc
 UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 .else
-OPTIONS_SINGLE=         SSL
-OPTIONS_SINGLE_SSL=     OPENSSL GNUTLS POLARSSL
+OPTIONS_SINGLE=	SSL
+OPTIONS_SINGLE_SSL=	OPENSSL GNUTLS POLARSSL
 .endif # if ${ZABBIX_BUILD} != "agent"
 
 IPV6_CONFIGURE_ENABLE=	ipv6
@@ -141,26 +135,45 @@ JAVAGW_USE=		JAVA=yes
 LIBXML2_CONFIGURE_WITH=	libxml2
 LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
-OPENSSL_CONFIGURE_WITH= openssl
-OPENSSL_USE=            OPENSSL=yes
+OPENSSL_CONFIGURE_WITH=	openssl
+OPENSSL_USES=		ssl
+OPENSSL_VARS=		BROKEN_SSL="libressl libressl-devel" \
+			BROKEN_SSL_REASON="PSK is not provided by LibreSSL"
 
 GNUTLS_CONFIGURE_WITH=	gnutls
-GNUTLS_LIB_DEPENDS=     libgnutls.so:security/gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 
 POLARSSL_CONFIGURE_WITH=mbedtls
 POLARSSL_LIB_DEPENDS=	libmbedtls.so:security/polarssl13
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000 && ${SSL_DEFAULT} == base
-IGNORE=   OpenSSL from the base system is too old, add DEFAULT_VERSIONS+=ssl=openssl to your /etc/make.conf and rebuild everything that needs SSL.
-.endif
-
 post-patch:
 	@${GREP} -rl "/etc/zabbix" ${WRKSRC} \
 	  | ${XARGS} ${REINPLACE_CMD} -e 's#/etc/zabbix#${ETCDIR}#g'
 	@${REINPLACE_CMD} -e 's#/usr/sbin/fping#${LOCALBASE}/sbin/fping#g' \
 		${WRKSRC}/conf/zabbix_*.conf
+
+.if ${ZABBIX_BUILD} == "server"
+	@${REINPLACE_CMD} -e 's#PidFile=/tmp/zabbix_server.pid#PidFile=/var/run/zabbix/zabbix_server.pid#g' \
+		${WRKSRC}/conf/zabbix_server*.conf
+	@${REINPLACE_CMD} -e 's#Include=/usr/local/usr/local/etc/zabbix3#Include=/usr/local/etc/zabbix3/zabbix#g' \
+		${WRKSRC}/conf/zabbix_server*.conf
+.endif
+
+.if ${ZABBIX_BUILD} == "proxy"
+	@${REINPLACE_CMD} -e 's#PidFile=/tmp/zabbix_proxy.pid#PidFile=/var/run/zabbix/zabbix_proxy.pid#g' \
+		${WRKSRC}/conf/zabbix_proxy*.conf
+	@${REINPLACE_CMD} -e 's#Include=/usr/local/usr/local/etc/zabbix3#Include=/usr/local/etc/zabbix3/zabbix#g' \
+		${WRKSRC}/conf/zabbix_proxy*.conf
+.endif
+
+.if ${ZABBIX_BUILD} == "agent"
+	@${REINPLACE_CMD} -e 's#PidFile=/tmp/zabbix_agentd.pid#PidFile=/var/run/zabbix/zabbix_agentd.pid#g' \
+		${WRKSRC}/conf/zabbix_agentd*.conf
+	@${REINPLACE_CMD} -e 's#Include=/usr/local/usr/local/etc/zabbix3#Include=/usr/local/etc/zabbix3/zabbix#g' \
+		${WRKSRC}/conf/zabbix_agentd*.conf
+.endif
 
 .if ${ZABBIX_BUILD} != "agent"
 .  for d in mysql oracle postgresql sqlite3
@@ -175,7 +188,7 @@ post-patch:
 		-Ee 's|(@sysconfdir@/(\$$\([A-Z]*_CONFIG\)))" ([|][|] cp "../../conf/\$$\([A-Z]*_CONFIG\)" "\$$\(DESTDIR\)@sysconfdir@)"|\1.sample" \3/\2.sample"|;' \
 		${WRKSRC}/src/zabbix_${ZABBIX_BUILD}/Makefile.in
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -or -name '*.orig' \) \
-		-exec ${RM} -f {} +
+		-exec ${RM} {} +
 
 post-install:
 

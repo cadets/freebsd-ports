@@ -2,6 +2,7 @@
 
 PORTNAME=	libbobcat
 PORTVERSION=	3.25.01
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SF/bobcat/bobcat/${PORTVERSION}
 DISTNAME=	bobcat_${PORTVERSION}
@@ -15,7 +16,7 @@ LICENSE=	GPLv3
 BUILD_DEPENDS=	icmake:devel/icmake \
 		yodl>=3.0:textproc/yodl
 
-USE_GCC=	4.9+
+USE_GCC=	yes
 USE_XORG=	x11
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
@@ -26,7 +27,7 @@ PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/bobcat-${PORTVERSION}
 
-USES=		readline shebangfix
+USES=		readline shebangfix ssl
 
 SHEBANG_LANG=	icmake
 icmake_OLD_CMD=	/usr/bin/icmake
@@ -49,12 +50,12 @@ post-patch:
 		s|"-d"|"-Pp"| ; \
 		s|#define MANHTML|| ; \
 		s|g++|${CXX}| ; \
-		s|Wall|Wall -D_GLIBCXX_USE_C99| ; \
+		s|Wall|Wall -D_GLIBCXX_USE_C99 -I${OPENSSLINC}| ; \
 		s|gcc|${CC}|' \
 		${WRKSRC}/INSTALL.im
 	@${REINPLACE_CMD} -e 's|"cp -r |"cp -R |' \
 		${WRKSRC}/icmake/install
-	@${REINPLACE_CMD} -e 's|-lssl|-lssl -L${LOCALBASE}/lib| ; \
+	@${REINPLACE_CMD} -e 's|-lssl|-L${OPENSSLIB} -lssl| ; \
 		s|-lX11|-lX11 -L${LOCALBASE}/lib| ; \
 		s|-lmilter|-lmilter -lpthread|' \
 		${WRKSRC}/icmake/special

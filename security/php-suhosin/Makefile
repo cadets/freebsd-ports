@@ -13,13 +13,11 @@ COMMENT=	PHP extension that implements high-level protections
 
 LICENSE=	PHP301
 
-BROKEN_powerpc64=	Does not build
-
 OPTIONS_DEFINE=	EXAMPLES
 
 USES=		php:ext
 USE_PHP=	session:build
-IGNORE_WITH_PHP=	70
+IGNORE_WITH_PHP=	70 71
 
 CONFIGURE_ARGS=	--enable-suhosin
 

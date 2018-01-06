@@ -2,46 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	dhcprelya
-PORTVERSION=	4.9
+PORTVERSION=	6.1
 CATEGORIES=	net
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sem@semmy.ru
 COMMENT=	Lightweight DHCP relay agent. Yandex edition
 
 LICENSE=	BSD3CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sem-hub
-GH_TAGNAME=	d42e83b
+GH_TAGNAME=	a4d10c4
 
 USE_RC_SUBR=	dhcprelya
 
-PORTDOCS=	README
+PORTDOCS=	README ChangeLog
 
 PLIST_FILES=	sbin/${PORTNAME} lib/${PORTNAME}_log_plugin.so \
-		lib/${PORTNAME}_option82_plugin.so
-
-# The modules use a new system libradius that is not committed yet
-#OPTIONS_DEFINE=	RADIUS_PLUGIN
-RADIUS_PLUGIN_PLUGIN_DESC=	build radius plugin
+		lib/${PORTNAME}_option82_plugin.so \
+		lib/${PORTNAME}_radius_plugin.so
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MRADIUS_PLUGIN}
-PLIST_FILES+=	lib/${PORTNAME}_radius_plugin.so
-MAKE_ARGS=	-DWITH_RADIUS_PLUGIN
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's#/usr/local#${STAGEDIR}/${PREFIX}#' \
-		${WRKSRC}/Makefile
-
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}/${DOCSDIR}
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}/${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${STAGEDIR}/${DOCSDIR}
 
 .include <bsd.port.mk>

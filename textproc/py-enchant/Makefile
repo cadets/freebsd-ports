@@ -2,23 +2,35 @@
 # $FreeBSD$
 
 PORTNAME=	enchant
-PORTVERSION=	1.6.5
-PORTREVISION=	6
+PORTVERSION=	1.6.11
 CATEGORIES=	textproc devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	py${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	nivit@FreeBSD.org
+MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Spellchecking library for Python based on the Enchant library
+
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libenchant.so:textproc/enchant
 
-USES=		python
-USE_PYTHON=	distutils autoplist
-USE_WX=		3.0+
-WX_COMPS=	python:run
+OPTIONS_DEFINE=	WX
+OPTIONS_DEFAULT=WX
+WX_DESC=	Provide a wxSpellCheckerDialog
+OPTIONS_SUB=	yes
 
-LDFLAGS+=	-L${LOCALBASE}/lib
+USES=		python:2.7
+USE_PYTHON=	distutils
+NO_ARCH=	yes
+
+WX_USE=		WX=3.0+
+WX_VARS=	WX_COMPS=python:run
+
+PLIST_SUB+=	VER=${PORTVERSION}
+
+post-install-WX-off:
+	${RM} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/checker/wxSpellCheckerDialog*
 
 .include <bsd.port.mk>

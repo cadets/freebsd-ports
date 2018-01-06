@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	drupal7
-PORTVERSION=	7.50
+PORTVERSION=	7.56
 CATEGORIES=	www
 MASTER_SITES=	http://ftp.drupal.org/files/projects/
 DISTNAME=	drupal-${PORTVERSION}
 DIST_SUBDIR=	drupal
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Database driven web content management system (CMS)
 
 LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		drupal:7 php:web shebangfix
 USE_PHP=	dom filter gd hash json mbstring pcre pdo session simplexml xml

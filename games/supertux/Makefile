@@ -3,11 +3,11 @@
 
 PORTNAME=	supertux
 PORTVERSION=	0.1.3
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://github.com/SuperTux/downloads/raw/master/
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Side-scroller game similar to Super Mario Brothers
 
 USES=		gmake tar:bzip2

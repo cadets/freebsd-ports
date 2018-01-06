@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.0.26
+PORTVERSION=	5.2.2
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${PORTVERSION}/
-PKGNAMESUFFIX=	-additions
+PKGNAMESUFFIX?=	-additions
 DISTNAME=	VirtualBox-${PORTVERSION}
 
 MAINTAINER=	vbox@FreeBSD.org
@@ -15,7 +15,8 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	yasm:devel/yasm \
-		kmk:devel/kBuild
+		kmk:devel/kBuild \
+		xsltproc:textproc/libxslt
 
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
@@ -23,7 +24,7 @@ CPE_PRODUCT=	vm_virtualbox
 PATCHDIR=	${.CURDIR}/../${PORTNAME}/files
 WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 USE_RC_SUBR=	vboxguest vboxservice
-USES=		compiler:features cpe iconv kmod python:build tar:bzip2
+USES=		compiler:c++11-lang cpe iconv kmod python:build tar:bzip2
 ONLY_FOR_ARCHS=	i386 amd64
 MAKE_JOBS_UNSAFE=	yes
 
@@ -37,10 +38,12 @@ CONFIGURE_ARGS+=	--disable-alsa \
 			--disable-xpcom
 CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
-CONFLICTS_INSTALL=	virtualbox-ose-[3-5]* \
-			virtualbox-ose-additions-devel-[3,4]* \
-			virtualbox-ose-devel-[3,4]* \
-			virtualbox-ose-legacy-[3,4]*
+CONFLICTS_INSTALL=	virtualbox-ose-[0-9]* \
+			virtualbox-ose-additions-devel-[0-9]* \
+			virtualbox-ose-devel-[0-9]* \
+			virtualbox-ose-legacy-[0-9]* \
+			virtualbox-ose-lite-[0-9]* \
+			virtualbox-ose-nox11-[0-9]*
 
 OPTIONS_DEFINE=	DBUS DEBUG OPENGL X11
 OPTIONS_DEFAULT=	DBUS X11
@@ -52,6 +55,12 @@ OPENGL_CONFIGURE_OFF=	--disable-opengl
 
 .include <bsd.port.options.mk>
 
+.if ${SLAVE_PORT} == no
+CONFLICTS_INSTALL+=	virtualbox-ose-additions-nox11-[0-9]*
+.else
+CONFLICTS_INSTALL+=	virtualbox-ose-additions-[0-9]*
+.endif
+
 .if ${PORT_OPTIONS:MOPENGL} && empty(PORT_OPTIONS:MX11)
 BROKEN=		OPENGL requires X11 support. Run 'make config' again!
 .endif
@@ -61,7 +70,8 @@ INPUTDIR=	${PREFIX}/lib/xorg/modules/input
 
 VBOX_BIN=	${WRKSRC}/out/${KMK_ARCH}/${KMK_BUILDTYPE}/bin/additions
 VBOX_SBINS=	VBoxControl \
-		VBoxService
+		VBoxService \
+		mount_vboxvfs
 
 BUILD_WRKSRC=	${VBOX_BIN}/src
 
@@ -76,9 +86,6 @@ MAKE_ARGS+=	DEBUG_FLAGS="-O1 -g"
 .endif
 
 .if ${PORT_OPTIONS:MOPENGL}
-PKGPOSTINSTALL=		${WRKDIR}/pkg-post-install
-PKGPREDEINSTALL=	${WRKDIR}/pkg-pre-deinstall
-SUB_FILES=	pkg-post-install pkg-pre-deinstall
 USE_XORG=	xcomposite xdamage xfixes
 USE_GL=		gl
 VBOX_LIBS=	VBoxEGL.so \
@@ -119,86 +126,89 @@ EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-x11-VBoxClient-Makefil
 .endif
 .endif
 
-pre-everything::
 .if ${ARCH} == "amd64"
 .if !exists(/usr/lib32/libc.so)
+pre-everything::
 	@${ECHO} 'Requires 32-bit libraries installed under /usr/lib32.'
-	@${ECHO} 'Do: cd /usr/src; make build32 install32; ldconfig -v -m -R /usr/lib32'
+	@${ECHO} 'Do: cd /usr/src; make build32 install32; service ldconfig restart'
 	@${FALSE}
 .endif
 .endif
 
 post-patch:
 	@${ECHO} 'VBOX_ONLY_ADDITIONS = 1' > ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_DRAG_AND_DROP = ${VBOX_WITH_X11}' >> ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_DRAG_AND_DROP_GH = ${VBOX_WITH_X11}' >> ${WRKSRC}/LocalConfig.kmk
-	@${ECHO} 'VBOX_WITH_X11_ADDITIONS = ${VBOX_WITH_X11}' >> ${WRKSRC}/LocalConfig.kmk
+	@${ECHO} 'VBOX_WITH_DRAG_AND_DROP = ${VBOX_WITH_X11}' >> \
+	    ${WRKSRC}/LocalConfig.kmk
+	@${ECHO} 'VBOX_WITH_DRAG_AND_DROP_GH = ${VBOX_WITH_X11}' >> \
+	    ${WRKSRC}/LocalConfig.kmk
+	@${ECHO} 'VBOX_WITH_X11_ADDITIONS = ${VBOX_WITH_X11}' >> \
+	    ${WRKSRC}/LocalConfig.kmk
+	@${ECHO} 'VBOX_GCC_std = -std=c++11' >> ${WRKSRC}/LocalConfig.kmk
 .if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's| -finline-limit=8000||' \
 	    -e 's| -fno-merge-constants||' \
 	    -e 's| -mpreferred-stack-boundary=2||' ${WRKSRC}/Config.kmk
-.if ${COMPILER_FEATURES:Mlibc++}
-	@${ECHO} 'VBOX_GCC_std = -std=c++11' >> ${WRKSRC}/LocalConfig.kmk
-.endif
-	@${ECHO} 'VBOX_GCC_Wno-unused-parameter = -Wno-unused-parameter' >> ${WRKSRC}/LocalConfig.kmk
 .endif
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
-		${WRKSRC}/Config.kmk \
-		${WRKSRC}/configure \
-		${WRKSRC}/kBuild/units/qt4.kmk \
-		${WRKSRC}/kBuild/sdks/LIBSDL.kmk \
-		${WRKSRC}/src/VBox/Additions/common/crOpenGL/load.c \
-		${WRKSRC}/src/VBox/Additions/x11/Installer/98vboxadd-xclient \
-		${WRKSRC}/src/VBox/Additions/x11/Installer/vboxclient.desktop
-	@${REINPLACE_CMD} -e 's|\$$KBUILDDIR_BIN/kmk_sed|${LOCALBASE}/bin/kmk_sed|g' ${WRKSRC}/configure
+	    ${WRKSRC}/Config.kmk ${WRKSRC}/configure \
+	    ${WRKSRC}/kBuild/header.kmk ${WRKSRC}/kBuild/units/qt4.kmk \
+	    ${WRKSRC}/kBuild/units/qt5.kmk ${WRKSRC}/kBuild/sdks/LIBSDL.kmk \
+	    ${WRKSRC}/src/VBox/Additions/common/crOpenGL/load.c \
+	    ${WRKSRC}/src/VBox/Additions/x11/Installer/98vboxadd-xclient \
+	    ${WRKSRC}/src/VBox/Additions/x11/Installer/vboxclient.desktop
+	@${REINPLACE_CMD} \
+	    -e 's|\$$KBUILDDIR_BIN/kmk_sed|${LOCALBASE}/bin/kmk_sed|g' \
+	    ${WRKSRC}/configure
 .if empty(ICONV_LIB)
-	@${REINPLACE_CMD} -e 's|iconv||' ${WRKSRC}/Config.kmk ${WRKSRC}/src/VBox/Runtime/Makefile.kmk \
-		${WRKSRC}/src/VBox/Additions/x11/VBoxClient/Makefile.kmk
+	@${REINPLACE_CMD} -e 's|iconv||' ${WRKSRC}/Config.kmk \
+	    ${WRKSRC}/src/VBox/Runtime/Makefile.kmk \
+	    ${WRKSRC}/src/VBox/Additions/x11/VBoxClient/Makefile.kmk
 	@${ECHO} 'VBOX_ICONV_DEFS = LIBICONV_PLUG' >> ${WRKSRC}/LocalConfig.kmk
 .endif
 
 pre-build:
-	cd ${WRKSRC} && \
-	    ${SH} -c '. env.sh && ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
+	cd ${WRKSRC} && ${SH} -c \
+	    '. env.sh && ${KMK_CONFIG} ${LOCALBASE}/bin/kmk ${KMK_FLAGS}'
 
 do-install:
 	${MKDIR} ${STAGEDIR}${KMODDIR}
-	${INSTALL_KLD} ${VBOX_BIN}/src/vboxguest/vboxguest.ko ${STAGEDIR}${KMODDIR}
-.if ${PORT_OPTIONS:MDEBUG}
-	${INSTALL_KLD} ${VBOX_BIN}/src/vboxguest/vboxguest.ko.symbols ${STAGEDIR}${KMODDIR}
-.endif
-
+	${INSTALL_KLD} ${VBOX_BIN}/src/vboxguest/vboxguest.ko \
+	    ${STAGEDIR}${KMODDIR}
+	${INSTALL_KLD} ${VBOX_BIN}/vboxvfs.ko ${STAGEDIR}${KMODDIR}
 	${INSTALL_LIB} ${VBOX_BIN}/pam_vbox.so ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_PROGRAM} ${VBOX_SBINS:S|^|${VBOX_BIN}/|} \
 	    ${STAGEDIR}${PREFIX}/sbin/
 
-.if ${PORT_OPTIONS:MX11}
-	${INSTALL_PROGRAM} ${VBOX_BIN}/VBoxClient ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_SCRIPT} ${WRKSRC}/src/VBox/Additions/x11/Installer/98vboxadd-xclient \
-	    ${STAGEDIR}${PREFIX}/bin/VBoxClient-all
+do-install-DEBUG-on:
+	${INSTALL_KLD} ${VBOX_BIN}/src/vboxguest/vboxguest.ko.symbols \
+	    ${STAGEDIR}${KMODDIR}
 
+do-install-X11-on:
+	${INSTALL_PROGRAM} ${VBOX_BIN}/VBoxClient ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_SCRIPT} \
+	    ${WRKSRC}/src/VBox/Additions/x11/Installer/98vboxadd-xclient \
+	    ${STAGEDIR}${PREFIX}/bin/VBoxClient-all
 	# X11 autostart
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/xdg/autostart/
-	${INSTALL_DATA} ${WRKSRC}/src/VBox/Additions/x11/Installer/vboxclient.desktop \
+	${INSTALL_DATA} \
+	    ${WRKSRC}/src/VBox/Additions/x11/Installer/vboxclient.desktop \
 	    ${STAGEDIR}${PREFIX}/etc/xdg/autostart/
-
 	# KDE autostart
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/autostart/
-	${INSTALL_DATA} ${WRKSRC}/src/VBox/Additions/x11/Installer/vboxclient.desktop \
+	${INSTALL_DATA} \
+	    ${WRKSRC}/src/VBox/Additions/x11/Installer/vboxclient.desktop \
 	    ${STAGEDIR}${PREFIX}/share/autostart/
-
 	${MKDIR} ${STAGEDIR}${VIDEODIR}
 	${INSTALL_DATA} ${VBOX_BIN}/vboxvideo_drv_$$(${XORG_DRV_ABI}).so \
 	    ${STAGEDIR}${VIDEODIR}/vboxvideo_drv.so
-
 	${MKDIR} ${STAGEDIR}${INPUTDIR}
 	${INSTALL_DATA} ${VBOX_BIN}/vboxmouse_drv_$$(${XORG_DRV_ABI}).so \
 	    ${STAGEDIR}${INPUTDIR}/vboxmouse_drv.so
-.endif
 
-.if ${PORT_OPTIONS:MOPENGL}
+do-install-OPENGL-on:
+	${INSTALL_DATA} ${FILESDIR}/vboxvideo.conf \
+	    ${STAGEDIR}${PREFIX}/etc/libmap.d/
 	${INSTALL_DATA} ${VBOX_LIBS:S|^|${VBOX_BIN}/|} \
 	    ${STAGEDIR}${PREFIX}/lib/
-.endif
 
 .include <bsd.port.post.mk>

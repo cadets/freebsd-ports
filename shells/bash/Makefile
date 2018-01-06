@@ -2,50 +2,49 @@
 # $FreeBSD$
 
 PORTNAME=		bash
-PATCHLEVEL=		46
-PORTVERSION=		4.3.${PATCHLEVEL:S/^0//g}
-PORTREVISION?=		1
+PATCHLEVEL=		12
+PORTVERSION=		4.4.${PATCHLEVEL:S/^0//g}
+PORTREVISION?=		3
 CATEGORIES=		shells
 MASTER_SITES=		GNU/${PORTNAME}
 DISTNAME=		${PORTNAME}-${PORTVERSION:R}
 DIST_SUBDIR=		${PORTNAME}
 EXTRACT_ONLY=		${DISTNAME}${EXTRACT_SUFX}
 
-PATCH_SITES=		GNU/${PORTNAME}/${DISTNAME}-patches/ \
-			ftp://ftp.cwru.edu/pub/${PORTNAME}/${DISTNAME}-patches/
+PATCH_SITES=		GNU/${PORTNAME}/${DISTNAME}-patches/
 PATCHFILES!=		/usr/bin/jot -s " " -w \
 			${PORTNAME}${PORTVERSION:R:S/.//g}-%03d \
 			${PATCHLEVEL} 1 ${PATCHLEVEL}
 
 MAINTAINER=		ehaupt@FreeBSD.org
-COMMENT=		The GNU Project's Bourne Again SHell
+COMMENT=		GNU Project's Bourne Again SHell
 
-LICENSE=		GPLv3
+LICENSE=		GPLv3+
+LICENSE_FILE=		${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=		IMPLICITCD COLONBREAKSWORDS HELP NLS STATIC SYSLOG DOCS
-OPTIONS_DEFINE+=	IMPORTFUNCTIONS
-OPTIONS_DEFAULT=	IMPLICITCD COLONBREAKSWORDS HELP
-IMPLICITCD_DESC=	Use directory name alone to cd into it
+OPTIONS_DEFINE=		COLONBREAKSWORDS FDESCFS HELP NLS STATIC SYSBASHRC SYSLOG DOCS
 COLONBREAKSWORDS_DESC=	Colons break words
+FDESCFS_DESC=		Enable use of /dev/fd
 HELP_DESC=		Enable builtin help
-IMPORTFUNCTIONS_DESC=	Import function from env without --import-functions
+SYSBASHRC_DESC=		Enable system-wide rc files
 
-USES=			bison cpe iconv makeinfo
+OPTIONS_DEFAULT=	COLONBREAKSWORDS HELP
+
+USES=			bison cpe iconv makeinfo pathfix
+GNU_CONFIGURE=		yes
 OPTIONS_SUB=		yes
 CPE_VENDOR=		gnu
 
-IMPLICITCD_EXTRA_PATCHES=	${PATCHDIR}/extrapatch-implicitcd
 COLONBREAKSWORDS_EXTRA_PATCHES=	${PATCHDIR}/extrapatch-colonbreakswords
-# Always apply this for now. The option will modify the default.
-EXTRA_PATCHES+=			${PATCHDIR}/extrapatch-import-functions
+
+FDESCFS_CONFIGURE_ENV_OFF=	bash_cv_dev_fd=absent
+FDESCFS_SUB_FILES=	pkg-message
 
 HELP_CONFIGURE_ENABLE=	help-builtin
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
 INFO=			bash
-
-GNU_CONFIGURE=		yes
 
 PORTDOCS=		FAQ INTRO CHANGES COMPAT NEWS POSIX RBASH README \
 			bash.html bashref.html
@@ -55,8 +54,6 @@ CONFIGURE_ARGS+=	--without-bash-malloc \
 			--enable-disabled-builtins \
 			--with-libiconv-prefix=${ICONV_PREFIX}
 
-CFLAGS+=		-DUSE_MKTEMP=1 -DUSE_MKSTEMP=1
-
 .if empty(PKGNAMESUFFIX)
 CONFLICTS+=		bash-static-[0-9]*
 .else
@@ -64,12 +61,6 @@ CONFLICTS+=		bash-[0-9]*
 .endif
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MIMPORTFUNCTIONS}
-CFLAGS+=	-DIMPORT_FUNCTIONS_DEF=1
-.else
-CFLAGS+=	-DIMPORT_FUNCTIONS_DEF=0
-.endif
 
 .if ${PORT_OPTIONS:MSTATIC} || defined(NO_DYNAMICROOT) || (defined(NOSHARED) && ${NOSHARED:tl} != "no")
 CONFIGURE_ARGS+=	--enable-static-link
@@ -79,6 +70,9 @@ CONFIGURE_ARGS+=	--disable-static-link
 # "enable -f". (Plugins are not supported for bash-static.)
 CFLAGS+=		-Wl,-export-dynamic
 .endif
+STANDARD_PATH=		/sbin:/bin:/usr/sbin:/usr/bin
+CPPFLAGS+=		-DDEFAULT_PATH_VALUE='\"${STANDARD_PATH}:${LOCALBASE}/sbin:${LOCALBASE}/bin\"' \
+			-DSTANDARD_UTILS_PATH='\"${STANDARD_PATH}\"'
 
 post-patch:
 # Ensure y.tab.c is regenerated
@@ -90,6 +84,11 @@ post-patch:
 	    -e "s|/\*.*#define SYSLOG_HISTORY .*\*/|#define SYSLOG_HISTORY|g" \
 	    ${WRKSRC}/config-top.h
 .endif
+
+post-patch-SYSBASHRC-on:
+	@${REINPLACE_CMD} \
+		-e "s|.*\(#define SYS_BASH.*\)\(/etc/.*\"\).*|\1${PREFIX}\2|" \
+		${WRKSRC}/config-top.h
 
 post-configure:
 	@${FIND} ${WRKSRC} -name Makefile -print0 | ${XARGS} -0 \
@@ -118,7 +117,7 @@ cklatest:
 	@${ECHO} -n "Currently at: "
 	@${MAKE} -V PATCHLEVEL
 	-ncftpls \
-	    ftp://ftp.cwru.edu/pub/${PORTNAME}/${PORTNAME}-${PORTVERSION:C/\.[0-9a-z]*$//}-patches/ \
+		${PATCH_SITES:Mftp*:Ox:[1]} \
 		| fgrep -v .sig | ${TAIL}
 
 .include <bsd.port.mk>

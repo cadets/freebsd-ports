@@ -3,7 +3,7 @@
 
 PORTNAME=	openalchemist
 PORTVERSION=	0.3
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -11,15 +11,13 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Tetris-like game
 
-LICENSE=	GPLv2 CCbySA
+LICENSE=	GPLv2+ CC-BY-SA-2.0
 LICENSE_COMB=	multi
-LICENSE_NAME_CCbySA=	Creative Commons Attribution-ShareAlike
-LICENSE_FILE_CCbySA=	${WRKSRC}/GRAPHICS-LICENSE
-LICENSE_PERMS_CCbySA=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	zip:archivers/zip
 LIB_DEPENDS=	libclanCore.so:devel/clanlib1 \
-	libpng.so:graphics/png
+		libpng.so:graphics/png
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
@@ -28,7 +26,7 @@ USE_GNOME=	pygtk2
 USE_XORG=	xxf86vm xi x11 xmu xext xdamage xfixes xau xdmcp xt sm ice
 USE_GL=		gl glu
 USE_SDL=	sdl gfx
-USES=		autoreconf gmake iconv jpeg pkgconfig shebangfix
+USES=		autoreconf gmake iconv jpeg pkgconfig python:2.7,run shebangfix
 SHEBANG_FILES=	openalchemist-config
 
 PORTDOCS=	AUTHORS ChangeLog README TODO

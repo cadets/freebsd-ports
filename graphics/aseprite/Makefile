@@ -2,15 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=		aseprite
-PORTVERSION=		1.1.7
+PORTVERSION=		1.1.13
 DISTVERSIONPREFIX=	v
+PORTREVISION=		4
 CATEGORIES=		graphics
 
 MAINTAINER=		yuri@rawbw.com
 COMMENT=		Animated sprite editor & pixel art tool
 
-LICENSE=		GPLv2
-LICENSE_FILE=		${WRKSRC}/LICENSE.txt
+LICENSE=		EULA
+LICENSE_NAME=		END-USER LICENSE AGREEMENT FOR ASEPRITE
+LICENSE_FILE=		${WRKSRC}/EULA.txt
+LICENSE_PERMS=		dist-mirror pkg-mirror auto-accept
 
 EXTRACT_DEPENDS=	${NONEXISTENT}:x11/pixman:extract
 LIB_DEPENDS=		libfreetype.so:print/freetype2 \
@@ -18,9 +21,14 @@ LIB_DEPENDS=		libfreetype.so:print/freetype2 \
 			libpng.so:graphics/png \
 			libgif.so:graphics/giflib \
 			libcurl.so:ftp/curl \
-			libtinyxml.so:textproc/tinyxml
+			libtinyxml.so:textproc/tinyxml \
+			libcmark.so:textproc/cmark
 
-BROKEN_FreeBSD_9=	Fails due to compiler issues
+BROKEN_aarch64=		fails to compile: undefined reference to __va_copy
+BROKEN_armv6=		fails to compile: undefined reference to __va_copy
+BROKEN_armv7=		fails to compile: undefined reference to __va_copy
+BROKEN_powerpc64=	fails to compile: arena.h: Failed assertion: "arena_mapbits_allocated_get(chunk, pageind) != 0"
+BROKEN_sparc64=		fails to compile: vsnprintf is not a member of std
 
 OPTIONS_DEFINE=		WEBP
 OPTIONS_DEFAULT=	WEBP
@@ -28,15 +36,19 @@ OPTIONS_DEFAULT=	WEBP
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 
 USE_GITHUB=		yes
-GH_TUPLE=		aseprite:clip:96ed960:clip/src/clip
+GH_TUPLE=		aseprite:clip:926e3cf:clip/src/clip
 GH_TUPLE+=		aseprite:flic:65a6072:flic/src/flic
 GH_TUPLE+=		aseprite:gtest:d63c625:gtest/third_party/gtest
 GH_TUPLE+=		aseprite:simpleini:0687587:simpleini/third_party/simpleini
-GH_TUPLE+=		aseprite:duktape:0de771c:duk/third_party/duktape
-GH_TUPLE+=		dacap:observable:89c9740:observable/src/observable
+GH_TUPLE+=		aseprite:duktape:0de771c:duktape/third_party/duktape
+GH_TUPLE+=		aseprite:undo:f39b188:undo/src/undo
+GH_TUPLE+=		aseprite:laf:e6d79aa:laf/laf
+GH_TUPLE+=		aseprite:stringencoders:f963507:stringencoders/laf/third_party/stringencoders
+GH_TUPLE+=		dacap:observable:27fa7f6:observable/src/observable
 
 USES=			cmake:outsource compiler:c++11-lib jpeg pkgconfig
 USE_XORG=		x11 xcursor xext xpm ice pixman sm xxf86dga xxf86vm
+USE_LDCONFIG=		yes
 
 CMAKE_ARGS+=		-DUSE_SHARED_ALLEGRO4=1
 CMAKE_ARGS+=		-DUSE_SHARED_GIFLIB=1
@@ -53,13 +65,16 @@ CMAKE_ARGS+=		-DFREETYPE_INCLUDE_DIR=${LOCALBASE}/include/freetype2
 CXXFLAGS+=		-I${LOCALBASE}/include
 CXXFLAGS+=		-I${LOCALBASE}/include/freetype2
 CXXFLAGS+=		-I${LOCALBASE}/include/freetype2/freetype
+CXXFLAGS+=		-D_GLIBCXX_USE_C99 # XXX ports/193528
 
 post-extract:
+	@${RM} -r ${WRKSRC}/src/allegro
 	@${MKDIR} ${WRKSRC}/third_party/pixman/pixman
 	@${CP} `${MAKE} -C ${PORTSDIR}/x11/pixman -V WRKSRC`/pixman/pixman-combine32.h \
 		${WRKSRC}/third_party/pixman/pixman/
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|1.1.6-dev|${PORTVERSION}|' ${WRKSRC}/src/config.h ${WRKSRC}/data/gui.xml
+	@${REINPLACE_CMD} 's|libcmark_static|cmark|' ${WRKSRC}/src/app/CMakeLists.txt
 
 .include <bsd.port.mk>

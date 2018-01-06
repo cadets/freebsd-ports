@@ -2,15 +2,14 @@
 
 PORTNAME=	kate-plugin-pate
 PORTVERSION=	${KDE4_VERSION}
-CATEGORIES=	editors kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
+PORTREVISION=	1
+CATEGORIES=	editors kde kde-kde4
 DISTNAME=	kate-${PORTVERSION}
-DIST_SUBDIR=	KDE/${PORTVERSION}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Support for Python plugins in Kate
 
-USES=		cmake:outsource kde:4 python tar:xz
+USES=		cmake:outsource,noninja kde:4 python:2.7 tar:xz
 USE_KDE=	kdelibs automoc4 kate \
 		pykde4_build pykde4_run
 USE_QT4=	gui webkit \

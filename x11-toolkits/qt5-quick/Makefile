@@ -2,6 +2,7 @@
 
 PORTNAME=	quick
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	qt5-
 
@@ -12,7 +13,7 @@ USE_GL=		gl
 USE_QT5=	core gui network qml sql testlib \
 		widgets xmlpatterns buildtools_build
 QT_DIST=	declarative
-USES=		qmake
+USES=		python:build qmake
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 QT_DEFINES=	ACCESSIBILITY
@@ -36,5 +37,10 @@ post-configure:
 		> ${CONFIGURE_WRKSRC}/src/qml/Makefile
 	${PRINTF} ".DEFAULT:\n\t@${DO_NADA}" \
 		> ${CONFIGURE_WRKSRC}/src/qmldevtools/Makefile
+
+post-patch:
+# qtdeclarative.pro wants to run python, replace that with PYTHON_CMD
+	${REINPLACE_CMD} '/py_out/s#python#${PYTHON_CMD}#g' \
+		${WRKSRC}/qtdeclarative.pro
 
 .include <bsd.port.mk>

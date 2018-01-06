@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	angband
-PORTVERSION=	4.0.5
+PORTVERSION=	4.1.0
 CATEGORIES=	games
 MASTER_SITES=	http://rephial.org/downloads/${PORTVERSION:R}/
 
@@ -11,8 +11,6 @@ COMMENT=	Rogue-like game with color, X11 support
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	Does not build
-
 OPTIONS_DEFINE=	SDL X11 DOCS
 OPTIONS_DEFAULT=X11
 
@@ -20,6 +18,7 @@ USES=		autoreconf gmake ncurses
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_path_NCURSES_CONFIG=${TRUE}
 CONFIGURE_ARGS=	--localstatedir=/var
+WRKSRC=		${WRKDIR}/${PORTNAME}-master
 
 CPPFLAGS+=	-I${NCURSESINC}
 LDFLAGS+=	-L${NCURSESLIB} -lncursesw

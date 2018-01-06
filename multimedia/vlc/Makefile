@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	vlc
-DISTVERSION=	2.2.4
+DISTVERSION=	2.2.6
+PORTREVISION=	3
 PORTEPOCH=	4
 CATEGORIES=	multimedia audio ipv6 net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
@@ -23,7 +24,13 @@ BUILD_DEPENDS=	ffmpeg>=2.0:multimedia/ffmpeg \
 		yasm:devel/yasm
 RUN_DEPENDS=	ffmpeg>=2.0:multimedia/ffmpeg
 
-USES=		compiler:c11 desktop-file-utils gmake iconv libtool pathfix \
+# VLC git (post 2.2.4) requires C++11 support and passes the appropriate flag
+# to the compiler. Until the port is updated, we explicitly pass -std=c++11 to
+# the compiler because Qt 5.7+ requires C++11 support, and FreeBSD 10.3's clang
+# does not default to C++11 mode.
+USE_CXXSTD=	c++11
+
+USES=		compiler:c++11-lib desktop-file-utils gmake iconv libtool pathfix \
 		pkgconfig tar:xz
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
@@ -41,13 +48,13 @@ CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 		--disable-dv1394 --disable-egl --disable-fdkaac \
 		--disable-gles1 --disable-gles2 --disable-kai --disable-kva \
 		--disable-libvnc --disable-opencv --disable-projectm \
-		--disable-quicksync --disable-silent-rules --disable-telx \
+		--disable-quicksync --disable-telx \
 		--disable-tiger --disable-tremor --disable-udev \
 		--disable-update-check --disable-vcdx --disable-vsxu \
 		--disable-wasapi --disable-x26410b \
 		--with-kde-solid=${PREFIX}/share/apps/solid/actions \
 		ac_cv_search_pthread_rwlock_init=-pthread
-.if defined(WITH_DEBUG) && !defined(WITHOUT_DEBUG)
+.if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=--enable-debug
 .endif
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -60,7 +67,7 @@ OPTIONS_DEFINE=	A52 AALIB ASS AVAHI CACA DBUS DCA DIRAC DOCS DVDREAD \
 		LIVEMEDIA LUA MAD MATROSKA MODPLUG \
 		MPEG2 MTP MUSEPACK NCURSES NLS NOTIFY OGG OPTIMIZED_CFLAGS \
 		OPUS PNG PULSEAUDIO QT4 QT5 REALRTSP RUNROOT SAMPLERATE \
-		SCHROEDINGER SDL SHOUTCAST SKINS SMB STREAM SPEEX \
+		SCHROEDINGER SDL SHOUTCAST SKINS SMB SNDIO STREAM SPEEX \
 		TAGLIB THEORA TWOLAME UPNP V4L VAAPI VCD VDPAU VORBIS \
 		X11 X264 X265 ZVBI
 OPTIONS_DEFAULT=A52 AVAHI DBUS DCA DVDREAD DVDNAV FAAD FLAC GNUTLS \
@@ -264,7 +271,10 @@ CONFIGURE_ARGS+=	--disable-sid
 SHOUTCAST_LIB_DEPENDS=	libshout.so:audio/libshout
 SHOUTCAST_CONFIGURE_ENABLE=	shout
 
-SMB_LIB_DEPENDS=	libsmbclient.so:net/samba-libsmbclient
+SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
+SNDIO_CONFIGURE_ENABLE=	sndio
+
+SMB_USES=		samba:lib
 SMB_CONFIGURE_ENABLE=	smbclient
 
 STREAM_CONFIGURE_ENABLE=sout
@@ -357,7 +367,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/dev/cdrom|${WITH_CDROM_DEVICE}|g' \
 		-e 's|/dev/dvd|${WITH_DVD_DEVICE}|g' \
 		${WRKSRC}/src/libvlc-module.c
-	@${RM} -rf ${WRKSRC}/modules/access/v4l2/linux
+	@${RM} -r ${WRKSRC}/modules/access/v4l2/linux
 # XXX FreeBSD doesn't have strerror_l() - use the android version of error.c
 	@${CP} ${WRKSRC}/src/android/error.c ${WRKSRC}/src/posix
 .if ${PORT_OPTIONS:MQT4}

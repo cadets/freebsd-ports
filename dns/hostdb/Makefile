@@ -3,8 +3,8 @@
 
 PORTNAME=	hostdb
 PORTVERSION=	1.004
+PORTREVISION=	1
 CATEGORIES=	dns
-MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	rodrigc@FreeBSD.org
 COMMENT=	Generate DNS and DHCP config files from single source
@@ -12,6 +12,10 @@ COMMENT=	Generate DNS and DHCP config files from single source
 LICENSE=	GPLv2
 
 USES=		shebangfix tar:tgz
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	TomOnTime
+GH_TAGNAME=	fb23e67642514f5
 
 NO_BUILD=	yes
 

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	elixir
-PORTVERSION=	1.3.2
+PORTVERSION=	1.5.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	lang
-MASTER_SITES+=	http://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
+MASTER_SITES+=	https://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
 DISTFILES=	Docs.zip:doc
 DIST_SUBDIR=	elixir/${PORTVERSION}
 
@@ -21,8 +21,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	elixir-lang
 
 USES=		gmake
-MAKE_ENV=	LANG=en_US.UTF-8
-ALL_TARGET=	#empty
+USE_LOCALE=	en_US.UTF-8
+ALL_TARGET=	# empty
 REINPLACE_ARGS=	-i ""
 NO_ARCH=	yes
 OPTIONS_SUB=	yes
@@ -34,9 +34,8 @@ SRC_DESC=	Install source code
 
 .include <bsd.port.options.mk>
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|share/man|man|' ${WRKSRC}/Makefile
-	@${RM} ${WRKSRC}/bin/*.orig
+post-extract:
+	@${FIND} ${WRKDIR}/doc -name .build -delete
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

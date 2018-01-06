@@ -2,15 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	dropbox-uploader
-PORTVERSION=	0.15
-#PORTREVISION=	0
+PORTVERSION=	1.0
+PORTREVISION=	0
+PORTEPOCH=	1
 CATEGORIES=	net
-MASTER_SITES=	http://nivit.altervista.org/FreeBSD/ports/distfiles/
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	BASH script for the Dropbox backup service
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	bash:shells/bash \
 		curl:ftp/curl \
@@ -19,7 +20,6 @@ RUN_DEPENDS=	bash:shells/bash \
 USE_GITHUB=	yes
 GH_ACCOUNT=	andreafabrizi
 GH_PROJECT=	Dropbox-Uploader
-GH_TAGNAME=	d012423
 
 NO_BUILD=	yes
 
@@ -29,6 +29,6 @@ post-patch:
 	${REINPLACE_CMD} -E -e 's,("darwin"),\1 -o "$${OSTYPE:0:7}" == "freebsd" ,1' -i.bak ${WRKSRC}/dropShell.sh
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/*.sh ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_SCRIPT} ${WRKSRC}/drop*.sh ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

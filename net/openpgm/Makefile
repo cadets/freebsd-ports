@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	openpgm
-PORTVERSION=	5.2.122
-PORTREVISION=	2
+DISTVERSIONPREFIX=	release-
+DISTVERSION=	5-2-122
+PORTREVISION=	3
 CATEGORIES=	net devel
-MASTER_SITES=	GOOGLE_CODE
-DISTNAME=	libpgm-${PORTVERSION}
 
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Implementation of the PGM reliable multicast protocol
@@ -14,19 +13,27 @@ COMMENT=	Implementation of the PGM reliable multicast protocol
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_powerpc64=	fails to compile: socket.c: internal compiler error: in extract_insn, at recog.c
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	steve-o
+
 GNU_CONFIGURE=	yes
-USES=		pathfix perl5 tar:bzip2 libtool python:build
+USES=		autoreconf pathfix perl5 libtool python:build
+USE_PERL5=	build
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}/${DISTNAME}/openpgm/pgm
+WRKSRC_SUBDIR=	openpgm/pgm
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 PORTDOCS=	draft-ietf-rmt-bb-pgmcc-03.txt rfc3208.txt
 PORTEXAMPLES=	*
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/../doc/,} ${STAGEDIR}${DOCSDIR}
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 

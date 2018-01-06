@@ -14,8 +14,8 @@ MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Real-time signal analysis and time-frequency browser
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S/i686/x86/}
-USE_LINUX=	yes
-USE_LINUX_APPS=	xorglibs
+USES=		linux
+USE_LINUX=	xorglibs
 ONLY_FOR_ARCHS=	i386 amd64
 
 RESTRICTED=	author requests no distribution except from their site
@@ -40,9 +40,10 @@ do-build:
 	${BRANDELF} -t Linux ${WRKSRC}/baudline
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/baudline ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/baudline ${STAGEDIR}${PREFIX}/bin
+
 do-install-DOCS-on:
-	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}
-	@cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

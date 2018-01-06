@@ -7,12 +7,12 @@ CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	olivierd@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Embed YouTube videos in reStructuredText documents
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docutils>=0.11:textproc/py-docutils
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docutils>=0.11:textproc/py-docutils@${FLAVOR}
 
 USES=	python:2
 USE_PYTHON=	distutils autoplist

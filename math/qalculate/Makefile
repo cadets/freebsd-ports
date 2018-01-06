@@ -2,34 +2,33 @@
 # $FreeBSD$
 
 PORTNAME=	qalculate
-PORTVERSION=	0.9.7
-PORTREVISION=	4
+PORTVERSION=	1.0.0
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	math
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-gtk/${PORTNAME}-gtk-${PORTVERSION}
-DISTNAME=	${PORTNAME}-gtk-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Multi-purpose desktop calculator (Gnome frontend)
+MAINTAINER=	jhale@FreeBSD.org
+COMMENT=	Multi-purpose desktop calculator (GTK+3 frontend)
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libqalculate.so:math/libqalculate
+LIB_DEPENDS=	libcln.so:math/cln \
+		libqalculate.so:math/libqalculate
 RUN_DEPENDS=	gnuplot:math/gnuplot \
 		wget:ftp/wget
 
-USES=		gettext gmake
-USE_GNOME=	intltool libglade2 libgnome
-GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
-INSTALLS_OMF=	yes
+BROKEN_powerpc64=	fails to compile:  main.cc: undefined reference to Calculator::temporaryCategory[abi:cxx11]()
 
-post-patch:
-	@${REINPLACE_CMD} -e \
-		'/^Icon/s|=\(.*\)|=${PREFIX}/share/pixmaps/\1|' \
-		${WRKSRC}/data/qalculate-gtk.desktop.in
-	@${REINPLACE_CMD} -e \
-		's/^GMSGFMT = @GMSGFMT@/GMSGFMT = msgfmt/' \
-		${WRKSRC}/po/Makefile.in.in
+USES=		autoreconf compiler:c++11-lang gettext gmake \
+		libtool:build localbase pkgconfig
+USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool libxml2
+GNU_CONFIGURE=	yes
+DATADIR=	share/${GH_PROJECT}
+DOCSDIR=	share/doc/${GH_PROJECT}
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	Qalculate
+GH_PROJECT=	${PORTNAME}-gtk
 
 .include <bsd.port.mk>

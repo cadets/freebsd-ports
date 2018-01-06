@@ -6,10 +6,9 @@ PORTVERSION=	5.1.2
 PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	SUNSITE/libs/graphics/ \
-		http://www.skysmurf.nl/comp/FreeBSD/distfiles/
+MASTER_SITES=	SUNSITE/libs/graphics/
 
-MAINTAINER=	freebsd@skysmurf.nl
+MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Type 1 font rasterization library for Unix/X11
 
 LICENSE=	LGPL20
@@ -26,6 +25,12 @@ OPTIONS_DEFAULT=	X11
 OPTIONS_SUB=	yes
 X11_USE=	XORG=xaw
 X11_CONFIGURE_WITH=	x
+
+# Build fails with:
+#  gmake[2]: Entering directory '/wrkdirs/usr/ports/devel/t1lib/work/t1lib-5.1.2/lib'
+#  gmake[2]: *** pselect jobs pipe: Bad file descriptor.  Stop.
+#  gmake[2]: *** Waiting for unfinished jobs....
+MAKE_JOBS_UNSAFE=	YES
 
 post-patch:
 	@${REINPLACE_CMD} -e \

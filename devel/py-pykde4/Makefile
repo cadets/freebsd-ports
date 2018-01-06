@@ -2,11 +2,9 @@
 
 PORTNAME=	pykde4
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	2
-CATEGORIES=	devel kde python
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
+PORTREVISION=	4
+CATEGORIES=	devel kde kde-kde4 python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DIST_SUBDIR=	KDE/${PORTVERSION}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python bindings for KDE
@@ -19,6 +17,7 @@ USE_KDE=	kdelibs nepomuk-core okular pimlibs \
 USE_PYQT=	declarative designer gui network opengl phonon script sip \
 		sql svg webkit xml \
 		dbussupport_run
+USE_PYTHON=	flavors
 USE_QT4=	corelib dbus designer_build gui network xml \
 		qmake_build moc_build uic_build rcc_build
 

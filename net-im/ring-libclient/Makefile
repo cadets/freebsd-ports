@@ -3,6 +3,7 @@
 
 PORTNAME=	ring-libclient
 PORTVERSION=	0.160516
+PORTREVISION=	4
 #DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im net-p2p
 
@@ -13,13 +14,11 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libring.so:net-im/ring-daemon
 
-BROKEN_FreeBSD_9=	Fails due to compiler issues
-
 USE_GITHUB=	yes
 #GH_TUPLE+=	savoirfairelinux:ring-lrc:9eaac77
 GH_TUPLE+=	savoirfairelinux:ring-lrc:cb5ee04
 
-USES=		cmake compiler:c++14-lang gmake
+USES=		cmake compiler:c++14-lang
 USE_GNOME=	glib20 gtk20 cairo gdkpixbuf2
 USE_XORG=	x11 xscrnsaver
 USE_GL=		gl

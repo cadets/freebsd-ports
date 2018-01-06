@@ -21,6 +21,8 @@ RUN_DEPENDS=	tor:security/tor
 LIB_DEPENDS=	libgtkspell.so:textproc/gtkspell \
 		libtspi.so:security/trousers
 
+BROKEN=		wrong build depends
+
 USES=		go
 PLIST_FILES=	bin/pond-server bin/pond
 USE_GNOME=	gtk30

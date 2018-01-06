@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	haproxy
-PORTVERSION=	1.6.8
+PORTVERSION=	1.7.9
 CATEGORIES=	net www
-MASTER_SITES=	http://www.haproxy.org/download/1.6/src/
+MASTER_SITES=	http://www.haproxy.org/download/1.7/src/
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	demon@FreeBSD.org
@@ -18,12 +18,9 @@ CONFLICTS_INSTALL=	haproxy-devel-[0-9]*
 USES=		cpe gmake
 USE_RC_SUBR=	haproxy
 
-DEVICEATLAS_VERSION=	2.1
-DEVICEATLAS_DISTFILE=	deviceatlas-enterprise-c-${DEVICEATLAS_VERSION}
-DEVICEATLAS_REGISTRATION_URL=	https://deviceatlas.com/deviceatlas-haproxy-module
-
 MAKE_ARGS=	TARGET=freebsd DEFINE=-DFREEBSD_PORTS USE_GETADDRINFO=1 \
-		USE_ZLIB=1 USE_CPU_AFFINITY=1 CC="${CC}" CFLAGS="${CFLAGS}"
+		USE_ZLIB=1 USE_CPU_AFFINITY=1 USE_ACCEPT4=1 \
+		CC="${CC}" DEBUG_CFLAGS="" CPU_CFLAGS="${CFLAGS}"
 
 OPTIONS_DEFINE=		DOCS EXAMPLES LUA OPENSSL DEVICEATLAS
 OPTIONS_RADIO=		PCRE
@@ -46,16 +43,8 @@ MAKE_ARGS+=	USE_PCRE=1 USE_STATIC_PCRE=1 USE_PCRE_JIT=1
 .endif
 
 .if ${PORT_OPTIONS:MDEVICEATLAS}
-.if !exists(${DISTDIR}/${DEVICEATLAS_DISTFILE}.zip)
-IGNORE?=	you must manually fetch the DeviceAtlas Device Detection C API from ${DEVICEATLAS_REGISTRATION_URL} and place it in ${DISTDIR} and then run make again
-.else
-RESTRICTED=	The redistribution of the DeviceAtlas Device Detection C API is not permitted
-DISTFILES+=	${DEVICEATLAS_DISTFILE}.zip
-MAKE_ARGS+=	USE_DEVICEATLAS=1 DEVICEATLAS_SRC=${WRKDIR}/deviceatlas-enterprise-c-${DEVICEATLAS_VERSION}
-.endif
-.if ! ${PORT_OPTIONS:MDPCRE} && ! ${PORT_OPTIONS:MSPCRE}
-IGNORE?=	enable PCRE support to use DeviceAtlas
-.endif
+LIB_DEPENDS+=   libda.so:net/deviceatlas-enterprise-c
+MAKE_ARGS+=	USE_DEVICEATLAS=1 DEVICEATLAS_LIB=${LOCALBASE}/lib DEVICEATLAS_INC=${LOCALBASE}/include
 .endif
 
 .if ${PORT_OPTIONS:MOPENSSL}
@@ -80,4 +69,14 @@ do-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR})
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "amd64" || ${ARCH} == "i386"
+MAKE_ARGS+=	USE_REGPARM=1
+.endif
+
+.if ${PORT_OPTIONS:MOPENSSL} && ${SSL_DEFAULT:Mopenssl-devel}
+BROKEN=		Does not build with openssl-devel
+.endif
+
+.include <bsd.port.post.mk>

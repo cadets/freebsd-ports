@@ -5,9 +5,9 @@ PKGNAMESUFFIX=	-ssl
 
 COMMENT=	Nagios Remote Plugin Executor (SSL version)
 
-CONFLICTS=	nrpe-2.*
+CONFLICTS=	nrpe nrpe3
 
-OPTIONS_SET=	SSL
+OPTIONS_SLAVE=	SSL
 
 MASTERDIR=		${.CURDIR}/../nrpe
 

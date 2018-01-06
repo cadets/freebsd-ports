@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	archiveopteryx
-PORTVERSION=	3.2.99.20160129
+PORTVERSION=	3.2.99.20170718
 PORTREVISION=	0
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
@@ -12,18 +12,18 @@ COMMENT=	Advanced PostgreSQL-based IMAP/POP server
 
 LICENSE=	MIT
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=	jam:devel/jam
+
+BROKEN_powerpc64=	Does not build: /bin/sh: clang: not found
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	aox
 GH_PROJECT=	aox
-GH_TAGNAME=	e10c73a
+GH_TAGNAME=	f9c2e40
 
-USES=		perl5 tar:bzip2 pgsql:9.1+
-USE_OPENSSL=	yes
+USES=		perl5 ssl
 USE_PERL5=	build
+WITH_PGSQL=	client
 
 PORTDOCS=	COPYING README license.txt
 
@@ -42,15 +42,19 @@ JAM?=		${LOCALBASE}/bin/jam
 
 .include <bsd.port.pre.mk>
 
-# force Clang when on FreeBSD 10+
-.if ${OSVERSION} >= 1000000
+# force Clang when on FreeBSD
+.if ${OPSYS} == FreeBSD
 JAMARG=	"-sCLANG=1"
 .endif
 
 post-patch:
-	@${GREP} -Rl '%%[[:alpha:]]\+%%' ${WRKSRC} |${XARGS} ${REINPLACE_CMD} \
+	@${EGREP} -Rl '%%[[:alpha:]]+%%' ${WRKSRC} |${XARGS} ${REINPLACE_CMD} \
 		-e 's,%%PREFIX%%,${PREFIX},g'
-	${REINPLACE_CMD} "s|INSTALLROOT ?= \"\" ;|INSTALLROOT = \"${STAGEDIR}\" ;|" ${WRKSRC}/Jamsettings
+	${REINPLACE_CMD} -e "s|\(C++FLAGS =\)|\1 -I${OPENSSLINC}|g" \
+		-e"s|INSTALLROOT ?= \"\" ;|INSTALLROOT = \"${STAGEDIR}\" ;|" \
+		${WRKSRC}/Jamsettings
+	${REINPLACE_CMD} -e "s|\(-lcrypto\)|-L${OPENSSLLIB} \1|g" \
+		${WRKSRC}/server/Jamfile
 
 do-build:
 	@cd ${WRKSRC} && ${JAM} ${JAMARG}

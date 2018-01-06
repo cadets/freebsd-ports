@@ -1,2 +1,3 @@
-SHA256 (plusvic-yara-v3.4.0_GH0.tar.gz) = 528571ff721364229f34f6d1ff0eedc3cd5a2a75bb94727dc6578c6efe3d618b
-SIZE (plusvic-yara-v3.4.0_GH0.tar.gz) = 7642695
+TIMESTAMP = 1510327306
+SHA256 (VirusTotal-yara-v3.7.0_GH0.tar.gz) = 01f0841e7387918c2b6d0b7fb48014bda41d1487be1cabf718a0576018969641
+SIZE (VirusTotal-yara-v3.7.0_GH0.tar.gz) = 558035

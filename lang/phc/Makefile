@@ -9,14 +9,17 @@ MASTER_SITES=	http://www.phpcompiler.org/src/archive/
 MAINTAINER=	eg@fbsd.lt
 COMMENT=	Compiler for the PHP language
 
-USES=	gmake
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/license/LICENSE
+
+USES=		gmake
+USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes
-CFLAGS+=	-fgnu89-inline
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} 's/g++/$$CXX/' \
 		${WRKSRC}/phc_compile_plugin.in
 	${REINPLACE_CMD} 's/insert/this->&/' \
-		${WRKSRC}/include/phc/lib/List.h
+		${WRKSRC}/lib/List.h
 
 .include <bsd.port.mk>

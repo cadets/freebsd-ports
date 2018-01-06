@@ -3,7 +3,7 @@
 
 PORTNAME=	xmlwrapp
 PORTVERSION=	0.7.0
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
@@ -12,8 +12,6 @@ COMMENT=	Modern style C++ library for working with XML data
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc64=	Does not build
 
 LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs
 
@@ -27,7 +25,6 @@ XSLT_CONFIGURE_ENABLE=	xslt
 USES=		pathfix pkgconfig libtool
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

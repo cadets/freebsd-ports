@@ -17,7 +17,8 @@ CPE_VENDOR=	gnu
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-[2]* cfengine-3.[3-9]* cfengine-devel-*
+CONFLICTS=	cfengine-2* cfengine-3.[13-9]* cfengine-devel-* \
+		cfengine3[3-9]-* cfengine31[0-9]-*
 
 USE_RC_SUBR=	cf-execd cf-serverd
 
@@ -25,6 +26,8 @@ LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USES=		bdb cpe libtool ssl
 GNU_CONFIGURE=	yes
+CFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
 # EXAMPLESDIR=	${PREFIX}/share/examples/cfengine3
 DOCSDIR=	${PREFIX}/share/doc/cfengine3
 CONFIGURE_ARGS=	--docdir=${DOCSDIR} \

@@ -2,15 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	pypy3
-DISTVERSION=	5.2.0-alpha1
-DISTNAME=	${PORTNAME}.3-v${DISTVERSION}-src
+DISTNAME=	${PORTNAME}-v${DISTVERSION}-src
 
 MASTERDIR=	${.CURDIR}/../pypy
 
-BUILD_WRKSRC?=	${WRKDIR}/build/usession-release-pypy3.3-v5.2-0/testing_1
+WRKSRC=		${WRKDIR}/${PORTNAME}-v${DISTVERSION:C/-.*//}-src
+BUILD_WRKSRC?=	${WRKDIR}/build/usession-release-${PORTNAME}.5-v${DISTVERSION:C/-.*//}-0/testing_1
+
+SHEBANG_FILES=	lib-python/3/encodings/rot_13.py \
+		lib-python/3/lib2to3/tests/data/different_encoding.py \
+		lib-python/3/lib2to3/tests/data/false_encoding.py \
+		lib-python/3/cgi.py
 
 PACKAGE_ARGS=	--without-_gdbm --without-sqlite3 --without-tk
 
-PYPY_CFFI_VER=	pypy3-52
+PYPY_CFFI_VER=	${PORTNAME}-${DISTVERSION:C/.[^.]+$//:S/.//}-${ARCH}-${OPSYS:tl}${OSREL:C/\..*//}
+
+pre-install:
+	${FIND} ${WRKSRC} -name '*.pyc' -delete
+	#${CHMOD} -R a-w ${WRKSRC}
+	#${CHMOD} -R u+w ${WRKSRC}/lib_pypy
 
 .include "${MASTERDIR}/Makefile"

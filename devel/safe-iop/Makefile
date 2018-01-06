@@ -3,10 +3,11 @@
 
 PORTNAME=	safe-iop
 PORTVERSION=	0.3.1
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	http://BSDforge.com/projects/source/devel/safe-iop/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Safe integer operation library for C
 
 USES=		tar:tgz
@@ -23,7 +24,7 @@ post-patch:
 	    ${WRKSRC}/Makefile
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/libsafe_iop.so.0 ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/libsafe_iop.so.0 ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_DATA} ${WRKSRC}/include/safe_iop.h ${STAGEDIR}${PREFIX}/include
 
 .include <bsd.port.mk>

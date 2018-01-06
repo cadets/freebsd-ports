@@ -135,7 +135,7 @@ amd64fbsd_trapframe_cache (struct frame_info *this_frame, void **this_cache)
   int i;
 
   if (*this_cache != NULL)
-    return (*this_cache);
+    return ((struct trad_frame_cache *)*this_cache);
 
   cache = trad_frame_cache_zalloc (this_frame);
   *this_cache = cache;
@@ -238,7 +238,7 @@ void
 _initialize_amd64_kgdb_tdep(void)
 {
 	gdbarch_register_osabi (bfd_arch_i386, bfd_mach_x86_64,
-	    GDB_OSABI_FREEBSD_ELF_KERNEL, amd64fbsd_kernel_init_abi);
+	    GDB_OSABI_FREEBSD_KERNEL, amd64fbsd_kernel_init_abi);
 
 #ifdef __amd64__
 	gdb_assert(offsetof(struct pcb, pcb_rbx)

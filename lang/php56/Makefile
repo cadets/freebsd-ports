@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	php56
-PORTVERSION=	5.6.24
+PORTVERSION=	5.6.32
 PORTREVISION?=	1
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -35,7 +35,7 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 USE_GNOME=	libxml2
 
 OPTIONS_DEFINE+=CLI CGI FPM EMBED PHPDBG DEBUG DTRACE IPV6 MAILHEAD LINKTHR ZTS
-OPTIONS_DEFAULT=CLI CGI FPM LINKTHR
+OPTIONS_DEFAULT=CLI CGI FPM EMBED LINKTHR
 # Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
 OPTIONS_EXCLUDE_mips=FPM
 OPTIONS_EXCLUDE_mips64=FPM
@@ -47,7 +47,6 @@ FPM_DESC=	Build FPM version
 EMBED_DESC=	Build embedded library
 DEBUG_DESC=	Enable debug
 DTRACE_DESC=	Enable DTrace support
-IPV6_DESC=	Enable ipv6 support
 MAILHEAD_DESC=	Enable mail header patch
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
@@ -88,9 +87,6 @@ CONFIGURE_ARGS+=--enable-fpm \
 .endif
 
 .if defined(PKGNAMEPREFIX)
-USES+=	php
-PHP_VER=	56
-IGNORE_WITH_PHP=53 54 5
 USE_APACHE=	22+
 .include "${PORTSDIR}/Mk/bsd.apache.mk"
 .if ${PORT_OPTIONS:MAP2FILTER}

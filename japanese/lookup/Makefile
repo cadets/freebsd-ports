@@ -3,7 +3,7 @@
 
 PORTNAME=	lookup
 PORTVERSION=	1.4.1
-PORTREVISION=	17
+PORTREVISION=	19
 CATEGORIES=	japanese elisp
 MASTER_SITES=	http://openlab.ring.gr.jp/edict/lookup/dist/
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
@@ -33,7 +33,7 @@ CONFIGURE_ARGS=	--with-emacs=${EMACS_CMD} \
 
 post-install:
 .if (${EMACS_PORT_NAME} == "xemacs21-mule")
-	${RM} -f ${WRKDIR}/${MANIFEST}
+	${RM} ${WRKDIR}/${MANIFEST}
 	emacsdir=`${ECHO_CMD} ${EMACSDIR} | ${SED} -e "s;^${PREFIX}/;;"`; \
 	${CAT} ${PLIST} | ${GREP} -e "^$${emacsdir}" | \
 		${SED} -e "s;^$${emacsdir}/;;" > ${WRKDIR}/${MANIFEST}

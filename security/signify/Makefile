@@ -1,12 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	signify
-PORTVERSION=	0.4.2
+PORTVERSION=	0.6
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	security
 
-MAINTAINER=	t@tobik.me
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Create and verify cryptographic signatures
 
 # outils includes signify from OpenBSD's base system which is under an
@@ -16,9 +17,7 @@ LICENSE=	ISCL BSD4CLAUSE BSD3CLAUSE
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-# gmake is required on FreeBSD 9.3, on FreeBSD >= 10 we get away with
-# regular make with tiny changes in the Makefile.
-USES=	gmake
+USES=		gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	chneukirchen
 GH_PROJECT=	outils
@@ -34,6 +33,7 @@ post-patch:
 	${REINPLACE_CMD} 's|/etc/signify/|${ETCDIR}/|g' \
 		${WRKSRC}/src/usr.bin/signify/signify.c \
 		${WRKSRC}/src/usr.bin/signify/signify.1
+	${REINPLACE_CMD} -e 's|-lcrypto||' ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/usr.bin/signify/signify \

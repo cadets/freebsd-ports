@@ -2,7 +2,7 @@
 
 PORTNAME=	icingaweb2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.4
+DISTVERSION=	2.5.0
 CATEGORIES=	net-mgmt www
 
 MAINTAINER=	lme@FreeBSD.org
@@ -11,12 +11,13 @@ COMMENT=	Next generation web interface for Icinga 1 and 2
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${LOCALBASE}/share/ZendFramework/bin/classmap_generator.php:www/zend-framework
+RUN_DEPENDS=	zf:www/zend-framework1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 USES=		php:build
 USE_PHP=	ctype dom gd gettext hash json openssl session sockets
@@ -29,13 +30,17 @@ SUB_LIST=	WWWDIR=${WWWDIR} \
 PLIST_SUB=	WWWOWN=${WWWOWN} \
 		WWWGRP=${WWWGRP}
 
-OPTIONS_DEFINE=		NLS LDAP MYSQL PGSQL
+OPTIONS_DEFINE=		NLS LDAP MYSQL PGSQL PDF
 OPTIONS_DEFAULT=	LDAP MYSQL PGSQL
 
+PDF_DESC=	Export graphs as PDF
+
 NLS_USES=	gettext
-PGSQL_USE=	PHP=pdo_pgsql
+NLS_USE=	php=intl
+PGSQL_USE=	PHP=pdo_pgsql,pgsql
 MYSQL_USE=	PHP=pdo_mysql
 LDAP_USE=	PHP=ldap
+PDF_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/imagick.so:graphics/pecl-imagick
 
 do-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/bash_completion.d/

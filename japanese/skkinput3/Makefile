@@ -3,15 +3,13 @@
 
 PORTNAME=	skkinput3
 PORTVERSION=	3.0.6
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	japanese x11
 MASTER_SITES=	SFJP/${PORTNAME}/2222
 DISTNAME=	skkinput-${PORTVERSION}
 
 MAINTAINER=	koma2@lovepeers.org
 COMMENT=	SKK-like Japanese input method for X11
-
-BROKEN_powerpc64=	Does not build
 
 USES=		imake
 USE_GCC=	any

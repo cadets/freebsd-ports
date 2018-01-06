@@ -11,7 +11,12 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	HTML to LaTeX to PDF Converter
 
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/copying.txt
+
 LIB_DEPENDS=	libGraphicsMagick++.so:graphics/GraphicsMagick
+
+BROKEN_powerpc64=	fails to link: libGraphicsMagick++.so: undefined reference to std::__cxx11::basic_string
 
 USES=		bison gmake
 MAKEFILE=	GNUmakefile

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	setuptools
-PORTVERSION=	23.1.0
+PORTVERSION=	36.5.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +13,8 @@ COMMENT=	Python packages installer
 LICENSE=	PSFL
 
 NO_ARCH=	yes
-USES=		python
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python zip
+USE_PYTHON=	autoplist concurrent distutils allflavors
 
 PYDISTUTILS_SETUP=	${PYSETUP}
 
@@ -32,9 +32,9 @@ SUB_LIST+=	PYTHON_VER=${PYTHON_VER}
 
 # These create dependency loops in redports/poudriere, because setuptools
 # is currently an explicit BUILD & RUN dependency in Uses/python.mk.
-#TEST_DEPENDS=  ${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest
+#TEST_DEPENDS=  ${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${FLAVOR}
 #.if ${PYTHON_REL} < 3300
-#TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock
+#TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${FLAVOR}
 #.endif
 
 post-install:

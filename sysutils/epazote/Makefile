@@ -1,44 +1,25 @@
 # $FreeBSD$
 
-PORTNAME=       epazote
-PORTVERSION=    1.5.2
-CATEGORIES=     sysutils
+PORTNAME=	epazote
+PORTVERSION=	2.1.2
+CATEGORIES=	sysutils
 
-MAINTAINER=     nbari@dalmp.com
-COMMENT=        Automated microservices supervisor
+MAINTAINER=	nbari@tequila.io
+COMMENT=	Automated HTTP (microservices) supervisor
 
-LICENSE=        BSD3CLAUSE
-LICENSE_FILE=   ${WRKSRC}/LICENSE
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=  go>=1.6:lang/go
+BUILD_DEPENDS=	go>=1.7:lang/go
 
-USES=           compiler
+USES=	compiler
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     nbari:DEFAULT \
-		go-yaml:yaml
-GH_PROJECT=     epazote yaml:yaml
-GH_TAGNAME=	v2:yaml
-
-STRIP=          # stripping can break go binaries
+USE_GITHUB=	yes
+GH_TUPLE=	epazote:scheduler:0.1.0:scheduler/src/github.com/epazote/scheduler \
+		go-yaml:yaml:cd8b52f:yaml/src/github.com/go-yaml/yaml
+GH_SUBDIR=	src/github.com/${PORTNAME}/${PORTNAME}
 
 PLIST_FILES=	bin/epazote
-
-post-patch:
-	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}
-.for src in .gitignore a_test.go cmd config.go mail.go mailman_test.go \
-	request.go scandir_test.go singleton_test.go supervice.go try.go \
-	block.go color.go config_test.go mail_test.go report.go \
-	request_test.go scheduler start.go supervice_test.go \
-	try_test.go .travis.yml README.md changelog.md color_test.go \
-	examples mailman.go report_test.go scandir.go singleton.go \
-	start_test.go test
-	@${MV} ${WRKSRC}/${src} \
-	${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}
-.endfor
-	@${MKDIR} ${WRKSRC}/src/gopkg.in
-	@${MV} ${WRKSRC_yaml}/ \
-		${WRKSRC}/src/gopkg.in/yaml.v2
 
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}; \

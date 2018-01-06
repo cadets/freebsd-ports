@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	qrcode
-PORTVERSION=	5.1
+PORTVERSION=	5.3
+PORTREVISION=	1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +13,8 @@ COMMENT=	QR Code image generator
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.8:devel/py-six \
-		${PYTHON_PKGNAMEPREFIX}pillow>=2.6:graphics/py-pillow
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.8:devel/py-six@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=2.6:graphics/py-pillow@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils

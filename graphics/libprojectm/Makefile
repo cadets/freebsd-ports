@@ -2,7 +2,7 @@
 
 PORTNAME=	libprojectM
 PORTVERSION=	2.0.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics audio
 MASTER_SITES=	SF/${PORTNAME:tl:S/lib//}/${PORTVERSION}/
 DISTNAME=	${PORTNAME:S/lib//}-${DISTVERSION}-Source
@@ -15,7 +15,7 @@ LICENSE=	LGPL21+
 LIB_DEPENDS=	libftgl.so:graphics/ftgl \
 		libfreetype.so:print/freetype2
 
-USES=		cmake localbase
+USES=		cmake localbase:ldflags
 CMAKE_ARGS=	-DUSE_OPENMP=OFF # openmp breaks build on 11.x
 USE_GL=		glew
 USE_LDCONFIG=	yes

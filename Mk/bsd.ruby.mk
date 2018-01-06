@@ -15,11 +15,9 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 # [variables that a user may define]
 #
 # RUBY_VER		- (See below)
-# RUBY_DEFAULT_VER	- Set to (e.g.) "2.1" if you want to refer to "ruby21"
+# RUBY_DEFAULT_VER	- Set to (e.g.) "2.4" if you want to refer to "ruby24"
 #			  just as "ruby".
 # RUBY_ARCH		- (See below)
-# RUBY_RD_HTML		- Define if you want HTML files generated from RD files.
-#
 #
 # [variables that each port can define]
 #
@@ -33,7 +31,6 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 # USE_RUBY		- Says that the port uses ruby for building and running.
 # RUBY_NO_BUILD_DEPENDS	- Says that the port should not build-depend on ruby.
 # RUBY_NO_RUN_DEPENDS	- Says that the port should not run-depend on ruby.
-# USE_LIBRUBY		- Says that the port uses libruby.
 # USE_RUBY_EXTCONF	- Says that the port uses extconf.rb to configure.
 #			  Implies USE_RUBY.
 # RUBY_EXTCONF		- Set to the alternative name of extconf.rb
@@ -44,7 +41,6 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 #			  build.
 # RUBY_SETUP		- Set to the alternative name of setup.rb
 #			  (default: setup.rb).
-# USE_RUBY_RDTOOL	- Says that the port uses rdtool to generate documents.
 # USE_RUBY_RDOC		- Says that the port uses rdoc to generate documents.
 # RUBY_REQUIRE		- Set to a Ruby expression to evaluate before building
 #			  the port.  The constant "Ruby" is set to the integer
@@ -52,10 +48,6 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 #			  expression will be set to RUBY_PROVIDED, which is
 #			  left undefined if the result is nil, false or a
 #			  zero-length string.  Implies USE_RUBY.
-# RUBY_RD_FILES		- Specify the RD files which you want to generate HTML
-#			  documents from. If this is defined and not empty,
-#			  USE_RUBY_RDTOOL is implied and RUBY_RD_HTML_FILES is
-#			  defined.
 # USE_RUBYGEMS		- Do not use this -- instead USES=gem
 #
 # [variables that each port should not (re)define]
@@ -95,18 +87,14 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 #
 # RUBY_MODNAME		- Set to the module name (default: ${PORTNAME}).
 #
-# RUBY_RD2		- Full path of rd2 executable.
 # RUBY_RDOC		- Full path of rdoc executable.
 #
 # RUBY_BASE_PORT	- Port path of base ruby without PORTSDIR, without
 #			  suffix except version.
 # RUBY_PORT		- Port path of ruby without PORTSDIR.
-# RUBY_RDTOOL_PORT	- Port path of rdtool without PORTSDIR.
 # RUBY_RDOC_PORT	- Port path of rdoc without PORTSDIR.
 #
-# DEPEND_LIBRUBY	- LIB_DEPENDS entry for libruby.
 # DEPEND_RUBY		- BUILD_DEPENDS/RUN_DEPENDS entry for ruby.
-# DEPEND_RUBY_RDTOOL	- BUILD_DEPENDS entry for rdtool.
 # DEPEND_RUBY_RDOC	- BUILD_DEPENDS entry for rdoc.
 #
 # RUBY_LIBDIR		- Installation path for architecture independent
@@ -125,7 +113,6 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 #			  documents.
 # RUBY_MODDOCDIR	- Installation path for the module's documents.
 # RUBY_MODEXAMPLESDIR	- Installation path for the module's examples.
-# RUBY_ELISPDIR		- Installation path for emacs lisp files.
 #
 
 .if defined(RUBY_DEFAULT_VER)
@@ -163,22 +150,12 @@ RUBY?=			${LOCALBASE}/bin/${RUBY_NAME}
 .if defined(RUBY_VER)
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-. if ${RUBY_VER} == 2.1
-#
-# Ruby 2.1
-#
-RUBY_RELVERSION=	2.1.9
-RUBY_PORTREVISION=	0
-RUBY_PORTEPOCH=		1
-RUBY_PATCHLEVEL=	0
-RUBY21=			""	# PLIST_SUB helpers
-
-. elif ${RUBY_VER} == 2.2
+. if ${RUBY_VER} == 2.2
 #
 # Ruby 2.2
 #
-RUBY_RELVERSION=	2.2.5
-RUBY_PORTREVISION=	0
+RUBY_RELVERSION=	2.2.8
+RUBY_PORTREVISION=	1
 RUBY_PORTEPOCH=		1
 RUBY_PATCHLEVEL=	0
 RUBY22=			""	# PLIST_SUB helpers
@@ -187,11 +164,21 @@ RUBY22=			""	# PLIST_SUB helpers
 #
 # Ruby 2.3
 #
-RUBY_RELVERSION=	2.3.1
-RUBY_PORTREVISION=	0
+RUBY_RELVERSION=	2.3.5
+RUBY_PORTREVISION=	1
 RUBY_PORTEPOCH=		1
 RUBY_PATCHLEVEL=	0
 RUBY23=			""	# PLIST_SUB helpers
+
+. elif ${RUBY_VER} == 2.4
+#
+# Ruby 2.4
+#
+RUBY_RELVERSION=	2.4.2
+RUBY_PORTREVISION=	1
+RUBY_PORTEPOCH=		1
+RUBY_PATCHLEVEL=	0
+RUBY24=			""	# PLIST_SUB helpers
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
@@ -199,16 +186,16 @@ RUBY23=			""	# PLIST_SUB helpers
 #
 # Other versions
 #
-IGNORE=	Only ruby 2.1, 2.2 and 2.3 are supported
+IGNORE=	Only ruby 2.2, 2.3 and 2.4 are supported
 _INVALID_RUBY_VER=	1
 . endif
 .endif # defined(RUBY_VER)
 
 .if !defined(_INVALID_RUBY_VER)
 
-RUBY21?=		"@comment "
 RUBY22?=		"@comment "
 RUBY23?=		"@comment "
+RUBY24?=		"@comment "
 
 .if defined(BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E})
 .if ${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}} == "yes"
@@ -269,25 +256,23 @@ RUBY_SHLIBVER?=		${RUBY_VER:S/.//}
 
 RUBY_CONFIGURE_ARGS+=	--program-prefix=""
 
-DEPENDS_ARGS+=		RUBY_VER="${RUBY_VER}"
+.if ${RUBY_VER} != ${RUBY_DEFAULT_VER}
+DEPENDS_ARGS+=		RUBY_VER=${RUBY_VER}
+.endif
 
 RUBY_CONFIGURE_ARGS+=	--program-suffix="${RUBY_SUFFIX}"
 
 RUBY_MODNAME?=		${PORTNAME}
 
 # Commands
-RUBY_RD2?=		${LOCALBASE}/bin/rd2
 RUBY_RDOC?=		${LOCALBASE}/bin/rdoc${RUBY_VER:S/.//}
 
 # Ports
 RUBY_BASE_PORT?=	lang/ruby${RUBY_VER:S/.//}
 RUBY_PORT?=		${RUBY_BASE_PORT}
-RUBY_RDTOOL_PORT?=	textproc/ruby-rdtool
 
 # Depends
-DEPEND_LIBRUBY?=	lib${RUBY_NAME}.so.${RUBY_SHLIBVER}:${RUBY_PORT}
 DEPEND_RUBY?=		${RUBY}:${RUBY_PORT}
-DEPEND_RUBY_RDTOOL?=	${RUBY_RD2}:${RUBY_RDTOOL_PORT}
 
 # Directories
 RUBY_LIBDIR?=		${_RUBY_SYSLIBDIR}/ruby/${RUBY_VER}
@@ -302,7 +287,6 @@ RUBY_RIDIR?=		${PREFIX}/share/ri/${RUBY_VER}/system
 RUBY_SITERIDIR?=	${PREFIX}/share/ri/${RUBY_VER}/site
 RUBY_MODDOCDIR?=	${RUBY_DOCDIR}/${RUBY_MODNAME}
 RUBY_MODEXAMPLESDIR?=	${RUBY_EXAMPLESDIR}/${RUBY_MODNAME}
-RUBY_ELISPDIR?=		${PREFIX}/lib/ruby/elisp
 
 # PLIST
 PLIST_RUBY_DIRS=	RUBY_LIBDIR="${RUBY_LIBDIR}" \
@@ -316,8 +300,7 @@ PLIST_RUBY_DIRS=	RUBY_LIBDIR="${RUBY_LIBDIR}" \
 			RUBY_DOCDIR="${RUBY_DOCDIR}" \
 			RUBY_EXAMPLESDIR="${RUBY_EXAMPLESDIR}" \
 			RUBY_RIDIR="${RUBY_RIDIR}" \
-			RUBY_SITERIDIR="${RUBY_SITERIDIR}" \
-			RUBY_ELISPDIR="${RUBY_ELISPDIR}"
+			RUBY_SITERIDIR="${RUBY_SITERIDIR}"
 
 PLIST_SUB+=		${PLIST_RUBY_DIRS:C,DIR="(${LOCALBASE}|${PREFIX})/,DIR=",} \
 			RUBY_VERSION="${RUBY_VERSION}" \
@@ -327,9 +310,9 @@ PLIST_SUB+=		${PLIST_RUBY_DIRS:C,DIR="(${LOCALBASE}|${PREFIX})/,DIR=",} \
 			RUBY_SUFFIX="${RUBY_SUFFIX}" \
 			RUBY_NAME="${RUBY_NAME}" \
 			RUBY_DEFAULT_SUFFIX="${RUBY_DEFAULT_SUFFIX}" \
-			RUBY21=${RUBY21} \
 			RUBY22=${RUBY22} \
-			RUBY23=${RUBY23}
+			RUBY23=${RUBY23} \
+			RUBY24=${RUBY24}
 
 .if defined(USE_RUBY_RDOC)
 MAKE_ENV+=	RUBY_RDOC=${RUBY_RDOC}
@@ -410,10 +393,6 @@ ruby-setup-install:
 	${SETENV} ${MAKE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_SETUP} install --prefix=${STAGEDIR}
 .endif
 
-.if defined(USE_LIBRUBY)
-LIB_DEPENDS+=		${DEPEND_LIBRUBY}
-.endif
-
 .if defined(USE_RUBY)
 .if !defined(RUBY_NO_BUILD_DEPENDS)
 EXTRACT_DEPENDS+=	${DEPEND_RUBY}
@@ -423,46 +402,6 @@ BUILD_DEPENDS+=		${DEPEND_RUBY}
 .if !defined(RUBY_NO_RUN_DEPENDS)
 RUN_DEPENDS+=		${DEPEND_RUBY}
 .endif
-.endif
-
-# documents
-
-RUBY_NO_RD_HTML=	yes
-
-.if defined(RUBY_RD_HTML)
-.undef RUBY_NO_RD_HTML
-.endif
-
-.if defined(NOPORTDOCS)
-RUBY_NO_RD_HTML=	yes
-.endif
-
-.if defined(RUBY_RD_FILES) && !defined(RUBY_NO_RD_HTML)
-USE_RUBY_RDTOOL=	yes
-
-RUBY_RD_HTML_FILES=	${RUBY_RD_FILES:S/.rb$//:S/.rd././:S/.rd$//:S/$/.html/}
-
-PLIST_SUB+=		RUBY_RD_HTML_FILES=""
-
-.if !empty(RUBY_RD_FILES)
-_USES_install+=	290:ruby-rd-build
-ruby-rd-build:
-	@${ECHO_MSG} "===>  Generating HTML documents from RD documents"
-	@cd ${WRKSRC}; for rd in ${RUBY_RD_FILES}; do \
-		html=$$(echo $$rd | ${SED} 's/\.rb$$//;s/\.rd\././;s/\.rd$$//').html; \
-		${ECHO_MSG} "${RUBY_RD2} $$rd > $$html"; \
-		${RUBY_RD2} $$rd > $$html; \
-	done
-.endif
-
-.else
-RUBY_RD_HTML_FILES=	# empty
-
-PLIST_SUB+=		RUBY_RD_HTML_FILES="@comment "
-.endif
-
-.if !defined(NOPORTDOCS) && defined(USE_RUBY_RDTOOL)
-BUILD_DEPENDS+=		${DEPEND_RUBY_RDTOOL}
 .endif
 
 .endif # _INVALID_RUBY_VER

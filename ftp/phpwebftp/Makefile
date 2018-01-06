@@ -12,8 +12,6 @@ COMMENT=	Set of PHP-scripts to manage FTP over the web
 
 LICENSE=	GPLv2
 
-BROKEN_powerpc64=	Does not build
-
 USES=		zip
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -26,7 +24,7 @@ SHAREOWN=	${WWWOWN}
 SHAREGRP=	${WWWGRP}
 
 post-patch:
-	@${FIND} -d ${WRKSRC} -name CVS -type d -exec ${RM} -R "{}" \;
+	@${FIND} -d ${WRKSRC} -name CVS -type d -exec ${RM} -R {} \;
 	@${RM} ${WRKSRC}/img/Thumbs.db
 	@${MV} ${WRKSRC}/config.inc.php ${WRKSRC}/config.inc.php.sample
 

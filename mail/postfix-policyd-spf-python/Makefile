@@ -9,23 +9,21 @@ MASTER_SITES=	https://launchpad.net/pypolicyd-spf/${PORTVERSION:R}/${PORTVERSION
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	pypolicyd-spf-${PORTVERSION}
 
-MAINTAINER=	me@mortis.eu
+MAINTAINER=	yasu@utahime.org
 COMMENT=	Pure Python Postfix policy daemon for SPF checking
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipaddr>0:devel/py-ipaddr \
-		${PYTHON_PKGNAMEPREFIX}pyspf>0:mail/py-pyspf \
-		${PYTHON_PKGNAMEPREFIX}authres>0:mail/py-authres
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ipaddr>0:devel/py-ipaddr@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyspf>0:mail/py-pyspf@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}authres>0:mail/py-authres@${FLAVOR}
 
-USES=		python
-USE_PYTHON=	distutils
-PYDISTUTILS_PKGNAME=	pypolicyd-spf
+USES=		python:2.7+
+USE_PYTHON=	autoplist distutils
 NO_ARCH=	yes
 
 PORTDOCS=	CHANGES \
-		COPYING \
 		README \
 		README.per_user_whitelisting \
 		policyd-spf.conf.commented

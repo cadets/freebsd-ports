@@ -3,11 +3,11 @@
 
 PORTNAME=	clanlib
 PORTVERSION=	2.2.12
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	http://www.clanlib.org/download/releases-2.0/
-DISTNAME=	ClanLib-${PORTVERSION}
 PKGNAMESUFFIX=	22
+DISTNAME=	ClanLib-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform game SDK
@@ -20,13 +20,12 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libpcre.so:devel/pcre
 
-USES=		gmake jpeg libtool pathfix pkgconfig sqlite tar:tgz
+USES=		gmake jpeg libtool localbase:ldflags pathfix pkgconfig \
+		sqlite tar:tgz
 USE_XORG=	x11
 USE_LDCONFIG=	yes
 USE_GL=		yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-docs \
 		--enable-clanDisplay \
@@ -39,13 +38,13 @@ CONFIGURE_ARGS=	--disable-docs \
 		--enable-clanNetwork \
 		--enable-clanGUI \
 		--enable-clanCSSLayout \
-		--enable-clanSWRender \
 		--enable-clanMikMod \
 		--enable-clanVorbis \
 		--enable-getaddr
 
 INSTALL_TARGET=	install-strip
 PLIST_SUB+=	VER=${PORTVERSION:R} \
+		SWRENDER=${ARCH:N*86:Namd64:C/.+/"@comment "/} \
 		SHORT_VER=${PORTVERSION:R:R}${PORTVERSION:R:E}
 
 post-patch:

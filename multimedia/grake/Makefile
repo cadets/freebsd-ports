@@ -5,7 +5,7 @@ PORTNAME=	grake
 PORTVERSION=	0.1.0
 PORTREVISION=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/grake/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command line tool for scanning webpages for Youtube links

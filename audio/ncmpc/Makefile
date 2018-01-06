@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ncmpc
-PORTVERSION=	0.25
+PORTVERSION=	0.27
 CATEGORIES=	audio
 MASTER_SITES=	http://www.musicpd.org/download/ncmpc/0/
 
@@ -21,7 +21,7 @@ OPTIONS_DEFINE=	NLS LYRICS
 OPTIONS_DEFAULT=	LYRICS
 LYRICS_DESC=	Compile with lyrics screen
 
-USES=		iconv localbase pkgconfig
+USES=		iconv localbase ncurses pkgconfig
 PLIST_FILES=	bin/ncmpc \
 		man/man1/ncmpc.1.gz \
 		%%EXAMPLESDIR%%/config \

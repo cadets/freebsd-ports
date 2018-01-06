@@ -10,12 +10,12 @@ PKGNAMEPREFIX=	sigrok-
 PKGNAMESUFFIX=	-utils
 DISTFILES=	#none
 
-MAINTAINER=	uffe@uffe.org
+MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	Sigrok firmware extraction utils
 
 LICENSE=	GPLv2
 
-USES=		python:3
+USES=		python:3.4+
 NO_BUILD=	yes
 
 PORTDOCS=	README.parsepe

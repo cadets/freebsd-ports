@@ -6,14 +6,14 @@ PORTVERSION=	1.4.40
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	loic-freebsd@loicp.eu
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network backup and restore program
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:devel/uthash
-LIB_DEPENDS=	librsync.so:net/librsync1
+LIB_DEPENDS=	librsync.so:net/librsync2
 
 OPTIONS_DEFINE=		IPV6
 
@@ -22,7 +22,7 @@ GH_ACCOUNT=	grke
 
 USE_RC_SUBR=	burp
 GNU_CONFIGURE=	yes
-USES=		gmake localbase ncurses
+USES=		gmake localbase ncurses ssl
 
 PORTSCOUT=	limit:^1\.4\.
 

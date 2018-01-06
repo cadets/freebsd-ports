@@ -1,20 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	yaac
-PORTVERSION=	1.0b89
+PORTVERSION=	1.0b114
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/yetanotheraprsc/
-DISTNAME=	YAACSrc_20160321
+DISTNAME=	YAACsrc_20170920
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Platform-independent Java application for the APRS network
 
 LICENSE=	LGPL3
 
-USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 USES=		zip
 USE_ANT=	yes
+USE_JAVA=	yes
 ALL_TARGET=	DISTRO
 SUB_FILES=	yaac.sh
 
@@ -23,7 +23,7 @@ WRKSRC=		${WRKDIR}/yaac
 
 do-install:
 	${UNZIP_NATIVE_CMD} -d ${STAGEDIR}/${JAVASHAREDIR}/${PORTNAME} ${WRKSRC}/YAAC.zip
-	${RM} -rf ${STAGEDIR}/${JAVASHAREDIR}/${PORTNAME}/lib/rxtx-2.2pre2-bins
+	${RM} -r ${STAGEDIR}/${JAVASHAREDIR}/${PORTNAME}/lib/rxtx-2.2pre2-bins
 	${INSTALL_SCRIPT} ${WRKDIR}/yaac.sh ${STAGEDIR}${PREFIX}/bin/yaac
 
 .include <bsd.port.mk>

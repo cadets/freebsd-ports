@@ -20,10 +20,9 @@ NO_ARCH=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} < 3000
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}futures>0:devel/py-futures
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}unittest2>0:devel/py-unittest2
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}futures>0:devel/py-futures@${FLAVOR}
 .if ${PYTHON_REL} < 3300
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock
+TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${FLAVOR}
 .endif
 .endif
 

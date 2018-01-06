@@ -5,7 +5,7 @@ PORTNAME=	uim
 PORTVERSION=	1.8.6
 PORTREVISION?=	2
 CATEGORIES?=	textproc
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://github.com/uim/uim/releases/download/${PORTNAME}-${PORTVERSION}/
 .if !defined(UIM_SLAVE) && defined(WITHOUT_X11)
 PKGNAMESUFFIX=	-nox11
 .endif
@@ -13,10 +13,11 @@ PKGNAMESUFFIX=	-nox11
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT?=	Input method library
 
+BROKEN_aarch64=	Fails to build: The collector has not been ported to this machine/OS combination
+
 USE_LDCONFIG=	yes
-WANT_GNOME=	yes
 USE_GNOME+=	glib20 intltool
-USES+=		gettext gmake iconv libedit libtool pkgconfig perl5 tar:bzip2
+USES+=		gettext gmake iconv libedit libtool pathfix pkgconfig perl5 tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 
@@ -57,11 +58,7 @@ PLIST_SUB+=	X11=""
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "ia64"
-IGNORE=		not yet ported to ia64
-.endif
-
-.if ${ARCH} == "amd64" || ${ARCH} == "ia64" || ${ARCH} == "sparc64"
+.if ${ARCH} == "amd64" || ${ARCH} == "sparc64"
 CONFIGURE_ARGS+=	--enable-storage=fatty
 .endif
 

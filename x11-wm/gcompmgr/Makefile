@@ -3,7 +3,7 @@
 
 PORTNAME=	gcompmgr
 PORTVERSION=	0.21
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -11,6 +11,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNOME interface to xcompmgr
 
 RUN_DEPENDS=	xcompmgr:x11-wm/xcompmgr
+
+BROKEN=		fails to compile: ustring.h: expected ';' at end of declaration list
 
 GNU_CONFIGURE=	yes
 LIBS+=		-L${LOCALBASE}/lib -lX11
@@ -28,7 +30,7 @@ DESKTOP_ENTRIES="gcompmgr" \
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${RM} -f ${WRKSRC}/INSTALL
+	@${RM} ${WRKSRC}/INSTALL
 	@${REINPLACE_CMD} -e 's|connect(SigC::slot|connect(sigc::mem_fun|g ; \
 		s|#include <sigc++\/compatibility\.h>||g' \
 			${WRKSRC}/src/*.cc

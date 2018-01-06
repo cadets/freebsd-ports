@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	SparseM
-PORTVERSION=	1.7
+PORTVERSION=	1.77
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Sparse Linear Algebra
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv2+
 
-USES=	cran:auto-plist
+USES=	cran:auto-plist,compiles
 
 .include <bsd.port.mk>

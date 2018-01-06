@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	robotframework-selenium2library
-PORTVERSION=	1.7.4
+PORTVERSION=	1.8.0
 CATEGORIES=	devel www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +13,8 @@ COMMENT=	Web testing library for Robot Framework
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}robotframework>=2.7.5:devel/py-robotframework \
-		${PYTHON_PKGNAMEPREFIX}decorator>=3.4.0:devel/py-decorator
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}robotframework>=2.7.5:devel/py-robotframework@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}decorator>=3.4.0:devel/py-decorator@${FLAVOR}
 
 USES=		python:2
 USE_PYTHON=	autoplist distutils

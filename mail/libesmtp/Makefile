@@ -16,6 +16,8 @@ COMMENT=	Library for posting electronic mail
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
+BROKEN_SSL=	openssl-devel
+
 USES=		gmake libtool tar:bzip2
 GNU_CONFIGURE=	yes
 # require-all-recipients (implied by enable-all) is required for Balsa
@@ -29,7 +31,7 @@ OPTIONS_SUB=	yes
 
 DEBUG_CONFIGURE_ENABLE=	debug
 OPENSSL_CONFIGURE_WITH=	openssl=${OPENSSLBASE}
-OPENSSL_USE=		OPENSSL=yes
+OPENSSL_USES=		ssl
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

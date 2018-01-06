@@ -3,7 +3,7 @@
 
 PORTNAME=	facedetect
 PORTVERSION=	1.1
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	php-
 
@@ -26,10 +26,4 @@ USES=		php:ext
 
 CONFIGURE_ARGS+=	--with-facedetect
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "amd64"
-USE_GCC=	any
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

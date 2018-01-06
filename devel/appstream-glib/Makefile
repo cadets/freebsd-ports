@@ -46,9 +46,9 @@ MANPAGES_USE=	GNOME=libxslt:build
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} < 1000000 && ${OPSYS} == FreeBSD
+.if ${ARCH} == powerpc || ${ARCH} == powerpc64
 post-patch:
-	${REINPLACE_CMD} -e 's|-Wtype-limits||g' \
+	@${REINPLACE_CMD} -e 's|-Wtype-limits||g' \
 		${WRKSRC}/configure
 .endif
 

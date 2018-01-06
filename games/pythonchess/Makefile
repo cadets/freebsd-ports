@@ -17,7 +17,7 @@ COMMENT=	Small program for playing chess against the computer
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/gpl.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR}
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/p/P/:S/c/C/}
 
@@ -31,7 +31,7 @@ DESKTOP_ENTRIES="Python Chess" "" "${PORTNAME}" \
 
 post-patch:
 	@${FIND} ${WRKDIR} -name Thumbs.db -or -name pygame2exe_Chess.py | \
-		${XARGS} ${RM} -fr
+		${XARGS} ${RM} -r
 	@${REINPLACE_CMD} -e 's|^.*#!.*python.*$$|#!${PYTHON_CMD}|' \
 		${WRKSRC}/*.py
 	@(cd ${WRKSRC} && ${RM} *.py.bak)

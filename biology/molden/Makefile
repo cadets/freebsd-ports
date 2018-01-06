@@ -3,13 +3,19 @@
 
 PORTNAME=	molden
 PORTVERSION=	5.7
+PORTREVISION=	13
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	ftp://ftp.cmbi.ru.nl/pub/molgraph/molden/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	pi@FreeBSD.org
+MAINTAINER=	jmd@FreeBSD.org
 COMMENT=	Display molecular orbitals and electron densities in 2D and 3D
+
+LICENSE=	Molden
+LICENSE_NAME=	Molden
+LICENSE_FILE=	${WRKSRC}/CopyRight
+LICENSE_PERMS=	auto-accept
 
 RESTRICTED=	free for academic, non profit usage; do not re-distribute source and executable.
 
@@ -17,7 +23,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}
 
 USES=		fortran gmake
 USE_XORG=	x11
-USE_GL=		glu
+USE_GL=		gl glu
 MAKEFILE=	makefile
 MAKE_JOBS_UNSAFE=yes
 
@@ -55,11 +61,11 @@ do-install:
 .for i in ambfor surf
 	(cd ${WRKSRC}/${i} && ${INSTALL_PROGRAM} ${i} ${STAGEDIR}/${PREFIX}/bin)
 .endfor
-	@${MKDIR} ${STAGEDIR}${DATADIR}/test
+	${MKDIR} ${STAGEDIR}${DATADIR}/test
 	(cd ${WRKSRC}/test && ${INSTALL_DATA} * ${STAGEDIR}${DATADIR}/test)
-	@${MKDIR} ${STAGEDIR}${DATADIR}/utils
+	${MKDIR} ${STAGEDIR}${DATADIR}/utils
 	(cd ${WRKSRC}/utils &&  ${INSTALL_DATA} * ${STAGEDIR}${DATADIR}/utils)
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

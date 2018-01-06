@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	duncan
-PORTVERSION=	0.1
-PORTREVISION=	6
+PORTVERSION=	0.2
+PORTREVISION=	2
 CATEGORIES=	textproc gnustep
 MASTER_SITES=	http://www.eskimo.com/~pburns/Dictionaries/files/
 DISTNAME=	Duncan-${PORTVERSION}

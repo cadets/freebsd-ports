@@ -3,7 +3,7 @@
 
 PORTNAME=	zerowait
 PORTVERSION=	0.8d
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	http://BSDforge.com/projects/source/www/zerowait-httpd/
 PKGNAMESUFFIX=	-httpd
@@ -14,8 +14,7 @@ COMMENT=	Lightweight and fast http server
 
 LICENSE=	BSD3CLAUSE
 
-USES=		gmake
-USE_OPENSSL=	yes
+USES=		gmake ssl
 USE_RC_SUBR=	0W-httpd
 ALL_TARGET=	#none
 

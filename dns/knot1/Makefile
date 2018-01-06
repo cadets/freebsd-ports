@@ -3,6 +3,7 @@
 
 PORTNAME=	knot
 PORTVERSION=	1.6.8
+PORTREVISION=	3
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://secure.nic.cz/files/knot-dns/ \
 		http://dns-lab.com/downloads/knot-dns/
@@ -18,18 +19,14 @@ LIB_DEPENDS=	liburcu.so:sysutils/liburcu
 
 CONFLICTS=	knot-2.* knot2-.*
 
-USES=		alias bison libtool pkgconfig tar:xz
+USES=		alias bison libtool pkgconfig ssl tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-storage=/var/db/knot \
 		--with-rundir=/var/run/knot \
-		--with-openssl=${OPENSSLBASE}
-USE_LDCONFIG=	yes
-USE_OPENSSL=	yes
-WITH_OPENSSL_PORT=	yes
+		--with-openssl=${OPENSSLBASE} \
+		--enable-recvmmsg=no
 
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
-CONFIGURE_ARGS+=	--disable-silent-rules
-.endif
+USE_LDCONFIG=	yes
 
 INSTALL_TARGET=	install-strip
 
@@ -62,7 +59,7 @@ post-patch:
 		${WRKSRC}/src/Makefile.in
 	@${REINPLACE_CMD} 's|$$(INSTALL) -d $$(DESTDIR)/\@storage_dir\@|#$$(INSTALL) -d $$(DESTDIR)/\@storage_dir\@|' \
 		${WRKSRC}/src/Makefile.in
-	@${RM} -rf ${WRKSRC}/src/zscanner/scanner.c
+	@${RM} -r ${WRKSRC}/src/zscanner/scanner.c
 
 post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/knot.sample.conf \

@@ -5,8 +5,9 @@ PORTNAME=	wingzpro
 PORTVERSION=	311
 PORTREVISION=	3
 CATEGORIES=	math linux
-MASTER_SITES=	SUNSITE/apps/financial/spreadsheet:wingz	\
-		${MASTER_SITE_FEDORA_LINUX:M*rpmfind.net/*:S|/fedora/core||}:l
+MASTER_SITES=	SUNSITE/apps/financial/spreadsheet:wingz
+# MASTER_SITE_FEDORA_LINUX does not contain rpmfind.net, so this does not do anything
+#		${MASTER_SITE_FEDORA_LINUX:M*rpmfind.net/*:S|/fedora/core||}:l
 MASTER_SITE_SUBDIR= redhat-archive/6.2/en/os/i386/RedHat/RPMS/:l
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:wingz \
 		ld.so-1.9.5-13.i386.rpm:l	\
@@ -19,8 +20,8 @@ COMMENT=	Commercial Spreadsheet
 NO_PACKAGE=	Commercial software with nothing to build - install from port
 
 IA32_BINARY_PORT=yes
-USE_LINUX=	yes
-USE_LINUX_APPS=	xorglibs
+USES=		linux
+USE_LINUX=	xorglibs
 SUB_FILES=	Wingz3
 PLIST_SUB+=	LINUXBASE=${LINUXBASE}
 OLDLIBS=	libm.so.5 libg++.so.27 libstdc++.so.27 libc.so.5 \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xmltodict
-PORTVERSION=	0.10.1
+PORTVERSION=	0.11.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	XML parser that returns python dictionaries
 
 LICENSE=	MIT
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose:devel/py-nose
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose:devel/py-nose@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

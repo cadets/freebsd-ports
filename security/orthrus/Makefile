@@ -3,9 +3,9 @@
 
 PORTNAME=	orthrus
 PORTVERSION=	0.8.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
-MASTER_SITES=	GOOGLE_CODE  \
+MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/orthrus/  \
 		http://16degrees.com.au/${PORTNAME}/
 
 MAINTAINER=	ports@FreeBSD.org

@@ -3,7 +3,7 @@
 
 PORTNAME=	hf
 PORTVERSION=	0.8
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/${PORTNAME}term/${PORTNAME}/${PORTVERSION}
 
@@ -11,8 +11,6 @@ MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio soundcard fsk, pactor 1, amtor, gtor, mt63
 
 LICENSE=	GPLv2
-
-BROKEN_powerpc64=	Does not build
 
 RUN_DEPENDS=	whiptail:devel/newt
 

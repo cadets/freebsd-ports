@@ -15,17 +15,12 @@ LICENSE_COMB=	multi
 USES=		bison ncurses
 GNU_CONFIGURE=	yes
 USE_XORG=	ice sm x11
+TEST_TARGET=	check
 
 PORTDOCS=	yabasic.htm
 PLIST_FILES=	bin/yabasic man/man1/yabasic.1.gz
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == "amd64" && ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-BROKEN=		all tests end up with segfault on FreeBSD < 10.x amd64
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -35,10 +30,7 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		'/Intrinsic.h/d' ${WRKSRC}/yabasic.h
 
-post-build test:
-	@(cd ${WRKSRC} && ${DO_MAKE_BUILD} check)
-
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 

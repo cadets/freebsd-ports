@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	OpenEXR
-PORTVERSION=	2.2.0
-PORTREVISION=	5
+PORTVERSION=	2.2.1
+PORTREVISION=	0
 CATEGORIES=	graphics devel
 MASTER_SITES=	SAVANNAH/openexr/:dist \
 		LOCAL/mandree/:test
@@ -17,7 +17,7 @@ COMMENT=	High dynamic-range (HDR) image file format
 LICENSE=	BSD3CLAUSE
 
 # exact version required to avoid hard-to-debug issues
-LIB_DEPENDS=	libImath-2_2.so.12:graphics/ilmbase
+LIB_DEPENDS=	libImath-2_2.so.23:graphics/ilmbase
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
@@ -55,7 +55,7 @@ USE_GCC=	yes
 .endif
 
 MAJORVER=	2_2
-VER=		22
+VER=		23
 
 PLIST_SUB=	MAJORVER=${MAJORVER}
 PLIST_SUB+=	VER=${VER}
@@ -73,8 +73,8 @@ post-patch:
 # library
 _ilm_libcxx=${COMPILER_FEATURES:Mlib*c++}
 pre-configure:
-	@${OBJDUMP} -p ${LOCALBASE}/lib/libImath.so \
-	| ${EGREP} -q '^[[:space:]]*NEEDED[[:space:]]+${_ilm_libcxx:C/\+/\\+/g}\.' \
+	@${READELF} -d ${LOCALBASE}/lib/libImath.so \
+	| ${EGREP} -q '\<NEEDED\>.*\[${_ilm_libcxx:C/\+/\\+/g}\.' \
 	|| {	${ECHO_CMD} "*** Your ilmbase package uses a different C++ standard library than ***" ; \
 		${ECHO_CMD} "*** OpenEXR would. Please recompile and reinstall ilmbase with the  ***" ; \
 		${ECHO_CMD} "*** same C++ std. library before trying to build OpenEXR.  Abort.   ***" ; \

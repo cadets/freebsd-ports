@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hatari
-PORTVERSION=	1.9.0
+PORTVERSION=	2.0.0
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.tuxfamily.org/hatari/${PORTVERSION}/
 
@@ -14,16 +15,23 @@ LICENSE_FILE=	${WRKSRC}/gpl.txt
 
 LIB_DEPENDS=	libportaudio.so:audio/portaudio \
 		libpng.so:graphics/png
+BUILD_DEPENDS=	python:lang/python
+RUN_DEPENDS=	python:lang/python
 
-USES=		cmake desktop-file-utils python readline shared-mime-info \
+USES=		cmake desktop-file-utils python:2.7 readline shared-mime-info \
 		shebangfix tar:bzip2
-SHEBANG_FILES=	tools/atari-convert-dir.py
+SHEBANG_FILES=	python-ui/*.py tools/atari-convert-dir.py \
+		tools/debugger/hatari_profile.py tools/hconsole/*.py
 python_OLD_CMD=	/usr/bin/python2
 USE_GNOME=	pygtk2
 CMAKE_ARGS=	-DETCDIR:PATH="${PREFIX}/etc" \
 		-DMANDIR:PATH="man/man1" \
 		-DREADLINE_FOUND:BOOL=ON
 INSTALLS_ICONS=	yes
+
+BROKEN_aarch64=		fails to configure: error: unrecognized CPU type
+BROKEN_armv6=		fails to configure: CMake Error: Generator: execution of make failed
+BROKEN_powerpc64=	fails to compile: sysdeps.h: redefinition of typedef 'uae_u8'
 
 OPTIONS_DEFINE=		DEBUG DOCS SDL2 WINUAE
 

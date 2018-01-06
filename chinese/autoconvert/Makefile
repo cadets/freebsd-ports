@@ -5,8 +5,7 @@ PORTNAME=	autoconvert
 PORTVERSION=	0.3.16
 PORTREVISION=	5
 CATEGORIES=	chinese
-MASTER_SITES=	GOOGLE_CODE
-PROJECTHOST=	libhz
+MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/libhz/
 DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org

@@ -12,13 +12,16 @@ NO_ARCH=	yes
 PATCHDIR=
 PLIST=		${PKGDIR}/pkg-plist.frontend
 
-USE_PHP=	bcmath ctype gd pcre snmp sockets mbstring session dom xml \
-		xmlreader xmlwriter simplexml gettext ldap
-WANT_PHP_WEB=	yes
+USE_PHP=	bcmath ctype dom gd gettext json ldap mbstring pcre \
+		session simplexml snmp sockets xml xmlreader xmlwriter
+
+USES=	php:web gettext
 
 OPTIONS_DEFINE=		MYSQL MYSQLI PGSQL SQLITE ORACLE
-OPTIONS_DEFAULT=	MYSQL MYSQLI
+OPTIONS_DEFAULT=	MYSQLI
 MYSQLI_DESC=		MySQLI backend
+
+MYSQL_VARS=	IGNORE_WITH_PHP+=70 71
 
 .include <bsd.port.options.mk>
 
@@ -40,7 +43,7 @@ USE_PHP+=	sqlite3
 
 .if ${PORT_OPTIONS:MORACLE}
 ZABBIX_REQUIRE=
-CONFIGURE_ARGS+=        --with-oracle
+CONFIGURE_ARGS+=	--with-oracle
 .endif
 
 do-install:

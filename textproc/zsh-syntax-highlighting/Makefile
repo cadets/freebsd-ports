@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	zsh-syntax-highlighting
-PORTVERSION=	20160816
+PORTVERSION=	20170329
 CATEGORIES=	textproc
 
-MAINTAINER=	jrm@ftfl.ca
+MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Fish shell syntax highlighting for Zsh
 
 LICENSE=	BSD3CLAUSE
@@ -17,7 +17,7 @@ NO_BUILD=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	zsh-users
-GH_TAGNAME=	11c9081
+GH_TAGNAME=	4627796
 
 SUB_FILES=	pkg-message
 

@@ -25,11 +25,13 @@
     SUBDIR += cqrlog
     SUBDIR += cutecom
     SUBDIR += cwdaemon
+    SUBDIR += cwstudio
     SUBDIR += dabstick-radio
     SUBDIR += dcf77pi
     SUBDIR += deforaos-phone
     SUBDIR += dfu-programmer
     SUBDIR += dfu-util
+    SUBDIR += direwolf
     SUBDIR += dump1090
     SUBDIR += ebook2cw
     SUBDIR += ebook2cwgui
@@ -37,8 +39,8 @@
     SUBDIR += efax
     SUBDIR += efax-gtk
     SUBDIR += ems-flasher
-    SUBDIR += esmska
     SUBDIR += fl_moxgen
+    SUBDIR += flcluster
     SUBDIR += fldigi
     SUBDIR += fllog
     SUBDIR += flrig
@@ -70,6 +72,7 @@
     SUBDIR += ibp
     SUBDIR += java-commapi
     SUBDIR += java-commapi-freebsd
+    SUBDIR += java-simple-serial-connector
     SUBDIR += jerm
     SUBDIR += jsdr
     SUBDIR += kb
@@ -77,7 +80,6 @@
     SUBDIR += klog
     SUBDIR += kremotecontrol
     SUBDIR += kvasd
-    SUBDIR += libcodec2
     SUBDIR += libconcord
     SUBDIR += libfap
     SUBDIR += libfec
@@ -100,6 +102,7 @@
     SUBDIR += minicom
     SUBDIR += mlan3
     SUBDIR += morse
+    SUBDIR += multimon-ng
     SUBDIR += nasawash
     SUBDIR += ncid
     SUBDIR += nec2c
@@ -133,6 +136,7 @@
     SUBDIR += predict
     SUBDIR += py-bulksms
     SUBDIR += py-gammu
+    SUBDIR += py-hidapi
     SUBDIR += py-libconcord
     SUBDIR += py-libimobiledevice
     SUBDIR += py-lirc
@@ -145,6 +149,7 @@
     SUBDIR += qsstv
     SUBDIR += qt5-connectivity
     SUBDIR += qt5-sensors
+    SUBDIR += qt5-serialbus
     SUBDIR += qt5-serialport
     SUBDIR += qtel
     SUBDIR += quisk
@@ -152,6 +157,7 @@
     SUBDIR += rtl-sdr
     SUBDIR += rubygem-callsign
     SUBDIR += rubygem-ruby-termios
+    SUBDIR += rubygem-serialport
     SUBDIR += rxtx
     SUBDIR += scmxx
     SUBDIR += sdr-wspr
@@ -164,12 +170,14 @@
     SUBDIR += spandsp
     SUBDIR += splat
     SUBDIR += sredird
+    SUBDIR += sunxi-tools
     SUBDIR += svxlink
     SUBDIR += syncterm
     SUBDIR += tcpser
     SUBDIR += telldus-core
     SUBDIR += thebridge
     SUBDIR += tilp2
+    SUBDIR += tio
     SUBDIR += tits
     SUBDIR += tkhylafax
     SUBDIR += tkscanfax
@@ -178,6 +186,7 @@
     SUBDIR += twpsk
     SUBDIR += uarduno
     SUBDIR += uartlirc
+    SUBDIR += uhd
     SUBDIR += uird
     SUBDIR += unixcw
     SUBDIR += usbmuxd

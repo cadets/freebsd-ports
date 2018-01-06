@@ -3,7 +3,7 @@
 
 PORTNAME=	gnome-vfs
 PORTVERSION=	2.24.4
-PORTREVISION?=	4
+PORTREVISION?=	6
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -11,16 +11,20 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME Virtual File System
 
+LICENSE=	LGPL20 LGPL20+  # dbus-utils.c is LGPL20 only
+LICENSE_COMB=	multi
+LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LIB
+LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING.LIB
+
 USES=		tar:bzip2
 
 .if !defined(REFERENCE_PORT)
 
 RUN_DEPENDS=	update-mime-database:misc/shared-mime-info
 
-USES+=		gettext gmake libtool:keepla pathfix pkgconfig
+USES+=		gettext gmake libtool:keepla pathfix pkgconfig ssl
 USE_GNOME=	gconf2 gnomemimedata intlhack referencehack
 INSTALL_TARGET=	install-strip
-USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-openssl \
@@ -61,7 +65,8 @@ CONFIGURE_ARGS+=--disable-hal
 .endif
 
 .if ${PORT_OPTIONS:MSAMBA}
-LIB_DEPENDS+=	libsmbclient.so:net/samba-libsmbclient
+CONFIGURE_ARGS+=--with-samba-includes=${SAMBAINCLUDES} --with-samba-libs=${SAMBALIBS}
+USES+=		samba:lib
 PLIST_SUB+=	SAMBA=""
 .else
 PLIST_SUB+=	SAMBA="@comment "

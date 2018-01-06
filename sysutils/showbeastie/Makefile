@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	showbeastie
-PORTVERSION=	0.2
+PORTVERSION=	0.3
 CATEGORIES=	sysutils
 MASTER_SITES=	# none
 DISTFILES=	# none
 
-MAINTAINER=	t@tobik.me
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Preview FreeBSD loader logos
 
 LICENSE=	BSD2CLAUSE
@@ -25,13 +25,17 @@ PLIST_FILES=	bin/${PORTNAME}
 # Make sure building succeeds on HEAD
 MAKE_ARGS+=	-m ${SRC_BASE}/share/mk
 
-BROKEN_FreeBSD_9=	builds but expects newer loader environment
+BROKEN_armv6=		fails to link: testmain uses VFP register arguments, dict.o does not
+BROKEN_armv7=		fails to install: tar: could not chdir to '/usr/src/sys/boot'
+BROKEN_mips64=		fails to link: relocation truncated to fit: R_MIPS_26 against `__assert@@FBSD_1.0'
+
+WRKSRC_SUBDIR=	ficl
 
 pre-patch:
 	@${MKDIR} ${WRKSRC}
-	@${TAR} -C ${SRC_BASE}/sys/boot/ficl \
+	@${TAR} -C ${SRC_BASE}/sys/boot \
 		--exclude '*.o' --exclude '*.a' --exclude 'testmain' \
-		-cf - . | ${TAR} -C ${WRKSRC} -xf -
+		-cf - . | ${TAR} -C ${WRKSRC}/.. -xf -
 
 post-patch:
 	${REINPLACE_CMD} 's|-I.*/\.\./common|-I${SRC_BASE}/sys/boot/common|g' \

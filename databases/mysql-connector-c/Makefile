@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mysql-connector-c
-PORTVERSION=	6.1.6
+PORTVERSION=	6.1.11
 CATEGORIES=	databases
 MASTER_SITES=	MYSQL/Connector-C
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -11,12 +11,10 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	MySQL database connector for C
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_OPENSSL=	yes
-WITH_OPENSSL_PORT=yes
-USES=		cmake:outsource compiler:features mysql
-CMAKE_ARGS+=	-DWITH_SSL=system \
-		-DOPENSSL_INCLUDE_DIR=${LOCALBASE}/include/openssl
+USES=		cmake:outsource compiler:features mysql ssl
+CMAKE_ARGS+=	-DOPENSSL_INCLUDE_DIR="${OPENSSLINC}"
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
 
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
@@ -25,6 +23,12 @@ PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 .if ${ARCH} == "i386" && ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
 CFLAGS+=	-march=i586
+.endif
+
+.if ${SSL_DEFAULT} == base
+CMAKE_ARGS+=	-DWITH_SSL="system"
+.else
+CMAKE_ARGS+=	-DWITH_SSL="${OPENSSLBASE}"
 .endif
 
 .include <bsd.port.post.mk>
