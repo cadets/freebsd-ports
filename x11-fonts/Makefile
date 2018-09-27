@@ -39,7 +39,6 @@
     SUBDIR += doulos
     SUBDIR += doulos-compact
     SUBDIR += droid-fonts-ttf
-    SUBDIR += ecofont
     SUBDIR += emojione-color-font-ttf
     SUBDIR += encodings
     SUBDIR += exo
@@ -93,12 +92,10 @@
     SUBDIR += font-util
     SUBDIR += font-winitzki-cyrillic
     SUBDIR += font-xfree86-type1
-    SUBDIR += fontcacheproto
     SUBDIR += fontconfig
     SUBDIR += fontconfig-reference
     SUBDIR += fontmatrix
     SUBDIR += fonts-indic
-    SUBDIR += fontsproto
     SUBDIR += fonttosfnt
     SUBDIR += freefont-ttf
     SUBDIR += freefonts
@@ -180,6 +177,7 @@
     SUBDIR += sourcecodepro-ttf
     SUBDIR += sourcesanspro-ttf
     SUBDIR += sourceserifpro-ttf
+    SUBDIR += spleen
     SUBDIR += stix-fonts
     SUBDIR += suxus
     SUBDIR += symbola
@@ -196,7 +194,6 @@
     SUBDIR += vollkorn-ttf
     SUBDIR += webfonts
     SUBDIR += wqy
-    SUBDIR += xf86bigfontproto
     SUBDIR += xfontsel
     SUBDIR += xfs
     SUBDIR += xfsinfo

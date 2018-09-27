@@ -4,12 +4,12 @@
     COMMENT = Miscellaneous utilities
 
     SUBDIR += R-cran-mime
+    SUBDIR += R-cran-xfun
     SUBDIR += achievo
     SUBDIR += aclgen
     SUBDIR += amanda-client
     SUBDIR += amanda-perl-wrapper
     SUBDIR += amanda-server
-    SUBDIR += amfm
     SUBDIR += ansiweather
     SUBDIR += apparix
     SUBDIR += artikulate
@@ -123,7 +123,6 @@
     SUBDIR += freebsd-doc-pl
     SUBDIR += freebsd-doc-pt
     SUBDIR += freebsd-doc-ru
-    SUBDIR += freebsd-doc-sr
     SUBDIR += freebsd-doc-tr
     SUBDIR += freebsd-doc-zh_cn
     SUBDIR += freebsd-doc-zh_tw
@@ -186,6 +185,7 @@
     SUBDIR += inplace
     SUBDIR += ipa_conv
     SUBDIR += ipbt
+    SUBDIR += ironscanner
     SUBDIR += iselect
     SUBDIR += iso-codes
     SUBDIR += jargon
@@ -290,6 +290,7 @@
     SUBDIR += mime-support
     SUBDIR += mirmon
     SUBDIR += mmv
+    SUBDIR += morse
     SUBDIR += mtail
     SUBDIR += mtx
     SUBDIR += najitool
@@ -299,10 +300,12 @@
     SUBDIR += nsf
     SUBDIR += numchar
     SUBDIR += nut
+    SUBDIR += ompl
     SUBDIR += ondir
     SUBDIR += opencyc
     SUBDIR += openhab2
     SUBDIR += openhab2-addons
+    SUBDIR += openhmd
     SUBDIR += openmvg
     SUBDIR += openr2
     SUBDIR += orange3
@@ -411,6 +414,7 @@
     SUBDIR += py-emoji
     SUBDIR += py-fuzzy
     SUBDIR += py-glance
+    SUBDIR += py-kartograph
     SUBDIR += py-orange3-associate
     SUBDIR += py-orange3-datafusion
     SUBDIR += py-orange3-educational
@@ -424,6 +428,7 @@
     SUBDIR += py-progressbar2
     SUBDIR += py-progressbar231
     SUBDIR += py-pyfiglet
+    SUBDIR += py-pykml
     SUBDIR += py-pyprind
     SUBDIR += py-python-geohash
     SUBDIR += py-python-utils
@@ -436,9 +441,11 @@
     SUBDIR += py-socli
     SUBDIR += py-spdx
     SUBDIR += py-spdx-lookup
+    SUBDIR += py-spdx-tools
     SUBDIR += py-tqdm
     SUBDIR += py-yolk
     SUBDIR += pylize
+    SUBDIR += pyobd
     SUBDIR += qbrew
     SUBDIR += qlas
     SUBDIR += qmetro
@@ -451,7 +458,7 @@
     SUBDIR += qt5-l10n
     SUBDIR += qt5ct
     SUBDIR += qtchooser
-    SUBDIR += R-cran-xfun
+    SUBDIR += raspberrypi-gpioshutdown
     SUBDIR += raspberrypi-userland
     SUBDIR += raspbsd-led
     SUBDIR += ree
@@ -493,6 +500,7 @@
     SUBDIR += spamcalc
     SUBDIR += sshbuddy
     SUBDIR += sssnips
+    SUBDIR += survex
     SUBDIR += susv2
     SUBDIR += susv3
     SUBDIR += susv4
@@ -508,7 +516,6 @@
     SUBDIR += termatrix
     SUBDIR += teseq
     SUBDIR += thefuck
-    SUBDIR += timediff
     SUBDIR += tkcron
     SUBDIR += tkinfo
     SUBDIR += tkregexp
@@ -519,6 +526,7 @@
     SUBDIR += tudu
     SUBDIR += tvbrowser
     SUBDIR += typetrainer
+    SUBDIR += tzdiff
     SUBDIR += uk-phone
     SUBDIR += uk-postcodes
     SUBDIR += umodunpack
@@ -532,10 +540,12 @@
     SUBDIR += usbids
     SUBDIR += usbrh-libusb
     SUBDIR += utftools
+    SUBDIR += valentina
     SUBDIR += valspeak
     SUBDIR += vdmfec
     SUBDIR += vera
     SUBDIR += vifm
+    SUBDIR += visp
     SUBDIR += viz
     SUBDIR += whichman
     SUBDIR += window
@@ -559,7 +569,6 @@
     SUBDIR += xiphos
     SUBDIR += xless
     SUBDIR += xosd
-    SUBDIR += xpns
     SUBDIR += xtail
     SUBDIR += xtar
     SUBDIR += xtypo

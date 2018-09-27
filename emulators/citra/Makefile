@@ -1,9 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	citra
-PORTVERSION=	s20180725
+PORTVERSION=	s20180924
 PORTREVISION?=	0
 CATEGORIES=	emulators
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	fce7afb8dc86.patch:-p1
+PATCHFILES+=	15d44f04501d.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Nintendo 3DS emulator/debugger
@@ -17,32 +21,31 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/license.txt
 LICENSE_FILE_MIT=	${WRKSRC}/externals/enet/LICENSE
 LICENSE_FILE_LGPL21+ =	${_LICENSE_STORE}/LGPL21 # soundtouch
 
-BROKEN_FreeBSD_10=	libc++ does not support C++17 features e.g., weak_from_this
+BROKEN_FreeBSD_10=	libc++ does not support C++17 features
 
 BUILD_DEPENDS=	boost-libs>=1.66:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	citra-emu
-GH_TAGNAME=	4a3c4f5f6
+GH_TAGNAME=	d6a9b0162
 GH_TUPLE=	citra-emu:ext-libressl-portable:7d01cb0:libressl/externals/libressl \
 		citra-emu:ext-soundtouch:060181e:soundtouch/externals/soundtouch \
-		MerryMage:dynarmic:r1-2-g4b350a3:dynarmic/externals/dynarmic \
+		MerryMage:dynarmic:r1-873-g68ca03e:dynarmic/externals/dynarmic \
 		arsenm:sanitizers-cmake:f09151b:sanitizers_cmake/externals/cubeb/cmake/sanitizers-cmake \
 		benhoyt:inih:r40:inih/externals/inih/inih \
-		catchorg:Catch2:v2.2.2:catch/externals/catch \
-		fmtlib:fmt:4.0.0-510-g5859e58:fmt/externals/fmt \
-		herumi:xbyak:v5.64:xbyak/externals/xbyak \
+		catchorg:Catch2:v2.3.0:catch/externals/catch \
+		fmtlib:fmt:5.1.0:fmt/externals/fmt \
+		herumi:xbyak:v5.71:xbyak/externals/xbyak \
 		kinetiknz:cubeb:cubeb-0.2-1039-g44341a1:cubeb/externals/cubeb \
 		lsalzman:enet:39a72ab:enet/externals/enet \
 		neobrain:nihstro:fd69de1:nihstro/externals/nihstro \
-		weidai11:cryptopp:CRYPTOPP_7_0_0-23-gf320e7d9:cryptopp/externals/cryptopp/cryptopp
+		weidai11:cryptopp:CRYPTOPP_7_0_0-23-gf320e7d9:cryptopp/externals/cryptopp/cryptopp \
+		zeromq:cppzmq:v4.2.3:cppzmq/externals/cppzmq \
+		zeromq:libzmq:v4.2.5:libzmq/externals/libzmq
 
-USES=		cmake:outsource compiler:c++14-lang iconv localbase:ldflags
+USES=		cmake:outsource compiler:c++17-lang iconv localbase:ldflags
 USE_SDL=	sdl2
-EXTRA_PATCHES+=	${EXTRA_PATCHES_${OPSYS}_${OSREL:R}}
-EXTRA_PATCHES_FreeBSD_10=	${PATCHDIR}/extra-patch-c++14
-CXXFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
-		-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
+CMAKE_OFF=	ENABLE_SCRIPTING # XXX #4206 and #4207
 LDFLAGS+=	-Wl,--as-needed # Qt5Network
 TEST_TARGET=	test
 

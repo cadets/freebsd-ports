@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	atompaw
-DISTVERSION=	4.1.0.3
+DISTVERSION=	4.1.0.4
 CATEGORIES=	science
 MASTER_SITES=	http://www.wfu.edu/~natalie/papers/pwpaw/
 

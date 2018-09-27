@@ -3,7 +3,7 @@
 
 PORTNAME=	focuswriter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.15
+DISTVERSION=	1.6.16
 CATEGORIES=	editors
 
 MAINTAINER=	lightside@gmx.com

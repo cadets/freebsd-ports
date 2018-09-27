@@ -162,6 +162,7 @@
     SUBDIR += ljclive
     SUBDIR += ljit
     SUBDIR += logjam
+    SUBDIR += lookbook
     SUBDIR += lumina-archiver
     SUBDIR += lumina-calculator
     SUBDIR += lumina-fileinfo
@@ -172,6 +173,7 @@
     SUBDIR += lumina-screenshot
     SUBDIR += lumina-textedit
     SUBDIR += lumina-xdg-entry
+    SUBDIR += lxqt-notificationd
     SUBDIR += mat
     SUBDIR += mate-notification-daemon
     SUBDIR += mate-utils
@@ -312,6 +314,7 @@
     SUBDIR += xpostitPlus
     SUBDIR += xrolo
     SUBDIR += xwrits
+    SUBDIR += zanshin
     SUBDIR += zim
     SUBDIR += znotes
     SUBDIR += zorro

@@ -201,7 +201,6 @@ thundercache		www/thundercache	Commercial software with shareware license to 50 
 tinker*			biology/tinker		Distribution is prohibited
 triangle-*/*		math/triangle		No commercial use without prior arrangement with the author
 Tripwire-*-1.tar.gz	security/tripwire-131	Cannot be redistributed for more than the cost of duplication
-tripwire-*.tar.gz	security/tripwire12	Cannot be redistributed for more than the cost of duplication
 TrueCrypt*		security/truecrypt	May not be redistributed.  Must accept license to download.
 tuc-*			converters/tuc		Author does not allow CD-ROM distribution
 tw_cli-*		sysutils/tw_cli		Redistribution forbidden by license
@@ -239,3 +238,8 @@ sas2ircu-*		sysutils/sas2ircu	May not be redistributed. Must accept license to d
 snes9x-*		emulators/snes9x-gtk	Commercial users must seek permission from copyright holders.
 rainloop-1.*.zip	mail/rainloop		Redistribution in any form is prohibited
 lha-114i.tar.gz		archivers/lha		Binary only redistribution is prohibited. Non-network redistribution such as CDROM requires prior notification to author. Commercial use whose main purpose is to provide the functions of this program is prohibited.
+atom-*.tgz		science/atom		Redistribution in any form is prohibited
+charm-uiuc-*		net/charm		No commercial use: commercial use requires a commercial license
+namd-*			science/namd		No commercial use: commercial use requires a commercial license
+vmd-*			science/vmd		No commercial use: commercial use requires a commercial license
+msms-*			science/msms		No commercial use, only for use by individuals in scientific research

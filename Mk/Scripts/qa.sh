@@ -905,7 +905,7 @@ flavors()
 		pkgnames=$(make -C "${CURDIR}" flavors-package-names|sort)
 		uniques=$(echo "${pkgnames}"|uniq)
 		if [ "$pkgnames" != "${uniques}" ]; then
-			err "Package names are not uniques with flavors:"
+			err "Package names are not unique with flavors:"
 			make -C "${CURDIR}" pretty-flavors-package-names >&2
 			err "maybe use <flavor>_PKGNAMEPREFIX/SUFFIX".
 			rc=1
@@ -918,7 +918,9 @@ license()
 {
 	local lic autoaccept pkgmirror #distsell distmirror pkgsell
 
-	if [ -n "$LICENSE" ]; then
+	if [ -n "$DISABLE_LICENSES" ]; then
+		warn "You have disabled the licenses framework with DISABLE_LICENSES, unable to run checks"
+	elif [ -n "$LICENSE" ]; then
 		for lic in $LICENSE_PERMS; do
 			case "$lic" in
 				auto-accept) autoaccept=1 ;;

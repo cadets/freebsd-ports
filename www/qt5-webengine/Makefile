@@ -20,7 +20,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -74,14 +74,14 @@ USES=		gperf jpeg python:2.7,build pkgconfig \
 		qmake:norecursive,outsource qt-dist:5,webengine shebangfix
 USE_GNOME=	glib20 libxml2 libxslt
 USE_QT=		core designer gui location network qml quick webchannel \
-		widgets buildtools_build qmake_build
-USE_XORG=	scrnsaverproto x11 xcb xcomposite xcursor xext xi xproto \
+		widgets buildtools_build qmake_build printsupport
+USE_XORG=	x11 xcb xcomposite xcursor xext xi xorgproto \
 		xrandr xrender xscrnsaver xtst
 
 USE_LDCONFIG=	${QT_LIBDIR}
 
 
-QMAKE_CONFIGURE_ARGS=	-no-printing-and-pdf -proprietary-codecs -system-ffmpeg
+QMAKE_CONFIGURE_ARGS=	-proprietary-codecs -system-ffmpeg
 
 # We could just set it to an empty string as well. "all" does not account for
 # dependencies correctly in the generated Makefiles, use the right target here.
@@ -141,5 +141,7 @@ pre-configure:
 # Unbundle a few dependencies.
 	${PYTHON_CMD} ${WRKSRC}/src/3rdparty/chromium/build/linux/unbundle/replace_gn_files.py \
 		--system-libraries libwebp libxml libxslt yasm
+# Rerun syncqt.pl -- otherwise the resulting package misses some forwarding headers.
+	cd ${WRKSRC} && ${QT_BINDIR}/syncqt.pl -version ${QT5_VERSION}
 
 .include <bsd.port.post.mk>

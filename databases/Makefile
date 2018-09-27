@@ -37,6 +37,7 @@
     SUBDIR += clickhouse
     SUBDIR += cockroach
     SUBDIR += couchdb
+    SUBDIR += couchdb2
     SUBDIR += courier-authlib-mysql
     SUBDIR += courier-authlib-pgsql
     SUBDIR += courier-authlib-userdb
@@ -51,7 +52,6 @@
     SUBDIR += db6
     SUBDIR += dbconnect
     SUBDIR += dbf
-    SUBDIR += dbf2mysql
     SUBDIR += dbh
     SUBDIR += dbixx
     SUBDIR += dbow
@@ -199,12 +199,12 @@
     SUBDIR += memcacheq
     SUBDIR += metakit
     SUBDIR += monetdb
-    SUBDIR += mongodb
     SUBDIR += mongodb32
     SUBDIR += mongodb32-tools
     SUBDIR += mongodb34
     SUBDIR += mongodb34-tools
     SUBDIR += mongodb36
+    SUBDIR += mongodb36-tools
     SUBDIR += mroonga
     SUBDIR += mrtg-mysql-load
     SUBDIR += mtools-mongodb
@@ -253,6 +253,7 @@
     SUBDIR += ocaml-mysql
     SUBDIR += ocaml-sqlite3
     SUBDIR += openark-kit
+    SUBDIR += opendbviewer
     SUBDIR += opendbx
     SUBDIR += opentsdb
     SUBDIR += ora2pg
@@ -268,6 +269,7 @@
     SUBDIR += p5-AsciiDB-TagFile
     SUBDIR += p5-BDB
     SUBDIR += p5-BSON
+    SUBDIR += p5-BSON-XS
     SUBDIR += p5-BerkeleyDB
     SUBDIR += p5-Bucardo
     SUBDIR += p5-CDB_File
@@ -589,6 +591,7 @@
     SUBDIR += pg_qualstats
     SUBDIR += pg_reorg
     SUBDIR += pg_repack
+    SUBDIR += pg_similarity
     SUBDIR += pg_stat_kcache
     SUBDIR += pgaccess
     SUBDIR += pgadmin3
@@ -605,7 +608,6 @@
     SUBDIR += pgmetrics
     SUBDIR += pgmodeler
     SUBDIR += pgpool
-    SUBDIR += pgpool-II-33
     SUBDIR += pgpool-II-35
     SUBDIR += pgpool-II-36
     SUBDIR += pgpool-II-37
@@ -622,7 +624,6 @@
     SUBDIR += php-mdcached
     SUBDIR += php-memcache
     SUBDIR += php-xapian
-    SUBDIR += php5-pdo_cassandra
     SUBDIR += php5-tarantool
     SUBDIR += php56-dba
     SUBDIR += php56-interbase
@@ -987,9 +988,9 @@
     SUBDIR += rubygem-peek-mysql2
     SUBDIR += rubygem-peek-pg
     SUBDIR += rubygem-pg
-    SUBDIR += rubygem-pg_array_parser
     SUBDIR += rubygem-pg0
     SUBDIR += rubygem-pg018
+    SUBDIR += rubygem-pg_array_parser
     SUBDIR += rubygem-pghero
     SUBDIR += rubygem-pghero-rails5
     SUBDIR += rubygem-pghero-rails50
@@ -1000,7 +1001,6 @@
     SUBDIR += rubygem-redis-actionpack-rails5
     SUBDIR += rubygem-redis-actionpack-rails50
     SUBDIR += rubygem-redis-namespace
-    SUBDIR += rubygem-redis-namespace15
     SUBDIR += rubygem-redis3
     SUBDIR += rubygem-seed-fu
     SUBDIR += rubygem-sqlite3
@@ -1070,6 +1070,7 @@
     SUBDIR += xapian-core
     SUBDIR += xapian-core10
     SUBDIR += xapian-core12
+    SUBDIR += xrootd
     SUBDIR += xtrabackup
     SUBDIR += zabbix22-libzbxpgsql
     SUBDIR += zabbix3-libzbxpgsql

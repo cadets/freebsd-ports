@@ -115,8 +115,10 @@
     SUBDIR += denemo
     SUBDIR += dir2ogg
     SUBDIR += discid
+    SUBDIR += dpf-plugins-lv2
     SUBDIR += dream
     SUBDIR += drumgizmo
+    SUBDIR += drumkv1-lv2
     SUBDIR += drumpiler
     SUBDIR += drumstick
     SUBDIR += dsbmixer
@@ -146,6 +148,7 @@
     SUBDIR += faad
     SUBDIR += fabla2-lv2
     SUBDIR += fapg
+    SUBDIR += fasttracker2
     SUBDIR += faust
     SUBDIR += faust-lv2
     SUBDIR += faustlive
@@ -177,7 +180,6 @@
     SUBDIR += festvox-rab16
     SUBDIR += festvox-rab8
     SUBDIR += festvox-russian
-    SUBDIR += firefly
     SUBDIR += flac
     SUBDIR += flac123
     SUBDIR += flacon
@@ -209,7 +211,6 @@
     SUBDIR += gimmix
     SUBDIR += gkrellmms2
     SUBDIR += gkrellmvolume2
-    SUBDIR += glame
     SUBDIR += glurp
     SUBDIR += gmidimonitor
     SUBDIR += gmixer
@@ -367,6 +368,7 @@
     SUBDIR += julius
     SUBDIR += kexis
     SUBDIR += kid3-kde4
+    SUBDIR += kid3-kf5
     SUBDIR += kid3-qt4
     SUBDIR += kid3-qt5
     SUBDIR += kio-audiocd-kde4
@@ -427,7 +429,6 @@
     SUBDIR += libmp3splt
     SUBDIR += libmpd
     SUBDIR += libmpdclient
-    SUBDIR += libmusicbrainz3
     SUBDIR += libmusicbrainz5
     SUBDIR += libmusicxml
     SUBDIR += libmysofa
@@ -435,6 +436,7 @@
     SUBDIR += libnoise
     SUBDIR += libogg
     SUBDIR += liboggz
+    SUBDIR += libopenmpt
     SUBDIR += libopenspc
     SUBDIR += libsamplerate
     SUBDIR += libshairport
@@ -570,7 +572,6 @@
     SUBDIR += musicpc
     SUBDIR += musicpd
     SUBDIR += mythplugin-mythmusic
-    SUBDIR += napster
     SUBDIR += nas
     SUBDIR += ncmpc
     SUBDIR += ncmpcpp
@@ -665,6 +666,7 @@
     SUBDIR += puddletag
     SUBDIR += pulseaudio
     SUBDIR += pulseaudio-module-sndio
+    SUBDIR += pulseaudio-module-xrdp
     SUBDIR += py-SoundFile
     SUBDIR += py-al
     SUBDIR += py-ao
@@ -721,6 +723,8 @@
     SUBDIR += resid
     SUBDIR += rexima
     SUBDIR += rezound
+    SUBDIR += rhvoice
+    SUBDIR += rhvoice-dictionary
     SUBDIR += rhythmbox
     SUBDIR += rio500
     SUBDIR += rioutil
@@ -780,6 +784,7 @@
     SUBDIR += soundtouch
     SUBDIR += soundtracker
     SUBDIR += sox
+    SUBDIR += spc2it
     SUBDIR += specimen
     SUBDIR += spectrogram
     SUBDIR += speex

@@ -2,6 +2,7 @@
 
 PORTNAME=	tigervnc
 PORTVERSION=	1.9.0
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net x11-servers
 PKGNAMESUFFIX=	-devel
@@ -13,6 +14,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENCE.TXT
 
 IGNORE=		no development version available right now. Please use net/tigervnc instead
+DEPRECATED=	Use net/tigervnc instead
+EXPIRATION_DATE=	2018-09-29
 
 PATCH_DEPENDS=	${NONEXISTENT}:x11-servers/xorg-server:patch
 BUILD_DEPENDS=	${LOCALBASE}/include/GL/internal/dri_interface.h:graphics/mesa-dri \
@@ -36,11 +39,8 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	TigerVNC
 
-USE_XORG+=	bigreqsproto compositeproto damageproto fixesproto fontsproto glproto \
-		ice inputproto kbproto pixman presentproto randrproto renderproto \
-		resourceproto scrnsaverproto sm videoproto x11 xau xcmiscproto xdamage \
-		xdmcp xext xextproto xfixes xfont xkbfile xorg-macros xproto xrandr \
-		xrender xtrans xtst
+USE_XORG+=	ice pixman sm x11 xau xdamage xdmcp xext xfixes xfont xkbfile \
+		xorg-macros xorgproto xrandr xrender xtrans xtst
 
 CFLAGS+=	-fPIC
 

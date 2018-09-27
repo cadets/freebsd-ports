@@ -4,6 +4,7 @@
     COMMENT = Archivers
 
     SUBDIR += 9e
+    SUBDIR += R-cran-zip
     SUBDIR += advancecomp
     SUBDIR += amigadepacker
     SUBDIR += arc
@@ -97,6 +98,7 @@
     SUBDIR += nwreckdum
     SUBDIR += ocaml-bz2
     SUBDIR += ocaml-zip
+    SUBDIR += opkg-openwrt
     SUBDIR += p5-Archive-Any
     SUBDIR += p5-Archive-Any-Lite
     SUBDIR += p5-Archive-Any-Plugin-Rar

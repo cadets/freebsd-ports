@@ -4,6 +4,7 @@
     COMMENT = Desktop publishing
 
     SUBDIR += R-cran-knitr
+    SUBDIR += R-cran-tinytex
     SUBDIR += a2pdf
     SUBDIR += a2ps
     SUBDIR += abcm2ps
@@ -97,8 +98,6 @@
     SUBDIR += hyperlatex
     SUBDIR += indexinfo
     SUBDIR += jabref
-    SUBDIR += print-manager
-    SUBDIR += print-manager-kde4
     SUBDIR += kde_poster
     SUBDIR += kover
     SUBDIR += kpdftool
@@ -158,6 +157,7 @@
     SUBDIR += papersize-default-letter
     SUBDIR += paps
     SUBDIR += pcal
+    SUBDIR += pdf-redact-tools
     SUBDIR += pdf-renderer
     SUBDIR += pdf-tools
     SUBDIR += pdf4tcl
@@ -185,6 +185,8 @@
     SUBDIR += pmw
     SUBDIR += pnm2ppa
     SUBDIR += poster
+    SUBDIR += print-manager
+    SUBDIR += print-manager-kde4
     SUBDIR += ps2eps
     SUBDIR += pscal
     SUBDIR += psdim
@@ -211,7 +213,6 @@
     SUBDIR += qpdf
     SUBDIR += qpdfview
     SUBDIR += qt5-printsupport
-    SUBDIR += R-cran-tinytex
     SUBDIR += rlpr
     SUBDIR += rprint
     SUBDIR += rtf2latex2e
