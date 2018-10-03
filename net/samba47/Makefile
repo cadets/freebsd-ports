@@ -17,6 +17,8 @@ IGNORE_NONTHREAD_PYTHON=	needs port lang/python${PYTHON_SUFFIX} to be build with
 
 CONFLICTS_INSTALL?=		samba4-4.0.* samba4[1-689]-4.* p5-Parse-Pidl-4.*
 
+LLD_UNSAFE=			yes
+
 EXTRA_PATCHES+=			${PATCHDIR}/0001-Zfs-provision-1.patch:-p1
 EXTRA_PATCHES+=			${PATCHDIR}/0001-Freenas-master-mdns-fixes-22.patch:-p1
 EXTRA_PATCHES+=			${PATCHDIR}/0001-audit.patch:-p1
