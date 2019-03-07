@@ -3,7 +3,7 @@
 PORTNAME=	prometheus-node-exporter
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.16.0
-CATEGORIES=	www
+CATEGORIES=	net-mgmt
 
 MAINTAINER=	jonathan@FreeBSD.org
 COMMENT=	Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
